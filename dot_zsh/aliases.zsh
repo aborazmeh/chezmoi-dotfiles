@@ -1,0 +1,186 @@
+# [Modern unix](https://github.com/ibraheemdev/modern-unix)
+alias ls='eza --icons always'
+alias ll='eza --long --header --classify=always --all --binary --group --links --inode --blocksize --long --git --icons=always'
+alias l='eza --long --header --classify=always'
+alias diff='delta'
+alias du='dust'
+alias ff='fd'
+alias rg='rg -S'
+alias df='duf -hide special'
+alias tree='broot'
+alias top='btm'
+alias less='bat --paging=always '
+alias cat='bat'
+alias traceroute='mtr'
+alias ping='gping'
+alias ps='procs'
+alias cd='z'    # zoxide
+alias dig='dog'
+alias cheat='cht.sh'
+alias nnn='source $HOME/.config/nnn/config.sh ; nnn'
+
+alias slrn="slrn -n"
+alias man='LC_ALL=C LANG=C man'
+alias f=finger
+alias offlineimap-tty='offlineimap -u TTY.TTYUI'
+alias hnb-partecs='hnb $HOME/partecs/partecs-hnb.xml'
+alias rest2html-css='rst2html --embed-stylesheet --stylesheet-path=/usr/share/python-docutils/s5_html/themes/default/print.css'
+alias rainbarf='rainbarf --bright'
+alias hijri="idate | sed -n '4p' | \grep -oh  '[0-9]\{1,2\}/[ 0-9]\{1,2\}/[0-9]\{4\}' | sed -s 's/ //' | head -n1"
+alias mv='mv -i '
+#alias mv='amv -ig'
+alias cp='cp -ip '
+#alias cp='acp -iprg'
+#alias rm='rm -ir '
+alias rm='rm -i '
+alias tee='tee -a'
+alias grep='grep --color -n'
+#alias emacs='emacsclient -c'
+#alias irssi='screen -US irssi irssi'
+#alias irssi='tmux new -s irssi irssi'
+alias W='worms -n20 -d50'
+alias vim=nvim
+alias gdb='gdb -tui'
+alias youtube-dl='yt-dlp --config-locations $HOME/.config/youtube-dl/config'
+alias yF='youtube-dl -F '
+alias yd='youtube-dl -c -t '
+alias download_song="youtube-dl -icf 'bestaudio[ext=m4a]' --embed-thumbnail -o '%(title)s.%(ext)s'"
+alias tmux='tmux -2 -u'
+alias pdf='perldoc -f '
+alias etmx='${EDITOR} $HOME/.tmux.conf'
+alias stmx='tmux source-file $HOME/.tmux.conf'
+alias rar='unrar'
+alias n='ncmpcpp'
+alias weechat='weechat-curses'
+#alias conky='~/.conky/start-conky'
+alias todo="$EDITOR ~/TODO"
+alias znckill="pkill -SIGUSR1 znc && pkill znc"
+alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+alias fck=fuck
+alias perl='perl -CS '
+alias gpg='gpg2'
+alias lynx='lynx -accept_all_cookies'
+# alias wc='tokei'
+alias hug='hugo server -F -O -N -D'
+
+function se() { swaymsg exec $(printf "%s " ${@[@]}) }
+function read_html() { python -m readability.readability -u "$1" 2>/dev/null | w3m -T text/html }
+
+# Task
+alias idea='task add project:ideas'
+alias pod='task add project:pod.exe'
+
+# R
+pdfviewer=zathura
+epubviewer=foliate
+comicviewer=mcomix
+# TODO:
+  # After running the viewer
+  # i3-msg 'workspace 5; fullscreen'
+alias R_C="swaymsg exec 'cd ~/Videos/R_C && mpv .'"
+alias R="cd ~/MEGA/R"
+alias R.pdf="XDG_DATA_HOME=~/MEGA/R $pdfviewer ~/MEGA/R/R.pdf"
+alias R.epub="XDG_DATA_HOME=~/MEGA/R $epubviewer ~/MEGA/R/R.epub"
+alias R.comic="XDG_DATA_HOME=~/MEGA/R $comicviewer ~/MEGA/R/R.cb[zr]"
+alias R.OneDrive="XDG_DATA_HOME=~/OneDrive/aborazmeh/R okular ~/OneDrive/aborazmeh/R/R.pdf"
+alias R.audiobook="play_audiobook mpv"
+alias mpvs="mpv --vo=null"
+alias music="python ~/MEGA/playlists/play.py"
+word() { while clipnotify; do echo $(wl-paste) | anewer ~/MEGA/words.txt; done }
+alias quote="cat >> ~/MEGA/quotes.txt"
+alias pip='function _pip(){
+    if [ $1 = "search" ]; then
+        pip_search "$2";
+    else pip "$@";
+    fi;
+};_pip'
+
+# Scanning aliases
+function scan {
+  if [[ ( "$#" -lt 2 ) || ( $1 != "image" && $1 != "text" ) || ( $2 != "png" && $2 != "jpg" && $2 != "tiff" ) ]]; then
+    return
+  fi
+
+  if [[ $# -lt 2 ]]; then
+    echo "h"
+  fi
+
+  type=$1
+  ext=$2
+
+  filename="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n1).${ext}"
+
+  if [[ $type = "text" ]]; then
+    $(scanimage -d pixma:E460 --format=${ext} -p --resolution 75 --mode lineart > ${filename}.${ext})
+  else
+    $(scanimage -d pixma:E460 --format=${ext} -p --resolution 150 --mode color > ${filename}.${ext})
+  fi
+}
+alias scanText='scan text png'
+alias scanImage='scan image png'
+
+# Docbook
+alias docvalidate="xmllint --valid --noout"
+alias docbook2html="xsltproc /usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl"
+alias docbook2multihtml="xsltproc /usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/chunk.xsl"
+alias docbook2man="xsltproc /usr/share/xml/docbook/xsl-stylesheets-1.79.1/manpages/docbook.xsl"
+
+alias docbook2epub="xsltproc /usr/share/xml/docbook/xsl-stylesheets-1.79.1/epub3/docbook.xsl"
+docbook2pdf() {
+  xsltproc -xinclude -o tmp.fo /usr/share/xml/docbook/stylesheet/docbook-xsl-ns/fo/docbook.xsl docbook.book.xml
+}
+
+# ledger
+alias bal="ledger balance"
+alias reg="ledger register"
+alias hledger="hledger -f ~/repos/budget/$(date +%Y).ledger"
+
+# audiobooks
+mpva() {
+  mpv --no-loop-file --no-terminal --script-opts=delete_file-DeleteOnFinish=yes,audiobook_mode-persistent_playlist=yes "$1" ; media_scores.py
+}
+alias pa='current_dir=$PWD; cd ~/Audiobooks; mpv --script-opts=delete_file-DeleteOnFinish=yes,audiobook_mode-persistent_playlist=yes playlist.m3u; cd $current_dir'
+alias pb='current_dir=$PWD; cd ~/Audiobooks; mpv --script-opts=delete_file-DeleteOnFinish=yes,audiobook_mode-persistent_playlist=yes books.m3u; cd $current_dir'
+alias pe='current_dir=$PWD; cd ~/Audiobooks; mpv --script-opts=delete_file-DeleteOnFinish=yes,audiobook_mode-persistent_playlist=yes ebooks.m3u; cd $current_dir'
+alias pv='current_dir=$PWD; cd ~/Videos/R_C; mpv --script-opts=delete_file-DeleteOnFinish=yes .; cd $current_dir'
+
+pbookmark() {
+  if [[ ! -f bookmarks.sabp.xml ]]; then
+    echo File bookmarks.sabp.xml was not found in this directory. && return
+  fi
+
+  echo Total bookmarks: $(\grep '<fileName>' bookmarks.sabp.xml | wc -l)
+
+  FILENAME=$(\grep '<fileName>' bookmarks.sabp.xml | head -n1 | sed -E 's/.*<fileName>|<\/fileName>.*//g')
+  LOCATION=$(($(\grep '<filePosition>' bookmarks.sabp.xml | head -n1 | sed 's/[^0-9]//g') - 5))
+  echo Filename: $FILENAME
+  echo Location: $LOCATION
+  mpv --really-quiet --force-window --start=${LOCATION} "${FILENAME}"
+
+  echo -n "Delete first bookmark? (yes/no)"
+  read answer
+
+  answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+
+  if [[ "$answer" == "y" || "$answer" == "yes" ]]; then
+    sd -n1 -f=m '\n.+?<bookmark>[\w\W]+?</bookmark>' '' bookmarks.sabp.xml
+    echo First bookmark deleted
+
+    if [[ $(\grep '<fileName>' bookmarks.sabp.xml | wc -l) -eq 0 ]]; then
+      rm -f bookmarks.sabp.xml
+    fi
+  fi
+}
+
+update_tmuxrc() {
+  temp_dir=$(mktemp -d)
+  trap "rm -rf $temp_dir" EXIT
+
+  mkdir -p ~/bk/tmux
+
+  git clone https://github.com/gpakosz/.tmux.git ${temp_dir}
+  mv -fvv ${temp_dir}/.tmux.conf ~/bk/tmux
+  if [[ ! -f ~/bk/tmux/.tmux.conf.local ]]; then
+    mv -fvv ${temp_dir}/.tmux.conf.local ~/bk/tmux
+  fi
+}

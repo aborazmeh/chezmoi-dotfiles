@@ -1,0 +1,71 @@
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+# zinit light-mode for \
+    # zdharma-continuum/zinit-annex-as-monitor \
+    # zdharma-continuum/zinit-annex-bin-gem-node \
+    # zdharma-continuum/zinit-annex-patch-dl \
+    # zdharma-continuum/zinit-annex-rust
+
+# ### End of Zinit's installer chunk
+
+zi snippet OMZP::git
+zi snippet OMZP::archlinux
+zi snippet OMZP::systemd
+zi snippet OMZP::npm
+# zi snippet OMZP::history-substring-search
+zi snippet OMZP::command-not-found
+zi snippet OMZP::common-aliases
+zi snippet OMZP::thefuck
+zi snippet OMZP::docker
+# zi snippet OMZP::rust
+zi snippet OMZP::uv
+
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+zi light jeffreytse/zsh-vi-mode
+zi light mafredri/zsh-async
+zi light MichaelAquilina/zsh-you-should-use
+zi ice from"gh-r" as"program"
+zi light junegunn/fzf
+zi light lincheney/fzf-tab-completion
+zi light atuinsh/atuin
+# zi light marlonrichert/zsh-autocomplete
+# zi light zsh-users/zaw
+zinit wait lucid for MichaelAquilina/zsh-autoswitch-virtualenv
+
+# zinit ice lucid wait"0a" from"gh-r" as"program" atload'eval "$(mcfly init zsh)"'
+# zinit light cantino/mcfly
+# eval "$(mcfly init zsh)"
+
+# Prompt
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+# eval "$(starship init zsh)"
+#
+# if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+  # export TERM='xterm-256color'
+# else
+  # export TERM='xterm-color'
+# fi
+

@@ -1,0 +1,106 @@
+# Path
+export PATH=/usr/bin:/bin:/usr/local/bin:/usr/games:/usr/lib/qt/bin:/usr/share/texmf/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/lib/w3m:
+export PATH=$PATH:/usr/lib/java/bin:/usr/lib/java/jre/bin #Java
+export PATH=$PATH:$HOME/scripts                           #scripts
+export PATH=$PATH:$HOME/d/dsss/bin            #dsss
+export PATH=$PATH:$HOME/bin #bins
+export PATH=$PATH:$HOME/.local/bin            #locals
+export PATH=$PATH:$HOME/perl5/bin:/usr/bin/core_perl:/usr/bin/vendor_perl #perl
+export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin                               #gems
+export PATH=$PATH:/opt/dropbox              #dropbox
+export PATH=$PATH:/usr/share/texmf-dist/scripts/texlive              #TeXLive
+export PATH=$PATH:$HOME/flutter/bin              #flutter
+export PATH=$PATH:$HOME/.config/composer/vendor/bin     #composer
+export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:.
+
+# Fix man pages colors escapes
+export MANROFFOPT=-c
+
+# Custom ZSH Completions
+fpath=($fpath $HOME/.zsh/completions)
+
+# LANGUAGE
+LC_ALL='en_US.UTF-8'
+LANG='en_US.UTF-8'
+LC_CTYPE='en_US.UTF-8'
+# Local ld libraries
+LD_LIBRARY_PATH="$HOME/lib"
+# Default Applications
+BROWSER="firefox"
+# Firefox: Enable touch scrolling and pinch for zooming
+export MOZ_USE_XINPUT2=1
+
+export EDITOR="nvim"
+export ALTERNATE_EDITOR="vim"
+export PAGER='bat --paging=always'
+export PAGER=less
+export VIEWER='bat --paging=always'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export PLAYER='mpv'
+# Default Applications' Options
+LS_OPTIONS="-F -b -T 0 --color=auto --time-style=long-iso"
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_MUSIC_DIR="$HOME/Music"
+PERL5LIB=.:$HOME/perl5/lib/perl5:/usr/share/tlpkg
+JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+GRADLE_HOME="/usr/share/java/gradle"
+#http://www.freeusenetnews.com/
+NNTPSERVER='ger.gmane.org' && export NNTPSERVER
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+TASKDDATA=$HOME/MEGA/Tasks
+unset GREP_OPTIONS
+unset grep_options
+
+# gtags
+export GTAGSLABEL=pygments
+
+# npm
+NPM_PACKAGES="${HOME}/.npm-packages"
+export PATH="$PATH:$NPM_PACKAGES/bin"
+# Preserve MANPATH if you already defined it somewhere in your config.
+# Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.
+export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+
+
+# ibus
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+
+# Configuration variables
+HISTFILESIZE=1000000000
+HISTSIZE=1000000000
+SAVEHIST=1000000000
+HISTFILE=~/.zsh_history
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+# Automatically start tmux
+ZSH_TMUX_AUTOSTART=true
+# Only autostart once. If set to false, tmux will attempt to
+# autostart every time your zsh configs are reloaded.
+ZSH_TMUX_AUTOSTART_ONCE=true
+# Automatically connect to a previous session if it exists
+ZSH_TMUX_AUTOCONNECT=true
+# Automatically close the terminal when tmux exits
+ZSH_TMUX_AUTOQUIT=$ZSH_TMUX_AUTOSTART
+# Set term to screen or screen-256color based on current terminal support
+ZSH_TMUX_FIXTERM=true
+# Set '-CC' option for iTerm2 tmux integration
+ZSH_TMUX_ITERM2=false
+# The TERM to use for non-256 color terminals.
+# Tmux states this should be screen, but you may need to change it on
+# systems without the proper terminfo
+ZSH_TMUX_FIXTERM_WITHOUT_256COLOR="screen"
+# The TERM to use for 256 color terminals.
+# Tmux states this should be screen-256color, but you may need to change it on
+# systems without the proper terminfo
+ZSH_TMUX_FIXTERM_WITH_256COLOR="screen-256color"
+
+# (h)ledger
+export LEDGER_FILE=$HOME/repos/budget/budget.ledger
+
+# McFly
+export MCFLY_LIGHT=FALSE
+export MCFLY_KEY_SCHEME=vim   # emacs
+export MCFLY_FUZZY=2

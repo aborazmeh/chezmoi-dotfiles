@@ -1,0 +1,41 @@
+source $HOME/.zsh/bundles.zsh
+source $HOME/.zsh/zsh-options.zsh
+source $HOME/.zsh/environemnt-variables.zsh
+source $HOME/.zsh/aliases.zsh
+source $HOME/.zsh/unalias.zsh
+source $HOME/.zsh/key-bindings.zsh
+source $HOME/.zsh/theme-options.zsh
+source $HOME/.zsh/functions.zsh
+source $HOME/scripts/zsh_functions/*.zsh
+source $HOME/.zsh/hstr.zsh
+# source /usr/share/doc/find-the-command/ftc.zsh
+
+# Perl local::lib
+# eval $(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
+# Init perlbrew
+#source ~/perl5/perlbrew/etc/bashrc
+# Use plenv instead
+# export PATH="$HOME/.plenv/bin:$PATH"
+# eval "$(plenv init - zsh)"
+
+# Start tmux
+# if [[ ! $TERM =~ screen ]]; then
+# exec tmux
+# fi
+
+# FIXME
+# Init zoxide
+eval "$(zoxide init zsh)"
+
+# Init atuin
+eval "$(atuin init zsh)"
+
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+# . "$HOME/.acme.sh/acme.sh.env"
+
+source ~/.local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh
+bindkey '^I' fzf_completion
+
+source $HOME/.config/broot/launcher/bash/br
+
