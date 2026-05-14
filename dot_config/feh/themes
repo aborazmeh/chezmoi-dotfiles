@@ -1,0 +1,2 @@
+default --auto-zoom --scale-down --borderless --cache-thumbnails
+random --auto-zoom --scale-down --borderless --randomize

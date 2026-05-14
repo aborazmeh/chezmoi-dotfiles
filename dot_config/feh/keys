@@ -1,0 +1,12 @@
+next_img j Right space
+prev_img k Left BackSpace
+
+scroll_up J
+
+toggle_filename i
+toggle_caption c
+# remove     d   Delete
+# delete   C-d C-Delete
+
+zoom_default d
+zoom_fit s =
