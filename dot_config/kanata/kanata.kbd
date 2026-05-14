@@ -1,0 +1,88 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 700
+  hold-time 200
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc      nlck kp/ kp* kp-
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \         kp7 kp8 kp9 kp+
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret            kp4 kp5 kp6
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft                kp1 kp2 kp3
+  lctl lmet lalt           spc            ralt rmet rctl                     kp0 kp.     kprt
+)
+
+;; First layer defined will be active by default on start up.
+(deflayer qwerty
+  @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc      @num kp/ kp* kp-
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \         kp7 kp8 kp9 kp+
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @;   '    ret            kp4 kp5 kp6
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft                kp1 kp2 kp3
+  lctl lmet lalt           spc            ralt rmet rctl                     kp0 kp.     kprt
+)
+
+(deflayer dvorak
+  @grl 1    2    3    4    5    6    7    8    9    0    [    ]    bspc      @num kp/ kp* kp-
+  tab  '    ,    .    p    y    f    g    c    r    l    /    =    \         kp7 kp8 kp9 kp+
+  @cap a    o    e    u    i    d    h    t    n    s    -    ret            kp4 kp5 kp6
+  lsft ;    q    j    k    x    b    m    w    v    z    rsft                kp1 kp2 kp3
+  lctl lmet lalt           spc            ralt rmet rctl                     kp0 kp.     kprt
+)
+
+
+;; Aliases are referred to by `@<alias_name>`.
+(defalias
+  ;; tap: backtick (grave), hold: toggle layer-switching layer while held
+  grl (tap-hold 200 200 grv (layer-toggle layers))
+
+  ;; layer-switch changes the base layer.
+  dvk (layer-switch dvorak)
+  qwr (layer-switch qwerty)
+
+  ;; tap for capslk, hold for lctl
+  cap (tap-hold $tap-time $hold-time caps lctl)
+  num (tap-hold $tap-time $hold-time XX (layer-toggle emoji))
+)
+
+;; home row mods
+(defalias
+    ;; escctrl (tap-hold $tap-time $hold-time esc lctl)
+    a (tap-hold $tap-time $hold-time a lalt)
+    s (tap-hold $tap-time $hold-time s lsft)
+    d (tap-hold $tap-time $hold-time d lctl)
+    f (tap-hold $tap-time $hold-time f lmet)
+
+    j (tap-hold $tap-time $hold-time j rmet)
+    k (tap-hold $tap-time $hold-time k rctl)
+    l (tap-hold $tap-time $hold-time l rsft)
+    ; (tap-hold $tap-time $hold-time ; ralt)
+)
+
+;; lrld = "live reload"
+(deflayer layers
+  _    @qwr @dvk lrld _    _    _    _    _    _    _    _    _    _         _    _   _   _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _         _   _   _   _
+  _    _    _    d    _    _    left down up   right _    _    _              _   _   _
+  _    _    _    _    _    _    _    _    _    _    _    _                   _   _   _
+  _    _    _              _              _    _    _                        _   _       _
+)
+
+(defalias
+  ❤️ (macro (unicode U+2764) (unicode U+FE0F))
+  😊 (unicode 😊) 😀 (unicode 😀) 😂 (unicode 😂) 😎 (unicode 😎)
+  🤔 (unicode 🤔) 😍 (unicode 😍) 🙄 (unicode 🙄) 😭 (unicode 😭)
+  🫪 (unicode 🫪) 🫩 (unicode 🫩) ✅ (unicode ✅) 👍 (unicode 👍)
+  🥹 (unicode 🥹) 💯 (unicode 💯) ✨ (unicode ✨) 👎 (unicode 👎)
+  🌹 (unicode 🌹)
+)
+
+(deflayer emoji
+  _    _    _    _    _    _    _    _    _    _    _    _    _    @👎        _    @😊  @✨  @😂
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _         @😎  _   @😍  @🙄
+  _    _    _    _    _    _    _    _    _    _    _    _    @👍             @😭  _   @🫩
+  _    _    _    _    _    _    _    _    _    _    @🤔   _                   @🌹  _   @🥹
+  _    _    _              _              _    _    _                        @❤️  @✅      @💯
+)
