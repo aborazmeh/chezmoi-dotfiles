@@ -1,0 +1,128 @@
+[opener]
+open = [
+  { run = 'xdg-open "$@"', desc = "Open", for = "linux" },
+  { run = 'open "$@"', desc = "Open", for = "macos" },
+  { run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
+]
+reveal = [
+  { run = 'xdg-open "$(dirname "$1")', desc = "Reveal", for = "linux" },
+  { run = 'open -R "$1"', desc = "Reveal", for = "macos" },
+  { run = 'explorer /select, "%1"', desc = "Reveal", for = "windows" },
+  { run = '''exiftool "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show EXIF", for = "unix" },
+
+]
+edit = [
+  { run = '${EDITOR:=nvim} "$@"', block = true, for = "unix" },
+  { run = "%EDITOR% %*", block = true, for = "windows" },
+
+  { run = 'code "$@"', orphan = true, desc = "vscode", for = "unix" },
+  { run = 'code "%*"', orphan = true, desc = "vscode", for = "windows" },
+
+  { run = 'gedit "$@"', orphan = true, desc = "gedit", for = "unix" },
+]
+extract = [
+  { run = 'unar "$1"', desc = "Extract here", for = "unix" },
+  { run = 'unar "%1"', desc = "Extract here", for = "windows" },
+]
+play = [
+  { run = 'mpv "$@"', orphan = true, for = "unix" },
+  { run = 'vlc "$@"', orphan = true, for = "unix" },
+  { run = 'mpv "%1"', orphan = true, for = "windows" },
+  { run = '''mediainfo "$1"; echo "Press enter to exit"; read _''', block = true, desc = "Show media info", for = "unix" },
+]
+pdf = [
+  { run = 'zathura "$@"', desc = "zathura", orphan = true, for = "unix" },
+  { run = 'evince "$@"', desc = "evince", orphan = true, for = "unix" },
+]
+
+calibre = [
+  { run = 'calibre "$@"', desc = "Add to calibre", orphan = true, for = "unix" },
+]
+
+comic = [
+  { run = 'mcomix "$@"', desc = "Open comic book", orphan = true, for = "unix" },
+]
+
+beautify = [{ run = 'beautify "$1" ', block = true, for = "unix" }]
+
+[open]
+rules = [
+  { name = "*/", use = [
+    "edit",
+    "open",
+    "reveal",
+  ] },
+  { name = "*.{py,js,ts,html,css,md,yaml,yml,json,toml,xml,c,cpp,h,hpp,java,sh,bash,zsh,go,sql,pl,pm,lua,rb,rs}", use = [
+    "beautify",
+    "open",
+    "edit",
+  ] },
+  { name = "*.m3u", use = [
+    "play",
+    "edit",
+  ] },
+  { mime = "text/*", use = [
+    "edit",
+    "reveal",
+  ] },
+  { mime = "image/*", use = [
+    "open",
+    "reveal",
+  ] },
+  { mime = "{audio,video}/*", use = [
+    "play",
+    "reveal",
+  ] },
+  { mime = "application/{,g}zip", use = [
+    "extract",
+    "reveal",
+  ] },
+  { mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", use = [
+    "extract",
+    "reveal",
+  ] },
+  { name = "*.cb[7rzt]", use = [
+    "comic",
+    "reveal",
+    "extract",
+  ] },
+  { mime = "application/pdf", use = [
+    "pdf",
+    "reveal",
+  ] },
+  { name = "*.epub", use = [
+    "open",
+    "calibre",
+    "reveal",
+    "extract",
+  ] },
+  { mime = "application/json", use = [
+    "edit",
+    "reveal",
+  ] },
+  { mime = "*/javascript", use = [
+    "edit",
+    "reveal",
+  ] },
+  { mime = "inode/x-empty", use = [
+    "edit",
+    "reveal",
+  ] },
+  { name = "*", use = [
+    "open",
+    "edit",
+    "reveal",
+  ] },
+]
+
+[plugin]
+prepend_previewers = [
+  { mime = "video/*", run = "noop" },
+  { name = "*.mp4", run = "noop" },
+]
+prepend_preloaders = [{ mime = "video/*", run = "noop" }]
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*"
+run = "git"
