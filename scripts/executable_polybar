@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [[ $1 == "notify" ]]; then
+  case $2 in
+    # FIXME don't show duplicated
+    "memory")
+      notify-send "Memory" "$(ps -eo cmd,%mem,%cpu --sort=-%mem | head | tail -n9 | awk '{print $1}')";;
+    "cpu")
+      notify-send "CPU" "$(ps -eo cmd,%mem,%cpu --sort=-%cpu | head | tail -n9 | awk '{print $1}')";;
+    "wifi")
+      ~/scripts/wifi info;;
+    "filesystem")
+      notify-send "Filesystem" "$(df -h | tail -n +2)";;
+  esac
+else
+  CONFIGFILE=~/scripts/.polybar.config
+  RUNNING=$(ps -ef | grep polybar | egrep -v "(n?vim|bash|grep) .*polybar" | wc -l)
+
+  cat ~/.config/polybar/config | sed "s/WIRELESS_INTERFACE/$(iw dev | awk '$1=="Interface"{print $2}')/" > $CONFIGFILE
+
+  if [[ $RUNNING -le 0 ]];then
+    cat ~/.config/polybar/config | sed "s/WIRELESS_INTERFACE/$(iw dev | awk '$1=="Interface"{print $2}')/" > $CONFIGFILE
+    /usr/bin/polybar -r -c $CONFIGFILE top &
+    /usr/bin/polybar -r -c $CONFIGFILE bottom &
+  fi
+fi
+

@@ -1,0 +1,446 @@
+# Variables
+set $mod Mod4
+set $alt Mod1
+set $terminal kitty tmux
+
+# Options
+focus_follows_mouse no
+mouse_warping output
+popup_during_fullscreen smart
+force_focus_wrapping yes
+focus_on_window_activation smart
+workspace_auto_back_and_forth yes
+default_border none
+new_window 1pixel
+
+# Font
+#font pango:monospace 8
+font pango:DejaVu Sans Mono 8, FontAwesome 8
+
+# Key Bindings
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Start a terminal
+bindsym $mod+Shift+Return exec $terminal
+
+# Screen Lock
+bindcode $mod+Ctrl+Shift+46 exec i3lock-fancy
+
+# Change keyboard layout
+bindcode 66 exec $HOME/scripts/xkbdlayout -s
+bindsym $mod+Escape exec $HOME/scripts/xkbdlayout -s
+bindsym $mod+Shift+Escape exec $HOME/scripts/xkbdlayout -w
+
+# kill focused window
+bindcode $mod+Shift+54 kill
+
+# Minimization
+set $minimize move scratchpad
+set $unminimize scratchpad show
+bindcode $mod+58 $minimize
+bindcode $mod+Shift+58 $unminimize
+
+# Program launcher
+set $rofi_cmd "rofi -show-icons -combi-modi window,drun,ssh -show combi -lines 9 -bw 0 -bg #FFFFFF"
+# bindsym $alt+space exec $rofi_cmd
+bindcode $mod+27 exec $rofi_cmd
+bindcode $mod+33 exec dmenu_run
+#bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+bindcode $mod+Shift+33 exec gmrun
+
+# Calculator
+bindcode $mod+21 exec "$HOME/.rofi/calc.sh"
+bindcode $mod+54 exec "$HOME/.rofi/calc.sh"
+
+# Screenshot
+bindsym --release Print exec $HOME/scripts/screenshot fullscreen
+bindsym --release Ctrl+Print exec $HOME/scripts/screenshot window
+bindsym $mod+Print exec $HOME/scripts/screenshot teiler
+
+# Searching the Web
+bindcode $mod+Shift+61 exec rofi-surfraw
+
+# Password Manager
+bindcode $mod+Ctrl+33 exec rofi-pass
+
+# TODO Browsing the filesystem
+# bindcode $mod+26
+
+# change focus
+bindcode $mod+43 focus left
+bindcode $mod+44 focus down
+bindcode $mod+45 focus up
+bindcode $mod+46 focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindcode $mod+Shift+43 move left
+bindcode $mod+Shift+44 move down
+bindcode $mod+Shift+45 move up
+bindcode $mod+Shift+46 move right
+# move to another output
+bindcode $mod+Ctrl+46 move container to output right
+bindcode $mod+Ctrl+43 move container to output left
+bindsym $mod+Ctrl+Right move workspace to output right
+bindsym $mod+Ctrl+Left move workspace to output left
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindcode $mod+118 split 43
+
+# split in vertical orientation
+bindcode $mod+shift+55 split v
+
+# enter fullscreen mode for the focused container
+bindcode $mod+41 fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+workspace_layout tabbed
+# bindcode $mod+39 layout stacking
+bindcode $mod+25 layout tabbed
+bindcode $mod+26 layout toggle split
+
+# toggle tiling / floating
+bindcode $mod+28 floating toggle
+bindcode $mod+39 sticky toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindcode $mod+38 focus parent
+
+# focus the child container
+#bindcode $mod+40 focus child
+
+# Function Keys
+
+#bindsym XF86Power exec "sh ~/.config/awesome/scripts/shutdown.sh"
+bindsym XF86MonBrightnessDown exec "light -U 15"
+bindsym XF86MonBrightnessUp exec "light -A 15"
+bindsym $mod+F4 exec "$HOME/.rofi/monitor_layout.sh"
+bindsym $mod+Shift+F4 exec "$HOME/.rofi/rofi-randr"
+bindsym XF86AudioPlay exec "$HOME/scripts/music -c toggle"
+bindsym $mod+XF86AudioPlay exec "clerk"
+# XF86AudioPlay with Ctrl to stop
+bindsym Ctrl+XF86AudioPlay exec "$HOME/scripts/music -c stop"
+# XF86AudioPrev to seek
+bindsym XF86AudioPrev exec "$HOME/scripts/music -c seek-"
+# XF86AudioPrev with Ctrl to previous track
+bindsym Ctrl+XF86AudioPrev exec "$HOME/scripts/music -c prev"
+# XF86AudioNext to seek
+bindsym XF86AudioNext exec "$HOME/scripts/music -c seek+"
+# XF86AudioNext with Ctrl to next track
+bindsym Ctrl+XF86AudioNext exec "$HOME/scripts/music -c next"
+bindsym XF86AudioLowerVolume exec "$HOME/scripts/music -c volume-"
+bindsym XF86AudioRaiseVolume exec "$HOME/scripts/music -c volume+"
+bindsym XF86AudioMute exec "$HOME/scripts/music -c mute"
+
+# Monitors
+set $monitor_primary "eDP-1"
+set $monitor_hdmi "HDMI1"
+
+# Workspaces
+set $ws_terminal "1: "
+set $ws_dev "2: "
+set $ws_web "3: "
+set $ws_office "4: "
+set $ws_doc "5: "
+set $ws_files "6: "
+set $ws_vnc "7: "
+set $ws_vm "8: "
+set $ws_im "9: "
+set $ws_media "10: "
+
+
+# switch to workspace
+# Workspace Switcher
+bindcode $mod+49 exec "$HOME/.rofi/i3_switch_workspace.sh"
+# bindcode keys from 1-0 to switch to specific workspace
+bindcode $mod+10 workspace $ws_terminal
+bindcode $mod+11 workspace $ws_dev
+bindcode $mod+12 workspace $ws_web
+bindcode $mod+13 workspace $ws_office
+bindcode $mod+14 workspace $ws_doc
+bindcode $mod+15 workspace $ws_files
+bindcode $mod+16 workspace $ws_vnc
+bindcode $mod+17 workspace $ws_vm
+bindcode $mod+18 workspace $ws_im
+bindcode $mod+19 workspace $ws_media
+
+# move focused container to workspace
+bindcode $mod+Shift+49 exec "$HOME/.rofi/move_window_to_current"
+bindcode $mod+Shift+10 move container to workspace $ws_terminal
+bindcode $mod+Shift+11 move container to workspace $ws_dev
+bindcode $mod+Shift+12 move container to workspace $ws_web
+bindcode $mod+Shift+13 move container to workspace $ws_office
+bindcode $mod+Shift+14 move container to workspace $ws_doc
+bindcode $mod+Shift+15 move container to workspace $ws_files
+bindcode $mod+Shift+16 move container to workspace $ws_vnc
+bindcode $mod+Shift+17 move container to workspace $ws_vm
+bindcode $mod+Shift+18 move container to workspace $ws_im
+bindcode $mod+Shift+19 move container to workspace $ws_media
+
+# Workspace Monitors
+workspace $ws_terminal output $monitor_primary
+workspace $ws_dev output $monitor_primary
+workspace $ws_web output $monitor_primary
+workspace $ws_office output $monitor_primary
+workspace $ws_doc output $monitor_primary
+workspace $ws_files output $monitor_primary
+workspace $ws_im output $monitor_primary
+workspace $ws_media output $monitor_hdmi
+
+# Workspaces apps
+assign [class="xterm"] $ws_terminal
+assign [class="urxvt"] $ws_terminal
+assign [class="aterm"] $ws_terminal
+assign [class="URxvt"] $ws_terminal
+assign [class="XTerm"] $ws_terminal
+assign [class="konsole"] $ws_terminal
+assign [class="terminator"] $ws_terminal
+assign [class="gnome-terminal"] $ws_terminal
+assign [class="Black Screen"] $ws_terminal
+assign [class="Alacritty"] $ws_terminal
+assign [class="kitty"] $ws_terminal
+
+assign [class="Kate"] $ws_dev
+assign [class="KDevelop"] $ws_dev
+assign [class="Codeblocks"] $ws_dev
+assign [class="Code::Blocks"] $ws_dev
+assign [class="DDD"] $ws_dev
+assign [class="kate4"] $ws_dev
+assign [class="Eclipse"] $ws_dev
+assign [class="Eeshcema"] $ws_dev
+assign [class="Eagle"] $ws_dev
+assign [class="Kicad"] $ws_dev
+assign [class="jetbrains-android-studio"] $ws_dev
+assign [class="jetbrains-studio"] $ws_dev
+assign [class="sun-awt-X11-XDialogPeer"] $ws_dev
+assign [class="jetbrians-idea-ce"] $ws_dev
+assign [class="sun-awt-X11-XFramePeer"] $ws_dev
+assign [class="QtCreator"] $ws_dev
+assign [class="glade"] $ws_dev
+assign [class="sqlitebrowser"] $ws_dev
+assign [class="Emacs"] $ws_dev
+assign [class="Gvim"] $ws_dev
+assign [class="Atom"] $ws_dev
+assign [class="Electron"] $ws_dev
+assign [class="[Cc]ode(-oss)?"] $ws_dev
+assign [class="Gedit"] $ws_dev
+assign [class="Postman"] $ws_dev
+assign [class="assistant"] $ws_dev
+assign [class="Designer"] $ws_dev
+assign [class="kwrite"] $ws_dev
+assign [class="Linguist"] $ws_dev
+assign [class="WindowsDaemon"] $ws_dev
+assign [class="DBeaver"] $ws_dev
+assign [title=".* \| Arduino .*"] $ws_dev
+assign [class="wireshark"] $ws_dev
+
+assign [class="Opera"] $ws_web
+assign [class="firefox"] $ws_web
+assign [class="Midori"] $ws_web
+assign [class="Rekonq"] $ws_web
+assign [class="Dillo"] $ws_web
+assign [class="Arora"] $ws_web
+assign [class="Chromium"] $ws_web
+assign [class="nightly"] $ws_web
+assign [class="gnome-minefield"] $ws_web
+assign [class="Google-chrome-stable"] $ws_web
+assign [class="Google-chrome"] $ws_web
+assign [class="Epiphany"] $ws_web
+assign [class="qBittorrent"] $ws_web
+assign [class="Deluge"] $ws_web
+assign [class="Filezilla"] $ws_web
+assign [class="Tor Browser"] $ws_web
+assign [class="Uzbl-core"] $ws_web
+assign [class="Netsurf-gtk3"] $ws_web
+assign [class="Mldonkey_gui"] $ws_web
+assign [class="Gtk-gnutella"] $ws_web
+assign [class="QupZilla" instance="QupZilla Browser"] $ws_web
+assign [class="Dwb"] $ws_web
+assign [class="qutebrowser"] $ws_web
+assign [class="Transmission-gtk"] $ws_web
+
+assign [instance="libreoffice"] $ws_office
+assign [title="LibreOffice"] $ws_office
+assign [class="libreoffice-calc"] $ws_office
+assign [class="calligra.*"] $ws_office
+assign [class="Gnucash"] $ws_office
+assign [class="Gramps"] $ws_office
+assign [class="TeXstudio"] $ws_office
+assign [class="Gummi"] $ws_office
+assign [class="Abiword"] $ws_office
+assign [class="Gnumeric"] $ws_office
+assign [class="ghostwriter"] $ws_office
+assign [class="Typora"] $ws_office
+assign [class="OmegaT"] $ws_office
+assign [class="tellico"] $ws_office
+
+assign [class="Assistant"] $ws_doc
+assign [class="Okular"] $ws_doc
+assign [class="Evince"] $ws_doc
+assign [class="EPDFviewer"] $ws_doc
+assign [class="xpdf"] $ws_doc
+assign [class="Xpdf"] $ws_doc
+assign [class="Anki"] $ws_doc
+assign [class="llpp"] $ws_doc
+assign [class="Zathura"] $ws_doc
+assign [class="MuPDF"] $ws_doc
+assign [instance="calibre"] $ws_doc
+assign [instance="sigil"] $ws_doc
+assign [class="libprs500-gui"] $ws_doc
+assign [class="FBReader"] $ws_doc
+assign [class="Simple-scan"] $ws_doc
+assign [class="Wine" instance="Kindle.exe"] $ws_doc
+assign [class="XDvi"] $ws_doc
+assign [class="com.github.johnfactotum.Foliate"] $ws_doc
+assign [class="xchm"] $ws_doc
+assign [class="net.kchmviewer.kchmviewer"] $ws_doc
+
+assign [class="Gimp"] $ws_doc
+assign [class="CinePaint"] $ws_doc
+assign [class="Krita"] $ws_doc
+assign [class="Inkscape"] $ws_doc
+assign [class="Kino"] $ws_doc
+assign [instance="openshot.*"] $ws_doc
+assign [class="Cinelerra"] $ws_doc
+assign [class="Pitivi"] $ws_doc
+assign [class="Kdenlive"] $ws_doc
+assign [class="Audacity"] $ws_doc
+assign [class="Blender"] $ws_doc
+assign [class="Qcad-bin"] $ws_doc
+assign [class="Openscad"] $ws_doc
+assign [class="com-eteks-sweethome3d-SweetHome3DBootstrap"] $ws_doc
+assign [class="Ghb"] $ws_doc
+assign [class="MComix"] $ws_doc
+
+assign [class="Thunar"] $ws_files
+assign [class="Konqueror"] $ws_files
+assign [class="ark"] $ws_files
+assign [class="dolphin"] $ws_files
+assign [class="Nautilus"] $ws_files
+assign [class="emelfm"] $ws_files
+assign [class="nemo"] $ws_files
+
+assign [class="TeamViewer.exe"] $ws_vnc
+assign [class="Anydesk"] $ws_vnc
+assign [instance="vncviewer" class="Vncviewer"] $ws_vnc
+
+
+assign [instance="qemu-system-.*" class="Qemu-system.*"] $ws_vm
+assign [instance="qtemu" class="Qtemu"] $ws_vm
+assign [class="Virt-manager"] $ws_vm
+assign [title="Android Emulator.*"] $ws_vm
+assign [title="org.remmina.Remmina"] $ws_vm
+
+assign [class="Skype"] $ws_im
+assign [class="Pidgin"] $ws_im
+assign [class="empathy"] $ws_im
+assign [class="irssi"] $ws_im
+assign [class="weechat"] $ws_im
+assign [class="Epathy"] $ws_im
+assign [class="Kopete"] $ws_im
+assign [class="Cheese"] $ws_im
+assign [class="Kamoso"] $ws_im
+assign [class="Viber"] $ws_im
+assign [class="ViberPC"] $ws_im
+assign [class="TelegramDesktop"] $ws_im
+assign [class="whatsapp-for-linux"] $ws_im
+assign [class="whatsdesk"] $ws_im
+assign [class="discord"] $ws_im
+
+assign [class="Vlc"] $ws_media
+assign [class="Totem"] $ws_media
+assign [class="MPlayer"] $ws_media
+assign [class="smplayer"] $ws_media
+assign [class="mpv"] $ws_media
+assign [class="smtube"] $ws_media
+assign [instance="spotify" class="Spotify"] $ws_media
+assign [class="Gpodder"] $ws_media
+
+# Floating apps
+for_window [class="Lxappearance"] floating enable
+for_window [class="Seahorse"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Gimp"] floating enable
+for_window [class="Speedcrunch"] floating enable
+for_window [class="xfce4-panel"] floating enable
+for_window [class="Gtk-recordMyDesktop"] floating enable
+for_window [instance="Toplevel" class="Firefox.*"] floating enable
+for_window [class="Pinentry"] floating enable
+for_window [class="zazu"] floating enable
+for_window [title="Android Virtual Device Manager"] floating enable
+for_window [title="Android Emulator.*"] floating enable
+for_window [title="Android Emulator - Nexus_5X_API_28:5554"] floating enable
+for_window [class="WindowsDaemon"] floating enable
+for_window [class="nz.co.mega.megasync"] floating enable
+for_window [class="MEGAsync"] floating enable
+for_window [class="pavucontrol"] floating enable
+for_window [class="org.kde.kdeconnect.daemon"] floating enable
+for_window [class="mpv" instance="mpv-sticky-float"] floating enable
+for_window [class="mpv" instance="mpv-sticky-float"] sticky enable
+
+# reload the configuration file
+# bindcode $mod+Shift+54 reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindcode $mod+24 restart
+# exit i3 (logs you out of your X session)
+bindcode $mod+Shift+24 exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+# These bindings trigger as soon as you enter the resize mode
+
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+  bindcode 43 resize shrink width 10 px or 10 ppt
+  bindcode 44 resize grow height 10 px or 10 ppt
+  bindcode 45 resize shrink height 10 px or 10 ppt
+  bindcode 46 resize grow width 10 px or 10 ppt
+
+# same bindings, but for the arrow keys
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+# back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+bindcode $mod+Shift+27 mode "resize"
+
+# Fire up apps
+exec $HOME/scripts/polybar            # Bar
+exec setxkbmap -option ctrl:nocaps    # Turn off CapsLock
+exec xset b off                       # Turn off X Bell
+exec dunst
+exec numlockx
+exec compton
+exec $terminal
+
+{{- if eq .machine "home" }}
+exec megasync
+# exec mpd ~/.mpd.conf
+exec znc                              # IRC Bouncer
+exec $HOME/scripts/wallpapers -m bing
+exec qbittorrent-nox --daemon
+exec $HOME/scripts/play_audiobook
+{{- end }}
+
