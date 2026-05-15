@@ -30,6 +30,9 @@ GNUstep
 .config/khal
 .taskrc
 
+.config/hypr
+.config/waybar/config-top-hyprland
+
 .config/nheko
 
 .config/vdirsyncer

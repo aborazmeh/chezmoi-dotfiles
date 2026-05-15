@@ -1,0 +1,158 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": [ "sway/workspaces", "sway/mode", "sway/scratchpad" ],
+  "modules-center": [ "sway/window" ],
+  "modules-right": [ {{ if eq .machine "home" -}} "custom/music", "mpd", "custom/torrents", "custom/rss", "custom/podcasts", "custom/torn", {{- end }} "custom/swaync" ],
+  "sway/workspaces": {
+    "disable-scroll-wraparound": false,
+    "smooth-scrolling-threshold": 1,
+    "enable-bar-scroll": true,
+    "format": "{icon}",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "󰈹",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": "",
+      "urgent": "",
+      /* "focused": "", */
+      "default": ""
+    }
+  },
+  "sway/mode": {
+      "format": "<span style=\"italic\">{}</span>"
+  },
+  "sway/scratchpad": {
+      "format": "{icon} {count}",
+      "show-empty": false,
+      "format-icons": ["", ""],
+      "tooltip": true,
+      "tooltip-format": "{app}: {title}"
+  },
+  "custom/music": {
+    "exec": "~/scripts/bar/music -f sway",
+    "interval": 1,
+    "return-type": "json",
+    "on-click": "~/scripts/bar/music -f sway toggle",
+    "on-click-right": "~/scripts/bar/music -f sway stop",
+    "on-scroll-up": "~/scripts/bar/music -f sway seek+",
+    "on-scroll-down": "~/scripts/bar/music -f sway seek-",
+    "on-click-middle": "~/scripts/bar/music -f sway bookmark",
+  },
+  "mpd": {
+    "server": "localhost",
+    "port": "6680",
+    "interval": 1,
+    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}({elapsedTime:%H:%M:%S}/{totalTime:%H:%M:%S}){title}",
+    "format-stopped": "",
+    "format-disconnected": "",
+    "tooltip-format": "{author}, {title} [{album}]",
+    "tooltip-format-disconnected": "",
+    "max-length": 60,
+    "on-click": "mpc toggle",
+    "on-click-right": "mpc seek -10",
+    "on-scrool-up": "mpc seek +10",
+    "on-scrool-down": "mpc seek -10",
+    "consume-icons": {
+      "on": " "
+    },
+    "random-icons": {
+      "off": "",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "single-icons": {
+      "on": "1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    }
+  },
+  "custom/torrents": {
+    "interval" : 1,
+    "format": " {}",
+    "return-type": "json",
+    "tooltip": true,
+    "on-click": "xdg-open http://localhost:7012/",
+    "on-click-right": "$HOME/scripts/i3blocks/qbittorrent -c alt-speed-limits",
+    "exec": "$HOME/scripts/i3blocks/qbittorrent -jf waybar"
+  },
+  "custom/goodreads": {
+    "interval": 60,
+    "format": "🅶 {}",
+    "return-type": "json",
+    "tooltip": true,
+    "on-click": "xdg-open http://goodreads.com/notifications",
+    "exec": "$HOME/scripts/i3blocks/goodreads_notifications"
+  },
+  "custom/podcasts": {
+    "interval" : 60,
+    "format": " {}",
+    "return-type": "json",
+    "tooltip": true,
+    "exec": "$HOME/scripts/podcasts waybar",
+    "on-click": "konsole -e newsboat"
+  },
+  "custom/rss": {
+    "interval" : 60,
+    "format": " {}",
+    "return-type": "json",
+    "tooltip": true,
+    "exec": "$HOME/scripts/rss waybar",
+    "on-click": "konsole -e newsboat"
+  },
+  "custom/torn": {
+    "interval" : 1,
+    "format": "{}",
+    "return-type": "json",
+    "tooltip": true,
+    "on-click": "$HOME/scripts/torn --open",
+    "exec": "$HOME/scripts/torn --json --emoji --bar waybar"
+  },
+  "TODO": "right: [tasks]",
+  "custom/swaync": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "󰵙<span foreground='red'><sup></sup></span>",
+      "none": "󰂚",
+      "dnd-notification": "󰂛",
+      "dnd-none": "󰂛"
+      },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+
+
+ // [facebook]
+ // command=$HOME/scripts/i3blocks/facebook
+ // interval=600
+ // color=#3b5998
+
+ // [dropbox]
+ // command=$HOME/scripts/dropbox i3blocks
+ // interval=3
+ // color=#007ee5
+ //
+ // [tasks]
+ // command=$HOME/scripts/taskwarrior i3blocks
+ // interval=10
+ // markup=pango
+ //
+ // [email]
+ // command=$HOME/scripts/i3blocks/email
+ // interval=590
+}

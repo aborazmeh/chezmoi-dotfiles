@@ -1,0 +1,407 @@
+{{ if stat (joinPath .chezmoi.homeDir ".cache/wal/colors-waybar.css") }}
+@import '{{ .chezmoi.homeDir }}/.cache/wal/colors-waybar.css';
+{{ end }}
+
+@define-color background #000;
+@define-color red #ad1818;
+@define-color gray #64727d;
+@define-color blue #2980b9;
+@define-color green #1a9b1a;
+@define-color fern #2ecc71; /* #26a65b */
+
+@define-color urgent #eb4d4b;  /* #f53c3c */
+@define-color memory #9b59b6;
+@define-color backlight #90b1b1;
+@define-color pulseaudio #f1c40f;
+@define-color pulseaudio-muted #2a5c45;
+@define-color exchange #85bb65;
+@define-color temperature #f0932b;
+@define-color bluetooth #0060a9;
+/* @define-color bluetooth-blink #218cdd; */
+@define-color disk #92fcfc;
+@define-color podcasts #a26eea;
+@define-color rss #f26522;
+
+@define-color alt-state #c1a100;
+@define-color torn-chain #35b9b9;
+
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: Roboto,'Font Awesome 5', 'SFNS Display',  Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  min-height: 0;
+}
+
+tooltip {
+  background: alpha(@background, 0.75);
+  border: 1px solid alpha(@color0, 0.5);
+  color: alpha(@foreground, 0.5);
+}
+
+tooltip label {
+  color: @foreground;
+}
+
+window#waybar {
+  background: alpha(@background, 0.5);
+  border-bottom: 3px solid alpha(@color1, 0.5);
+  color: @foreground;
+}
+
+window#waybar.hidden {
+  opacity: 0.0;
+}
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+#workspaces button {
+  padding: 0 5px;
+  background: transparent;
+  color: @color2;
+  border-bottom: 3px solid transparent;
+}
+
+#workspaces button.focused,
+#workspaces button.active
+{
+  background: @background;
+  color: @foreground;
+  border-bottom: 3px solid shade(@color2, 1.5);
+}
+
+#workspaces button.urgent {
+  background-color: @urgent;
+}
+
+#mode {
+  background: @gray;
+  border-bottom: 3px solid @foreground;
+}
+
+#scratchpad {
+  margin-left: 5px;
+}
+
+#clock, #custom-clock, #battery, #cpu, #memory, #temperature,
+#backlight, #network, #pulseaudio, #custom-exchange, #custom-weather,
+#tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync {
+  padding: 0 10px;
+  margin: 0 5px;
+}
+
+#custom-swaync,
+#custom-torn,
+#mpd,
+#custom-music,
+#custom-torrents,
+#custom-goodreads {
+  transition: border .3s;
+}
+
+#custom-swaync:hover,
+#custom-torn:hover,
+#custom-music:hover,
+#custom-torrents:hover,
+#custom-goodreads:hover {
+  border-bottom: 4px solid @foreground;
+}
+
+#clock {
+  /* background-color: @gray; */
+}
+
+@keyframes prayertimes-blink {
+  to {
+    background: alpha(#fff, 0);
+  }
+}
+
+#custom-praytimes.close {
+  background: alpha(@urgent, 0.65);
+  color: #ccc;
+  animation-name: prayertimes-blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#battery {
+  background-color: alpha(#ffffff, 0.65);
+  color: #000000;
+}
+
+#battery.charging {
+  background-color: alpha(@fern, 0.65);
+  color: #ccc;
+}
+
+@keyframes blink {
+  to {
+    background-color: alpha(#ffffff, 0.65);
+    color: #000000;
+  }
+}
+
+#battery.critical:not(.charging) {
+  background: @urgent;
+  color: #ccc;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#cpu {
+  transition: background .3s;
+  background: alpha(@fern, 0.65);
+  color: #ccc;
+}
+
+#cpu:hover {
+  background: alpha(@fern, 0.80);
+}
+
+#memory {
+  transition: background .3s;
+  background: alpha(@memory, 0.65);
+  color: #ccc;
+}
+
+#memory:hover {
+  background: @memory;
+}
+
+#backlight {
+  transition: background .3s;
+  background: alpha(@backlight, 0.65);
+  color: #ccc;
+}
+
+#backlight:hover {
+  background: alpha(@backlight, 0.80);
+}
+
+#network {
+  background: alpha(@blue, 0.65);
+  color: #ccc;
+}
+
+#network:hover {
+  transition: background .3s;
+  background: @blue;
+}
+
+#network.disconnected {
+  background: alpha(@urgent, 0.65);
+}
+
+#network.disconnected:hover {
+  background: @urgent;
+}
+
+#pulseaudio {
+  transition: background .3s;
+  background: alpha(@pulseaudio, 0.65);
+  color: #111;
+}
+
+#pulseaudio:hover {
+  background: @pulseaudio;
+}
+
+#pulseaudio.muted {
+  background: alpha(@backlight, 0.65);
+  color: @pulseaudio-muted;
+}
+
+#pulseaudio.muted:hover {
+  background: @backlight;
+}
+
+#custom-exchange {
+  background: alpha(@exchange, 0.65);
+  color: #ccc;
+}
+
+#temperature {
+  transition: background .3s;
+  background: alpha(@temperature, 0.65);
+  color: #ccc;
+}
+
+#temperature:hover {
+  background: alpha(@temperature, 0.90);
+}
+
+#temperature.critical {
+  background: @urgent;
+}
+
+#custom-keyboard {
+  margin-right: .5rem;
+}
+
+#bluetooth {
+  transition: background .3s;
+  background: alpha(@bluetooth, 0.65);
+  padding: 0 .3rem 0 .3rem;
+}
+
+#bluetooth:hover {
+  background: @bluetooth
+}
+
+@keyframes bluetooth-blink {
+  to {
+    background-color: alpha(@blue, 0.65);
+  }
+}
+
+#bluetooth.discovering {
+  animation-name: bluetooth-blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#custom-keyboard,
+#tray {
+  /* background-color: @blue; */
+}
+
+#idle_inhibitor {
+  background-color: alpha(#2d3436, 0.65);
+}
+
+#idle_inhibitor.activated {
+  background-color: alpha(#ecf0f1, 0.65);
+  color: #2d3436;
+}
+
+#disk {
+  transition: background .3s;
+  background-color: alpha(@disk, 0.65);
+  color: #000;
+  font-weight: 500;
+}
+
+#disk:hover {
+  background-color: alpha(@disk, 0.85);
+}
+
+#mpd,
+#custom-music {
+  color: #eee;
+  font-size: 14px;
+  border-bottom: 3px solid shade(@color3, .8);
+}
+
+#mpd.paused,
+#custom-music.paused {
+  color: @alt-state;
+  border-color: shade(@alt-state, .7)
+}
+
+#mpd.paused:hover,
+#custom-music.paused:hover {
+  border-color: @alt-state;
+}
+
+#custom-torn {
+  color: @foreground;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-bottom: 3px solid @foreground;
+}
+
+#custom-torn:hover {
+  border-bottom: 4px solid @foreground;
+}
+
+#custom-torn.returning {
+  color: @green;
+  border-color: shade(@green, .7);
+}
+#custom-torn.returning:hover {
+  border-color: @green;
+}
+#custom-torn.traveling {
+  color: @alt-state;
+  border-color: shade(@alt-state, .7);
+}
+#custom-torn.traveling:hover {
+  border-color: shade(@alt-state, 1.3);
+}
+#custom-torn.error,
+#custom-torn.hospital {
+  color: @red;
+  border-color: shade(@red, .7);
+}
+#custom-torn.error:hover,
+#custom-torn.hospital:hover {
+  border-color: @red;
+}
+#custom-torn.jail {
+  color: @gray;
+  border-color: shade(@gray, .7);
+}
+#custom-torn.jail:hover {
+  border-color: @gray;
+}
+#custom-torn.chain {
+  color: @torn-chain;
+  border-color: shade(@torn-chain, .7);
+}
+#custom-torn.chain:hover {
+  border-color: @torn-chain;
+}
+#custom-torn.chain-critical {
+  background: @urgent;
+  color: @torn-chain;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+#custom-torn.abroad {
+  /* TODO */
+}
+#custom-torn.racing {
+  /* TODO */
+}
+
+#custom-torrents {
+  font-size: 16px;
+  font-weight: 500;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom: 3px solid shade(@color3, .8);
+}
+
+#custom-torrents.alt-speed {
+  color: @alt-state;
+  border-color: shade(@alt-state, .7);
+}
+#custom-torrents.alt-speed:hover {
+  border-color: @alt-state;
+}
+
+#custom-goodreads {
+  color: #f4f1ea;
+}
+
+#custom-podcasts {
+  font-size: 1.1rem;
+  color: @podcasts;
+  border-bottom: 3px solid shade(@podcasts, .7);
+}
+
+#custom-rss {
+  font-size: 1.1rem;
+  color: @rss;
+  border-bottom: 3px solid shade(@rss, .7);
+}

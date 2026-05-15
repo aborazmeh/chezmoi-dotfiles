@@ -1,0 +1,165 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "modules-left": [ {{ if eq .device "laptop" -}} "backlight", "battery", {{- end -}} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
+  "modules-center": [ {{ if eq .machine "home" -}} "custom/clock", "custom/praytimes" {{- else -}} "clock" {{- end }} ],
+  "modules-right": [ "tray" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .device "laptop" }}, "bluetooth" {{- end }} ],
+  "clock": {
+    "interval": 60,
+    "format": " {:%H:%M}",
+    "timezone": "{{ .timezone }}",
+    "tooltip-format": "{:%Y-%m-%d}"
+  },
+  "custom/clock": {
+    "interval": 60,
+    "format": "  {}",
+    "return-type": "json",
+    "exec": "$HOME/scripts/bar/date -f waybar",
+    "on-click": "$HOME/scripts/bar/date -f waybar -c"
+  },
+  "sway/language": {
+    "format": "{flag} {long}",
+    "tooltip": false,
+    "return-type": "json",
+    "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
+    "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
+    "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
+    "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+  "bluetooth": {
+    "format": "",
+  	"format-on": " {status}",
+  	"format-off": "",
+  	"format-disabled": "", // an empty format will hide the module
+  	"format-connected": " {device_alias}",
+  	"format-connected-battery": " {device_alias} {device_battery_percentage}%",
+  	// "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+  	"tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+  	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+  	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+  	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+
+    "on-click": "ghostty --command=bluetoothctl"
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon}",
+    "states": [ 0, 50 ],
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "on-scroll-up": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+    "on-scroll-down": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+
+    "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
+    "on-click-right": "killall wlsunset",
+    "on-click-middle": "darkman toggle",
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "custom/keyboard": {
+    "format": "{}",
+    "tooltip": true,
+    "return-type": "json",
+    "exec": "$HOME/scripts/bar/kbd_layouts_i3ipc",
+    "on-click": "swaymsg input '*' xkb_switch_layout next",
+    "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
+    "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
+    "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
+  },
+  "pulseaudio": {
+    "scroll-step": 5,
+    "format": "{icon} {volume}%",
+    "format-bluetooth": " {icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", ""]
+    },
+    "on-click": "$HOME/scripts/bar/music -f sway mute",
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "$HOME/scripts/bar/music -f sway volume+",
+    "on-scroll-down": "$HOME/scripts/bar/music -f sway volume-"
+  },
+  "cpu": {
+    "format": "  {usage}%",
+    "on-click": "cpupower-gui"
+  },
+  "memory": {
+    "format": "󰍛 {}%",
+    "on-click": "ghostty --command=btop",
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C ",
+    "format": " {temperatureC}°C",
+    "on-click": "ghostty --command=btop",
+  },
+  "disk": {
+    "format": "   {percentage_used}% ",
+    "path": "/",
+    "tooltip-format": "{free} remaining of {total} on `/` [{percentage_used}%]",
+    "on-click": "ghostty --command=ncdu",
+    "on-click-middle": "ghostty --command=yazi",
+    "on-click-right": "ghostty --command=nnn",
+  },
+  "network": {
+    "format": "{ifname}",
+    "interface": "{{ .network_interface }}",
+    "format-wifi": "   {signalStrength}%    {bandwidthDownOctets}    {bandwidthUpOctets}",
+    "format-ethernet": "   {bandwidthDownOctets}  {bandwidthUpOctets}",
+    "format-disconnected": "",
+
+    "tooltip" : true,
+    "tooltip-format": "{ifname}",
+    "tooltip-format-wifi": "{ipaddr}\n{essid} ({signalStrength}%) ",
+    "tooltip-format-ethernet": "{ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+
+    "interval" : 3,
+    "on-click": "ghostty --command=nmtui"
+  },
+  "custom/exchange": {
+    "interval": 5,
+    "format": "{icon}   {}",
+    "format-icons": {
+      "default": ""
+    },
+    "tooltip": true,
+    "return-type": "json",
+    "exec": "$HOME/scripts/bar/exchange USDTRY EURTRY USDSYP TRYSYP --json 2> /dev/null"
+  },
+  "custom/weather": {
+    "format": "{}",
+    "tooltip": true,
+    "return-type": "json",
+    "exec": "$HOME/scripts/weather waybar 2> /dev/null",
+    "interval": 600
+  },
+  "custom/praytimes" : {
+    "format": "🕌 {}",
+    "return-type": "json",
+    "tooltip": "true",
+    "exec": "$HOME/scripts/prayertimes -jf waybar 2> /dev/null",
+    "interval": 10
+  }
+
+}

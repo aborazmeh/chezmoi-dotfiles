@@ -2,6 +2,7 @@
 # ~/.config/chezmoi/chezmoi.toml
 [data]
   machine = "home" # or "work", "server" ...
+  device = "laptop" # or "desktop"
   longitude =
   latitude =
   city =
@@ -11,6 +12,7 @@
   email =
   wm = "wayland" # or "x11"
   password_manager = "bw" # = "bitwarden" / "vaultwarden" or "pass"
+  network_interface = "enp3s0"
 [data.env]
   path = ["~/.local/bin", "~/bin"]
 [data.calcure]
