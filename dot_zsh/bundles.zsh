@@ -32,6 +32,7 @@ zi snippet OMZP::thefuck
 zi snippet OMZP::docker
 # zi snippet OMZP::rust
 zi snippet OMZP::uv
+zi snippet OMZP::chezmoi
 
 zinit wait lucid for \
  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
