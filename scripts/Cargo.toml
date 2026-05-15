@@ -1,0 +1,20 @@
+[package]
+name = "scripts"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = [
+  "args",
+  "date",
+  "kbd_layouts_i3ipc",
+  "exchange",
+  "music",
+]
+
+[profile.release]
+opt-level = 3     # Optimize for size
+lto = true        # Enable link-time optimization
+codegen-units = 1 # Reduce number of codegen units to increase optimizations
+panic = 'abort'   # Abort on panic
+# strip = true        # Strip symbols from binary

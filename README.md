@@ -1,3 +1,5 @@
+Create template file
+
 ```toml
 # ~/.config/chezmoi/chezmoi.toml
 [data]
@@ -31,3 +33,11 @@
   username =
   password =
 ```
+
+Then run
+
+```shell
+chezmoi init --apply https://github.com/aborazmeh/chezmoi-dotfiles.git
+```
+
+Run `bookstrap.sh` script
