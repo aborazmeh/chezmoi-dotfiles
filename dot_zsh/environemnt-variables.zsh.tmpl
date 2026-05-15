@@ -1,5 +1,5 @@
 # Path
-export PATH=/usr/bin:/bin:/usr/local/bin:/usr/games:/usr/lib/qt/bin:/usr/share/texmf/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/lib/w3m:
+export PATH=/usr/bin:/bin:/usr/local/bin:/usr/games:/usr/lib/qt/bin:/usr/share/texmf/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/lib/w3m:$PATH
 export PATH=$PATH:/usr/lib/java/bin:/usr/lib/java/jre/bin #Java
 export PATH=$PATH:$HOME/scripts                           #scripts
 export PATH=$PATH:$HOME/d/dsss/bin            #dsss
@@ -13,10 +13,29 @@ export PATH=$PATH:$HOME/flutter/bin              #flutter
 export PATH=$PATH:$HOME/.config/composer/vendor/bin     #composer
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
+{{ range .env.path -}}
+export PATH="$PATH:{{ . }}"
+{{ end -}}
 export PATH=$PATH:.
 
 # Fix man pages colors escapes
 export MANROFFOPT=-c
+
+# Perl local::lib
+# eval $(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
+# Init perlbrew
+#source ~/perl5/perlbrew/etc/bashrc
+# Use plenv instead
+# export PATH="$HOME/.plenv/bin:$PATH"
+# eval "$(plenv init - zsh)"
+
+{{- if stat (joinPath .chezmoi.homeDir ".local/share/pnpm") }}
+export PNPM_HOME="/home/idrees/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME/bin:"*) ;;
+*) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+{{- end }}
 
 # Custom ZSH Completions
 fpath=($fpath $HOME/.zsh/completions)

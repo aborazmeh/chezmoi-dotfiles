@@ -21,8 +21,16 @@ autoload -Uz _zinit
 
 # ### End of Zinit's installer chunk
 
-zi snippet OMZP::git
+{{- if eq .chezmoi.osRelease.id "arch" }}
 zi snippet OMZP::archlinux
+{{- else if eq .chezmoi.osRelease.id "debian" "ubuntu" "kali" }}
+zi snippet OMZP::debian
+{{- else if eq .chezmoi.osRelease.id "fedora" }}
+zi snippet OMZP::dnf
+{{- else if eq .chezmoi.osRelease.id "ubuntu" }}
+zi snippet OMZP::ubuntu
+{{- end }}
+zi snippet OMZP::git
 zi snippet OMZP::systemd
 zi snippet OMZP::npm
 # zi snippet OMZP::history-substring-search
@@ -69,4 +77,3 @@ zinit light starship/starship
 # else
   # export TERM='xterm-color'
 # fi
-

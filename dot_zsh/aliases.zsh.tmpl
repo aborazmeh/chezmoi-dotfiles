@@ -4,13 +4,20 @@ alias ll='eza --long --header --classify=always --all --binary --group --links -
 alias l='eza --long --header --classify=always'
 alias diff='delta'
 alias du='dust'
-alias ff='fd'
 alias rg='rg -S'
 alias df='duf -hide special'
 alias tree='broot'
 alias top='btm'
+{{- if eq .chezmoi.osRelease.id "debian" }}
+alias less='batcat --paging=always '
+alias cat='batcat'
+alias fd='fdfind'
+alias ff='fdfind'
+{{- else }}
 alias less='bat --paging=always '
 alias cat='bat'
+alias ff='fd'
+{{- end }}
 alias traceroute='mtr'
 alias ping='gping'
 alias ps='procs'
@@ -82,7 +89,7 @@ alias R="cd ~/MEGA/R"
 alias R.pdf="XDG_DATA_HOME=~/MEGA/R $pdfviewer ~/MEGA/R/R.pdf"
 alias R.epub="XDG_DATA_HOME=~/MEGA/R $epubviewer ~/MEGA/R/R.epub"
 alias R.comic="XDG_DATA_HOME=~/MEGA/R $comicviewer ~/MEGA/R/R.cb[zr]"
-alias R.OneDrive="XDG_DATA_HOME=~/OneDrive/aborazmeh/R okular ~/OneDrive/aborazmeh/R/R.pdf"
+alias R.OneDrive="XDG_DATA_HOME=~/OneDrive/{{ .chezmoi.username }}/R okular ~/OneDrive/{{ .chezmoi.username }}/R/R.pdf"
 alias R.audiobook="play_audiobook mpv"
 alias mpvs="mpv --vo=null"
 alias music="python ~/MEGA/playlists/play.py"

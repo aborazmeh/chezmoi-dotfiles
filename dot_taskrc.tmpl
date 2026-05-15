@@ -1,0 +1,27 @@
+# [Created by task 2.4.4 7/5/2015 12:10:30]
+# Use the command 'task show' to see all defaults and overrides
+
+# Files
+data.location={{ .chezmoi.homeDir }}/MEGA/Tasks
+locking=on
+gc=on
+
+# Terminal
+editor=vim
+
+# Holidays
+calendar.holidays=full
+include /usr/share/doc/task/rc/holidays.tr-TR.rc
+include /usr/share/doc/task/rc/holidays.en-US.rc
+
+# Color theme
+color=on
+include /usr/share/doc/task/rc/dark-256.theme
+
+# Aliases
+alias.a=add
+alias.ls=list
+report.notify.columns=description.count
+report.notify.description=Most details of tasks
+report.notify.filter=status:pending
+report.notify.sort=due-,project+,urgency-

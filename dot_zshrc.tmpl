@@ -1,22 +1,20 @@
 source $HOME/.zsh/bundles.zsh
-source $HOME/.zsh/zsh-options.zsh
 source $HOME/.zsh/environemnt-variables.zsh
+source $HOME/.zsh/zsh-options.zsh
 source $HOME/.zsh/aliases.zsh
 source $HOME/.zsh/unalias.zsh
 source $HOME/.zsh/key-bindings.zsh
 source $HOME/.zsh/theme-options.zsh
 source $HOME/.zsh/functions.zsh
+{{- if stat (joinPath .chezmoi.homeDir "scripts/zsh_functions") }}
 source $HOME/scripts/zsh_functions/*.zsh
+{{- end }}
 source $HOME/.zsh/hstr.zsh
 # source /usr/share/doc/find-the-command/ftc.zsh
 
-# Perl local::lib
-# eval $(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
-# Init perlbrew
-#source ~/perl5/perlbrew/etc/bashrc
-# Use plenv instead
-# export PATH="$HOME/.plenv/bin:$PATH"
-# eval "$(plenv init - zsh)"
+{{- if stat (joinPath .chezmoi.homeDir ".zshrc.local") }}
+source $HOME/.zshrc.local
+{{- end }}
 
 # Start tmux
 # if [[ ! $TERM =~ screen ]]; then
@@ -30,12 +28,19 @@ eval "$(zoxide init zsh)"
 # Init atuin
 eval "$(atuin init zsh)"
 
+{{- if stat "/usr/share/fzf/key-bindings.zsh" }}
 source /usr/share/fzf/key-bindings.zsh
+{{- end }}
+{{- if stat "/usr/share/fzf/completion.zsh" }}
 source /usr/share/fzf/completion.zsh
+{{- end }}
 # . "$HOME/.acme.sh/acme.sh.env"
 
+{{ if stat (joinPath .chezmoi.homeDir ".local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh") }}
 source ~/.local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh
 bindkey '^I' fzf_completion
+{{- end }}
 
+{{ if stat (joinPath .chezmoi.homeDir ".config/broot/launcher/bash/br") }}
 source $HOME/.config/broot/launcher/bash/br
-
+{{- end }}
