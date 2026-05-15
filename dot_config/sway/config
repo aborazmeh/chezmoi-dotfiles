@@ -1,0 +1,656 @@
+# Variables
+set $mod Mod4
+set $alt Mod1
+
+set $float-sticky-video floating enable, sticky enable, exec "$HOME/scripts/sway-move-to bottom-right"
+set $terminal ghostty -e tmux new-session -A -D -s main
+set $editor ghostty -e micro
+set $scratchpad $editor ~/MEGA/scratchpad.md
+set $filemanager ghostty -e ranger
+set $browser firefox --new-tab about:blank
+set $mailclient thunderbird
+set $minimize move scratchpad
+set $unminimize scratchpad show
+# wofi --allow-images --allow-markup --gtk-dark --show drun,run f
+set $rofi_cmd "rofi -show combi -combi-modes drun,window,ssh"
+set $calculator "$HOME/.rofi/calc.sh"
+
+# Monitors
+set $monitor_primary "eDP-1"
+set $monitor_hdmi "HDMI-A-1"
+
+# Workspaces
+set $ws_terminal "1"
+set $ws_dev "2"
+set $ws_web "3"
+set $ws_office "4"
+set $ws_doc "5"
+set $ws_files "6"
+set $ws_vnc "7"
+set $ws_vm "8"
+set $ws_im "9"
+set $ws_media "10"
+
+# Workspace Monitors
+workspace $ws_terminal output $monitor_primary
+workspace $ws_dev output $monitor_primary
+workspace $ws_web output $monitor_primary
+workspace $ws_office output $monitor_primary
+workspace $ws_doc output $monitor_primary
+workspace $ws_files output $monitor_primary
+workspace $ws_im output $monitor_primary
+workspace $ws_media output $monitor_hdmi
+
+# Options
+focus_follows_mouse no
+mouse_warping output
+popup_during_fullscreen smart
+# force_focus_wrapping yes  use focus_wrapping
+focus_on_window_activation smart
+workspace_auto_back_and_forth yes
+xwayland enabled
+workspace_layout tabbed
+
+# Theme
+gaps outer 0
+gaps inner 2
+default_border pixel 2
+hide_edge_borders --i3 smart
+smart_borders on
+smart_gaps on
+show_marks yes
+#font pango:monospace 8
+font pango:DejaVu Sans Mono 8, FontAwesome 8
+include "$HOME/.cache/wal/colors-sway"
+# client.<class> <border> <background> <text> [<indicator> [<child_border>]]
+client.background $background $background $background
+client.focused $color0 $background $foreground $color7 $background
+# |focused_inactive  | #333333 | #5f676a    | #ffffff | #484e50   | #5f676a      |
+# |focused_tab_title | #333333 | #5f676a    | #ffffff | n/a       | n/a          |
+# |unfocused         | #333333 | #222222    | #888888 | #292d2e   | #222222      |
+# |urgent            | #2f343a | #900000    | #ffffff | #900000   | #900000      |
+# |placeholder       | #000000 | #0c0c0c    | #ffffff | #000000   | #0c0c0c
+
+# Bar
+# bar {
+  # position bottom
+  # swaybar_command waybar
+  # pango_markup enabled
+  # mode hide
+  # hidden_state hide
+# }
+exec waybar
+exec waybar -c $HOME/.config/waybar/config-top
+
+# Seat
+seat * {
+  hide_cursor 3000
+}
+
+# Input
+input "type:keyboard" {
+  # xkb_file ~/keymap.xkb
+  xkb_layout us,ara
+  xkb_model pc101
+  # xkb_variant workman,
+  xkb_options grp:caps_toggle
+  #,grp:alt_shift_toggle
+  # xkb_rules
+  xkb_numlock enabled
+  repeat_delay 500
+  repeat_rate 50
+}
+
+input "type:touchpad" {
+  tap enabled
+  drag enabled
+  # drag_lock enabled
+  click_method button_areas
+  dwt enabled
+  middle_emulation enabled
+  natural_scroll enabled
+  accel_profile adaptive
+  events enabled
+  scroll_method two_finger
+}
+
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+}
+
+# Switches
+bindswitch --reload --locked {
+  # Laptop lid switch
+  lid:on output $monitor_primary disable
+  lid:off output $monitor_primary enable
+}
+
+# Key Bindings
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+bindsym --to-code {
+  # reload the configuration file
+  $mod+q reload
+  $mod+Shift+q exec "swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your session.' -b 'Yes, exit sway' 'swaymsg exit'"
+
+  # Start a terminal
+  $mod+Shift+Return exec $terminal
+
+  # Screen Lock
+  $mod+Ctrl+Shift+l exec swaylock
+
+  # Change keyboard layout
+  $mod+Shift+Escape exec $HOME/scripts/kbd_input_sway
+
+  # kill focused window
+  $mod+Shift+c kill
+
+  # Minimization
+  $mod+m $minimize
+  $mod+Shift+m $unminimize
+
+  # Program launcher
+  $alt+space exec $rofi_cmd
+  $mod+r exec $rofi_cmd
+  $mod+p exec $mailclient
+  #$mod+d exec --no-startup-id i3-mailclient thunderbird
+  $mod+Shift+p $mailclient
+
+  # Calculator
+  $mod+equal exec $calculator
+  $mod+c exec $calculator
+  XF86Calculator exec $calculator
+
+  # Browser
+  XF86HomePage exec $browser
+
+  # Mail Client
+  XF86Mail exec $mailclient
+
+  # Screenshot
+  --release Print exec $HOME/scripts/screenshot -f sway -c fullscreen
+  --release Ctrl+Print exec $HOME/scripts/screenshot -f sway -c window
+  $mod+Print exec $HOME/scripts/screenshot -f sway -c teiler
+
+  # Searching the Web
+  $mod+Shift+slash exec rofi-surfraw
+
+  # Password Manager
+  $mod+Ctrl+p exec rofi-pass
+
+  # Browsing the filesystem
+  $mod+Shift+f exec $filemanager
+
+  # Scratchpad
+  $mod+Shift+e exec $scratchpad
+
+  # change focus
+  $mod+h focus left
+  $mod+j focus down
+  $mod+k focus up
+  $mod+l focus right
+
+  # alternatively, you can use the cursor keys:
+  $mod+Left focus left
+  $mod+Down focus down
+  $mod+Up focus up
+  $mod+Right focus right
+
+  # move focused window
+  $mod+Shift+h move left
+  $mod+Shift+j move down
+  $mod+Shift+k move up
+  $mod+Shift+l move right
+
+  # move to another output
+  $mod+Ctrl+h move container to output left
+  $mod+Ctrl+l move container to output right
+  $mod+Ctrl+Left move workspace to output left
+  $mod+Ctrl+Right move workspace to output right
+
+  # alternatively, you can use the cursor keys:
+  $mod+Shift+Left move left
+  $mod+Shift+Down move down
+  $mod+Shift+Up move up
+  $mod+Shift+Right move right
+
+  # resize mode
+  $mod+Shift+r mode "resize"
+
+  # split
+  # $mod+Shift+s split toggle
+
+  # split in horizontal orientation
+  # $mod+bar split h
+  # $mod+backslash split h
+
+  # split in vertical orientation
+  # $mod+shift+minus split v
+
+  # enter fullscreen mode for the focused container
+  $mod+f fullscreen toggle
+
+  # change container layout (stacked, tabbed, toggle split)
+  # $mod+s layout stacking
+  $mod+w layout tabbed
+  $mod+e layout toggle split
+
+  # toggle tiling / floating
+  $mod+t floating toggle
+  $mod+s sticky toggle
+  $mod+b border toggle
+
+  # change focus between tiling / floating windows
+  $mod+space focus mode_toggle
+
+  # focus the parent container
+  $mod+a focus parent
+
+  # focus the child container
+  # $mod+d focus child
+
+  # notifications
+  $mod+n exec swaync-client -t
+  $mod+ctrl+space exec swaync-client --hide-latest
+
+  # Function Keys
+  # --locked XF86Power exec "sh ~/.config/awesome/scripts/shutdown.sh"
+  --locked XF86MonBrightnessDown exec "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
+  --locked XF86MonBrightnessUp exec "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
+  $mod+F4 exec "$HOME/.rofi/monitor_layout.sh"
+  $mod+Shift+F4 exec "$HOME/.rofi/rofi-randr"
+  --locked XF86AudioPlay exec "$HOME/scripts/bar/music -f sway toggle"
+  $mod+XF86AudioPlay exec "clerk"
+  # XF86AudioPlay with Ctrl to stop
+  --locked Ctrl+XF86AudioPlay exec "$HOME/scripts/bar/music -f sway stop"
+  # XF86AudioPrev to seek
+  --locked XF86AudioPrev exec "$HOME/scripts/bar/music -f sway seek-"
+  # XF86AudioPrev with Ctrl to previous track
+  --locked Ctrl+XF86AudioPrev exec "$HOME/scripts/bar/music -f sway prev"
+  # XF86AudioNext to seek
+  --locked XF86AudioNext exec "$HOME/scripts/bar/music -f sway seek+"
+  # XF86AudioNext with Ctrl to next track
+  --locked Ctrl+XF86AudioNext exec "$HOME/scripts/bar/music -f sway next"
+  --locked XF86AudioLowerVolume exec "$HOME/scripts/bar/music -f sway volume-"
+  --locked XF86AudioRaiseVolume exec "$HOME/scripts/bar/music -f sway volume+"
+  --locked XF86AudioMute exec "$HOME/scripts/bar/music -f sway mute"
+
+  # switch to workspace
+  $mod+tab workspace next
+  $mod+shift+tab workspace prev
+  # Workspace Switcher
+  $mod+grave exec "$HOME/.rofi/i3_switch_workspace.sh"
+  # bind keys from 1-0 to switch to specific workspace
+  $mod+1 workspace $ws_terminal
+  $mod+2 workspace $ws_dev
+  $mod+3 workspace $ws_web
+  $mod+4 workspace $ws_office
+  $mod+5 workspace $ws_doc
+  $mod+6 workspace $ws_files
+  $mod+7 workspace $ws_vnc
+  $mod+8 workspace $ws_vm
+  $mod+9 workspace $ws_im
+  $mod+0 workspace $ws_media
+
+  # Switch Windows
+  $alt+tab focus next
+  $alt+shift+tab focus prev
+
+  # move focused container to workspace
+  $mod+Shift+grave exec "$HOME/.rofi/move_window_to_current"
+  $mod+Shift+1 move container to workspace $ws_terminal
+  $mod+Shift+2 move container to workspace $ws_dev
+  $mod+Shift+3 move container to workspace $ws_web
+  $mod+Shift+4 move container to workspace $ws_office
+  $mod+Shift+5 move container to workspace $ws_doc
+  $mod+Shift+6 move container to workspace $ws_files
+  $mod+Shift+7 move container to workspace $ws_vnc
+  $mod+Shift+8 move container to workspace $ws_vm
+  $mod+Shift+9 move container to workspace $ws_im
+  $mod+Shift+0 move container to workspace $ws_media
+}
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+  # These bindings trigger as soon as you enter the resize mode
+
+  # Pressing left will shrink the window’s width.
+  # Pressing right will grow the window’s width.
+  # Pressing up will shrink the window’s height.
+  # Pressing down will grow the window’s height.
+  bindsym --to-code {
+    h resize shrink width 10 px or 10 ppt
+    j resize grow height 10 px or 10 ppt
+    k resize shrink height 10 px or 10 ppt
+    l resize grow width 10 px or 10 ppt
+
+  # same bindings, but for the arrow keys
+    Left resize shrink width 10 px or 10 ppt
+    Down resize grow height 10 px or 10 ppt
+    Up resize shrink height 10 px or 10 ppt
+    Right resize grow width 10 px or 10 ppt
+
+  # back to normal: Enter or Escape
+    Return mode "default"
+    Escape mode "default"
+  }
+}
+
+# Workspaces apps
+assign [class="xterm"] $ws_terminal
+assign [class="urxvt"] $ws_terminal
+assign [class="aterm"] $ws_terminal
+assign [class="URxvt"] $ws_terminal
+assign [class="XTerm"] $ws_terminal
+assign [app_id="ord.kde.konsole"] $ws_terminal
+assign [class="terminator"] $ws_terminal
+assign [app_id="gnome-terminal-server"] $ws_terminal
+assign [class="Black Screen"] $ws_terminal
+assign [app_id="Alacritty"] $ws_terminal
+assign [app_id="kitty"] $ws_terminal
+assign [app_id="foot"] $ws_terminal
+assign [app_id="org.wezfurlong.wezterm"] $ws_terminal
+assign [app_id="com.mitchellh.ghostty"] $ws_terminal
+
+assign [app_id="org.kde.kate"] $ws_dev
+assign [class="KDevelop"] $ws_dev
+assign [class="Codeblocks"] $ws_dev
+assign [class="Code::Blocks"] $ws_dev
+assign [class="DDD"] $ws_dev
+assign [class="Eclipse"] $ws_dev
+assign [class="Eeshcema"] $ws_dev
+assign [class="Eagle"] $ws_dev
+assign [app_id="kicad"] $ws_dev
+assign [class="jetbrains-android-studio"] $ws_dev
+assign [class="jetbrains-studio"] $ws_dev
+assign [class="sun-awt-X11-XDialogPeer"] $ws_dev
+assign [class="jetbrians-idea-ce"] $ws_dev
+assign [class="sun-awt-X11-XFramePeer"] $ws_dev
+assign [app_id="org.qt-project.qtcreator"] $ws_dev
+assign [app_id="glade"] $ws_dev
+assign [app_id="sqlitebrowser"] $ws_dev
+assign [class="Emacs"] $ws_dev
+assign [class="Gvim"] $ws_dev
+assign [class="Atom"] $ws_dev
+assign [app_id="[Cc]ode(-oss)?"] $ws_dev
+assign [app_id="gedit"] $ws_dev
+assign [class="Postman"] $ws_dev
+assign [class="assistant"] $ws_dev
+assign [class="Designer"] $ws_dev
+assign [class="kwrite"] $ws_dev
+assign [app_id="org.kde.kwrite"] $ws_dev
+assign [app_id="WindowsDaemon"] $ws_dev
+assign [app_id="DBeaver"] $ws_dev
+assign [class="Arduino IDE"] $ws_dev
+assign [app_id="wireshark"] $ws_dev
+assign [app_id="org.pgadmin.pgAdmin4"] $ws_dev
+assign [class="rstudio"] $ws_dev
+assign [app_id="imhex"] $ws_dev
+assign [app_id="dev.zed.Zed"] $ws_dev
+
+assign [class="Opera"] $ws_web
+assign [app_id="firefox(-nightly|developeredition)?"] $ws_web
+assign [app_id="crashreporter"] $ws_web
+assign [app_id="org.mozilla.Thunderbird"] $ws_web
+assign [instance="vivaldi-stable"] $ws_web
+assign [class="Midori"] $ws_web
+assign [class="Rekonq"] $ws_web
+assign [class="Dillo"] $ws_web
+assign [class="Arora"] $ws_web
+assign [class="Chromium"] $ws_web
+assign [class="gnome-minefield"] $ws_web
+assign [class="Google-chrome(-stable)?"] $ws_web
+assign [app_id="google-chrome"] $ws_web
+assign [app_id="org.gnome.Epiphany"] $ws_web
+assign [app_id="org.qbittorrent.qBittorrent"] $ws_web
+assign [app_id="deluge"] $ws_web
+assign [app_id="filezilla"] $ws_web
+assign [class="Tor Browser"] $ws_web
+assign [class="Uzbl-core"] $ws_web
+assign [class="Netsurf-gtk3"] $ws_web
+assign [class="Mldonkey_gui"] $ws_web
+assign [class="Gtk-gnutella"] $ws_web
+assign [class="QupZilla" instance="QupZilla Browser"] $ws_web
+assign [class="Dwb"] $ws_web
+assign [app_id="org.qutebrowser.qutebrowser"] $ws_web
+assign [class="Transmission-gtk"] $ws_web
+assign [app_id="vimb"] $ws_web
+assign [app_id="nyxt"] $ws_web
+assign [app_id="midori"] $ws_web
+assign [app_id="luakit"] $ws_web
+assign [app_id="org.kde.fiery"] $ws_web
+assign [app_id="org.kde.falkon"] $ws_web
+assign [app_id="org.gnome.Eolie"] $ws_web
+assign [app_id="aura-browser"] $ws_web
+assign [app_id="org.kde.angelfish"] $ws_web
+assign [app_id="zen"] $ws_web
+
+assign [title="LibreOffice"] $ws_office
+assign [app_id="libreoffice-startcenter"] $ws_office
+assign [app_id="soffice"] $ws_office
+assign [class="libreoffice-calc"] $ws_office
+assign [app_id="org.kde.calligra.*"] $ws_office
+assign [class="Gnucash"] $ws_office
+assign [class="Gramps"] $ws_office
+assign [class="TeXstudio"] $ws_office
+assign [class="Gummi"] $ws_office
+assign [class="Abiword"] $ws_office
+assign [app_id="gnumeric"] $ws_office
+assign [app_id="org.kde.ghostwriter"] $ws_office
+assign [class="Typora"] $ws_office
+assign [class="OmegaT"] $ws_office
+assign [app_id="org.kde.tellico"] $ws_office
+assign [app_id="obsidian"] $ws_office
+assign [class="Joplin"] $ws_office
+assign [class="marktext"] $ws_office
+
+assign [class="Assistant"] $ws_doc
+assign [app_id="org.kde.okular"] $ws_doc
+assign [app_id="org.gnome.Evince"] $ws_doc
+assign [class="EPDFviewer"] $ws_doc
+assign [class="xpdf"] $ws_doc
+assign [class="Xpdf"] $ws_doc
+assign [app_id="anki"] $ws_doc
+assign [class="llpp"] $ws_doc
+assign [app_id="org.pwmt.zathura"] $ws_doc
+assign [class="MuPDF"] $ws_doc
+assign [app_id="calibre-gui"] $ws_doc
+assign [app_id="calibre-edit-book"] $ws_doc
+assign [app_id="sigil"] $ws_doc
+assign [class="libprs500-gui"] $ws_doc
+assign [class="FBReader"] $ws_doc
+assign [app_id="org.gnome.SimpleScan"] $ws_doc
+assign [app_id="org.kde.skanlite"] $ws_doc
+assign [class="Wine" instance="Kindle.exe"] $ws_doc
+assign [class="XDvi"] $ws_doc
+assign [app_id="com.github.johnfactotum.Foliate"] $ws_doc
+assign [app_id="readest"] $ws_doc
+assign [app_id="xchm"] $ws_doc
+assign [app_id="net.kchmviewer.kchmviewer"] $ws_doc
+
+assign [app_id="^gimp.*"] $ws_doc
+assign [class="CinePaint"] $ws_doc
+assign [class="krita"] $ws_doc
+assign [app_id="org.inkscape.Inkscape"] $ws_doc
+assign [class="Kino"] $ws_doc
+assign [title=".*OpenShot Video Editor$"] $ws_doc
+assign [class="Cinelerra"] $ws_doc
+assign [app_id="pitivi"] $ws_doc
+assign [app_id="org.kde.kdenlive"] $ws_doc
+assign [class="Audacity"] $ws_doc
+assign [app_id="blender"] $ws_doc
+assign [app_id="org.QCAD.qcad-bin"] $ws_doc
+assign [app_id="org.openscad.openscad"] $ws_doc
+assign [class=".*sweethome3d.*"] $ws_doc
+assign [class="Ghb"] $ws_doc
+assign [app_id="MComix"] $ws_doc
+assign [class="aegisub"] $ws_doc
+assign [app_id="gaupol"] $ws_doc
+assign [app_id="subtitleeditor"] $ws_doc
+assign [app_id="gnome-subtitles"] $ws_doc
+
+assign [app_id="thunar"] $ws_files
+assign [class="Konqueror"] $ws_files
+assign [class="ark"] $ws_files
+assign [app_id="org.kde.dolphin"] $ws_files
+assign [app_id="org.gnome.Nautilus"] $ws_files
+assign [class="emelfm"] $ws_files
+assign [app_id="nemo"] $ws_files
+assign [app_id="pcmanfm"] $ws_files
+
+assign [app_id="TeamViewer"] $ws_vnc
+assign [class="Anydesk"] $ws_vnc
+assign [instance="vncviewer" class="Vncviewer"] $ws_vnc
+assign [app_id="org.remmina.Remmina"] $ws_vnc
+
+assign [instance="qemu-system-.*" class="Qemu-system.*"] $ws_vm
+assign [instance="qtemu" class="Qtemu"] $ws_vm
+assign [class="Virt-manager"] $ws_vm
+assign [title="Android Emulator.*"] $ws_vm
+assign [app_id="dosbox"] $ws_vm
+assign [class="org.dosbox.*"] $ws_vm
+assign [app_id="waydroid"] $ws_vm
+assign [class="steam"] $ws_vm
+
+assign [class="Skype"] $ws_im
+assign [class="Pidgin"] $ws_im
+assign [app_id="empathy"] $ws_im
+assign [class="irssi"] $ws_im
+assign [class="weechat"] $ws_im
+assign [class="Epathy"] $ws_im
+assign [class="Kopete"] $ws_im
+assign [class="Cheese"] $ws_im
+assign [class="Kamoso"] $ws_im
+assign [class="Viber"] $ws_im
+assign [class="ViberPC"] $ws_im
+assign [app_id="org.telegram.desktop"] $ws_im
+assign [app_id="com.ayugram.desktop"] $ws_im
+assign [app_id="whatsapp-for-linux"] $ws_im
+assign [class="whatsdesk"] $ws_im
+assign [class="discord"] $ws_im
+assign [class="^Clubhouse.*"] $ws_im
+assign [class="Twitch"] $ws_im
+assign [app_id="zoom"] $ws_im
+assign [class="Hexchat"] $ws_im
+assign [class="KVIrc"] $ws_im
+assign [app_id="org.kde.konversation"] $ws_im
+assign [app_id="org.gnome.Polari"] $ws_im
+assign [app_id="Element"] $ws_im
+assign [app_id="org.gnome.Fractal"] $ws_im
+assign [app_id="nheko"] $ws_im
+assign [class="whatsapp-nativefier-.*"] $ws_im
+assign [app_id="signal"] $ws_im
+
+assign [class="vlc"] $ws_media
+assign [class="Totem"] $ws_media
+assign [class="MPlayer"] $ws_media
+assign [class="smplayer"] $ws_media
+assign [app_id="mpv"] $ws_media
+assign [class="mpv"] $ws_media
+assign [class="smtube"] $ws_media
+assign [instance="spotify" class="Spotify"] $ws_media
+assign [class="Gpodder"] $ws_media
+assign [app_id="ario"] $ws_media
+
+# Transparency options
+for_window [class="Gvim"] opacity  set 0.75
+for_window [class="Emacs"] opacity set 0.75
+for_window [class="Atom"] opacity set 0.75
+for_window [class="Code"] opacity set 0.9
+for_window [app_id="gedit"] opacity set 0.9
+for_window [class="ghostwriter"] opacity set 0.75
+for_window [app_id="Alacritty"] opacity set 0.90
+for_window [app_id="org.wezfurlong.wezterm"] opacity set 0.75
+for_window [app_id="com.mitchellh.ghostty"] opacity set 0.90
+for_window [app_id="kitty"] opacity set 0.90
+for_window [app_id="org.kde.konsole"] opacity set 0.75
+for_window [app_id="foot"] opacity set 0.75
+for_window [app_id="rofi"] opacity set 0.75
+# Floating apps
+for_window [window_role="pop-up"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Seahorse"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Speedcrunch"] floating enable
+for_window [class="xfce4-panel"] floating enable
+for_window [class="Gtk-recordMyDesktop"] floating enable
+for_window [app_id="firefox(-nightly|developeredition)?" title="^(Password Required|Library|About Mozilla Firefox|Page Info — .*|Extension: (Bitwarden Password Manager) - Bitwarden — Mozilla Firefox)$"] floating enable
+for_window [app_id="crashreporter"] floating enable
+for_window [app_id="org.mozilla.Thunderbird" title="\d+ Reminder"] floating enable
+for_window [app_id="org.mozilla.Thunderbird" title="^$"] floating enable
+for_window [class="Pinentry"] floating enable
+for_window [class="zazu"] floating enable
+for_window [title="Android Virtual Device Manager"] floating enable
+for_window [title="Android Emulator.*"] floating enable
+for_window [app_id="WindowsDaemon"] floating enable
+for_window [app_id="nz.co.mega.megasync"] floating enable
+for_window [class="MEGAsync"] floating enable
+for_window [instance="megasync"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="org.kde.kdeconnect.daemon"] floating enable
+for_window [app_id="org.https://nomacs.nomacs"] floating enable
+for_window [app_id="cpupower-gui"] floating enable
+for_window [app_id="mpv-sticky-float"] $float-sticky-video
+for_window [app_id="wev"] floating enable
+for_window [app_id="firefox(-nightly|developeredition)?" title="^Picture-in-Picture$"] $float-sticky-video
+for_window [title="^Picture[ -]in[ -][Pp]icture$"] $float-sticky-video
+for_window [app_id="thunar" title="(File Operation Progress|Confirm to replace files|Rename .*)"] floating enable
+for_window [app_id="org.inkscape.Inkscape" title="(Document Properties|XML Editor) - .*"] $ws_doc
+for_window [app_id="calibre-gui" title="Where do you want to delete from\?"] $ws_doc
+for_window [app_id="ario" title="Save playlist"] $ws_doc
+for_window [app_id="ranger-choosefiles"] floating enable
+for_window [app_id="com.rafaelmardojai.Blanket"] floating enable
+for_window [app_id="^gimp.*" title="Open Location"] floating enable
+for_window [app_id="org.kde.tellico" title="^Edit Entry - .*"] floating enable
+
+# Misc
+# for_window [urgent="latest"] focus
+# for_window [app_id="firefox" title="^Firefox — Sharing Indicator$"] kill
+# for_window [app_id="firefoxdeveloperedition" title="^Firefox Developer Edition — Sharing Indicator$"] kill
+
+# autotiling manager
+exec_always autotiling
+
+# Notify daemon
+exec swaync
+
+# Fire up apps
+exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
+exec kanata
+exec megasync
+# exec play_audiobook mpv
+# exec mpd ~/.mpd.conf
+# exec $HOME/scripts/play_audiobook mopidy
+# exec $terminal
+exec wlsunset -l $latitude -L $longitude
+# exec 'wlsunset -l $(city.py $city latitude) -L $(city.py $city longitude)'
+exec kdeconnect-indicator
+# exec telegram-desktop
+# exec whatsdesk
+# exec discord
+# Start dbus for gnome-keyring to run
+# required packages gnome-keyring libsecret libgnome-keyring
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# exec_always "systemctl --user import-environment"
+# exec --no-startup-id libinput-gestures-setup start
+# exec blueman-applet
+# exec nm-applet --indicator
+# exec emacs --daemon
+# exec wluma
+exec swayidle -w \
+         timeout 300  'swaylock' \
+         timeout 600  'swaymsg "output * dpms off"' \
+              resume  'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock'
+# exec udiskie --automount --tray --notify --appindicator
+# exec wl-paste -t text --watch clipman store
+
+# Wallpaper
+output "*" bg ~/Pictures/backgrounds/wallpaper.png fill
+# exec_always $HOME/scripts/wallpapers -m bing -f sway
+
+# reload configs on changes
+# exec "$HOME/scripts/reload-configs"
+
+# System config
+include /etc/sway/config.d/*

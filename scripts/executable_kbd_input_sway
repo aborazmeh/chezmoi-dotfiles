@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+layouts_array=(us ara tr ir fr)
+
+join() { local IFS="$1"; shift; echo "$*"; }
+includes() { local e match="$1"; shift; for e; do [[ "$e" == "$match" ]] && return 0; done; return 1; }
+check_layouts() {
+  IFS=',' read -ra TMP <<< $1
+  for i in "${TMP[@]}"; do
+    if ! includes "$i" "${layouts_array[@]}"; then
+      echo 1
+    fi
+  done
+  echo 0
+}
+
+count_layouts() {
+  local layouts
+  local commas
+  layouts=$(grep -m1 -i xkb_layout ~/.config/sway/config | sed 's/\s*xkb_layout //')
+  commas="${layouts//[^,]}"
+  echo "$((${#commas}+1))"
+}
+
+if [[ $1 == "next" ]]; then
+  count=$(count_layouts)
+  if [[ $CURRENT_LAYOUT_SWAY -lt $((count-1)) ]]; then
+    next_layout=$((CURRENT_LAYOUT_SWAY+1))
+  else
+    next_layout=0
+  fi
+  export CURRENT_LAYOUT_SWAY=$next_layout
+  swaymsg input type:keyboard xkb_switch_layout $next_layout
+else
+  layouts=$(join , ${layouts_array[*]}  | rofi -dmenu -sep ',' -p "layout" -i -multi-select -format 'p' | tr '\n' ',' | sed -e 's/,\+$//g')
+  if [[ -n $layouts && $(check_layouts "$layouts") -eq 0 ]]; then
+    sed -i.bak "s/xkb_layout.*/xkb_layout $layouts/" ~/.config/sway/config
+    swaymsg reload
+    export CURRENT_LAYOUT_SWAY=0
+  fi
+fi

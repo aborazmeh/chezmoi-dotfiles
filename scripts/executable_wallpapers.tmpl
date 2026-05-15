@@ -1,0 +1,128 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/Pictures/backgrounds"
+TODAY=$(date +'%Y%m%d')
+
+while getopts f:m:i: option; do
+  case "${option}" in
+  f) FRONTEND=${OPTARG} ;;
+  m) METHOD=${OPTARG} ;;
+  i) INTERVAL=${OPTARG} ;;
+  *) ;;
+  esac
+done
+
+function create_palette() {
+  wal -nei "${1}"
+  wal-nnn.py
+}
+
+function sway_wal() {
+  create_palette "${1}"
+  swaymsg output "*" bg "${1}" fill
+}
+
+function hyprland_wal() {
+  create_palette "${1}"
+  swaybg -i "${1}"
+}
+
+# Wallpaper
+wallpaper_set() {
+  if [[ -z $1 ]]; then
+    # if [[ -f "${HOME}/.cache/wal/wal" && -f "$(cat "${HOME}/.cache/wal/wal")" ]]; then
+    # filename="$(cat "${HOME}/.cache/wal/wal")"
+    # else
+    filename="$(find "${WALLPAPER_DIR}" -type f | shuf -n1)" # random image
+    # fi
+  else
+    filename=$1
+  fi
+
+  #xsetroot -solid midnightblue # Set the background color
+  #xloadimage -onroot -fullscreen $HOME/.config/awesome/theme/background.png &
+  if [[ $FRONTEND == sway ]]; then
+    sway_wal "${filename}"
+  elif [[ $FRONTEND == hyprland ]]; then
+    hyprland_wal "${filename}"
+  else
+    feh --bg-scale "${filename}"
+  fi
+}
+
+download_and_set() {
+  link=$1
+  filename=$2
+
+  remote_size=$(curl -sLIf "${link}" | grep -iE '^Content-Length' | tail -n1 | awk '{print $2}' | sed 's/^0\s//g' | tr -d '\r')
+
+  if [[ -z $remote_size ]]; then # connection error
+    echo Could not download, setting a random wallpaper
+    wallpaper_set
+  fi
+
+  if [[ -e $filename ]]; then
+    local_size=$(stat -c %s "${filename}")
+  else
+    local_size=0
+  fi
+
+  mkdir -p "${WALLPAPER_DIR}"
+
+  if [[ $remote_size -gt 0 && $remote_size -ne $local_size ]]; then
+    curl -sLfo "${filename}" "${link}"
+  fi
+  wallpaper_set "${filename}"
+}
+
+# Use bing image of the day
+_bing() {
+  link=$(wget --no-proxy -qO- $(echo https://bingwallpaper.anerg.com$(wget --no-proxy -qO- https://bingwallpaper.anerg.com | rg '.*href="(/detail/.*?)".*' -r '$1' --max-count 1)) | rg '.*href="(https://imgproxy.nanxiongnandi.com.*?)".*' --max-count 1 -r '$1')
+  link=$(wget --no-proxy -qO- $(echo https://bingwallpaper.anerg.com$(wget --no-proxy -qO- https://bingwallpaper.anerg.com | rg '.*href="(/detail/.*?)".*' -r '$1' --max-count 1)) | rg '.*href="(https://imgproxy.nanxiongnandi.com.*?)".*' -r '$1' | tail -1)
+
+  filename="${WALLPAPER_DIR}/bing_${TODAY}.png"
+
+  download_and_set "${link}" "${filename}"
+}
+
+_nasa() {
+  link=http://apod.nasa.gov/apod/$(wget -qO- http://apod.nasa.gov/apod/ | rg '<IMG SRC="(.+?)"' -r '$1')
+  filename="${WALLPAPER_DIR}/nasa_${TODAY}.jpg"
+
+  download_and_set "${link}" "${filename}"
+}
+
+_natgeo() {
+  link=$(wget -qO- https://photography.nationalgeographic.com/photography/photo-of-the-day/ | rg -m1 --only-matching 'https://www.nationalgeographic.com/.*?.jpg')
+  filename="${WALLPAPER_DIR}/natgeo_${TODAY}.jpg"
+
+  download_and_set "${link}" "${filename}"
+}
+
+_wikipedia() {
+  link=https:$(wget -qO- "https://en.wikipedia.org/$(wget -qO- https://en.wikipedia.org/wiki/Wikipedia:Picture_of_the_day | rg -m1 --only-matching '/wiki/File:.+?.jpg')" | rg -m1 --only-matching '<a.+href="(.+?)".*>Original file</a>' -r "\$1")
+  filename="${WALLPAPER_DIR}/wikipedia_${TODAY}.jpg"
+
+  download_and_set "${link}" "${filename}"
+}
+
+if [[ $METHOD == bing ]]; then
+  _bing
+elif [[ $METHOD == nasa ]]; then
+  _nasa
+elif [[ $METHOD == natgeo ]]; then
+  _natgeo
+elif [[ $METHOD == wikipedia ]]; then
+  _wikipedia
+elif [[ $METHOD == dir ]]; then
+  if [[ $INTERVAL -gt 0 ]]; then
+    while true; do
+      wallpaper_set
+      sleep "${INTERVAL}"
+    done &
+  else
+    wallpaper_set
+  fi
+else
+  wallpaper_set
+fi

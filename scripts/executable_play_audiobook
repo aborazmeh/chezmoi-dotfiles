@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [[ $1 == "mpd" ]]; then
+  mpv --config-dir $HOME/MEGA/R/_config/mpv ~/MEGA/R/audiobooks
+elif [[ $1 == "mopidy" ]]; then
+  mopidy --config $HOME/MEGA/R/_conf/mopidy/mopidy.conf local scan
+  mopidy --config $HOME/MEGA/R/_conf/mopidy/mopidy.conf
+  ./music addall
+  if [[ $(mpc playlist 2>/dev/null | wc -l) -eq 0 ]]; then
+    mpc add "Local media"
+  fi
+elif [[ $1 == mpv ]]; then
+  mpv --watch-later-directory=$HOME/MEGA/R/_config/mpv/watch_later --pause --speed=2 --display-tags= --vo=null $HOME/MEGA/R/audiobooks
+fi

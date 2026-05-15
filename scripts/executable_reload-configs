@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+reload_sway() {
+  CONFIG_FILES="$HOME/.config/sway/config $HOME/.cache/wal/colors-sway"
+  while true; do
+    inotifywait -e create,modify $CONFIG_FILES
+    swaymsg reload
+  done
+}
+
+reload_waybar() {
+  CONFIG_FILES="$HOME/.config/waybar/config $HOME/.config/waybar/config-top $HOME/.config/waybar/style.css $HOME/.cache/wal/colors-waybar.css"
+  trap "killall waybar" EXIT
+  while true; do
+    inotifywait -e create,modify $CONFIG_FILES
+    killall waybar
+    waybar -c $HOME/.config/waybar/config-top & waybar &
+  done
+}
+
+reload_swaync() {
+  CONFIG_FILES="$HOME/.config/swaync/config.json $HOME/.config/swaync/style.css $HOME/.cache/wal/colors-waybar.css"
+  while true; do
+    inotifywait -e create,modify $CONFIG_FILES
+    swaync-client -R
+    swaync-client -rs
+  done
+}
+
+
+IS_RUNNING=$(\ps -aux | rg "bash $HOME/scripts/reload-configs" | rg -v rg | wc -l)
+if [[ $IS_RUNNING -lt 3 ]]; then
+  reload_sway &
+  reload_waybar &
+  reload_swaync &
+fi
