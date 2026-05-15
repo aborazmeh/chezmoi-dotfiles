@@ -1,0 +1,55 @@
+[exchage]
+command=echo -n `$HOME/scripts/i3blocks/exchange USDTRY EURTRY USDSYP`
+interval=3600
+markup=pango
+align=right
+
+[weather]
+command=$HOME/scripts/i3blocks/weather
+interval=3600
+markup=pango
+
+[prayer_times]
+command=$HOME/scripts/prayertimes i3blocks
+interval=1
+label=
+markup=pango
+
+[date]
+command=$HOME/scripts/i3blocks/dateandtime
+interval=10
+label=
+markup=pango
+
+[bandwidth]
+command=$HOME/scripts/i3blocks/bandwidth -i  -o 
+interval=1
+markup=pango
+
+[wifi]
+command=$HOME/scripts/wifi i3blocks
+interval=10
+label= 
+
+[memory]
+command=$HOME/scripts/i3blocks/memory
+interval=2
+label=M:
+
+[cpu]
+command=$HOME/scripts/i3blocks/cpu_usage
+interval=1
+label=
+
+[battery]
+command=$HOME/scripts/i3blocks/battery
+interval=10
+
+[volume]
+command=$HOME/scripts/i3blocks/volume
+interval=2
+
+[keyboard_layout]
+command=$HOME/scripts/xkbdlayout -c
+interval=1
+label=

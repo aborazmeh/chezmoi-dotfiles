@@ -1,0 +1,39 @@
+[music]
+command=$HOME/scripts/music i3blocks
+interval=1
+markup=pango
+
+[facebook]
+command=$HOME/scripts/i3blocks/facebook
+interval=600
+color=#3b5998
+
+[rss]
+command=$HOME/scripts/rss i3blocks
+interval=600
+color=#f26522
+
+[podcasts]
+command=$HOME/scripts/podcasts i3blocks
+interval=600
+color=#a26eea
+
+[dropbox]
+command=$HOME/scripts/dropbox i3blocks
+interval=3
+color=#007ee5
+
+[tasks]
+command=$HOME/scripts/taskwarrior i3blocks
+interval=10
+markup=pango
+
+[email]
+command=$HOME/scripts/i3blocks/email
+interval=590
+
+[torn-city]
+command=$HOME/scripts/torn i3blocks
+interval=1
+markup=pango
+

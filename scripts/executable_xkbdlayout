@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# If no arguments is passed then echo current layout, else:
+#   -s switch to frequently used layouts (e.g ara, us).
+#   -w switch to less frequently used layouts (e.g ara, us, hl, fr, et.) and
+#      change wallpaper according to that.
+
+LAYOUTS=("us" "ara")
+LAYOUTS_WITH_WALLPAPERS=("us" "ara" "fr" "tr" "ir" "il" "ru")
+
+set_wallpaper() {
+  if [[ $FRONTEND == sway ]]; then
+    swaymsg output '*' bg $1 fill
+  else
+    feh --bg-scale $1
+  fi
+}
+
+switch_layout() {
+
+  if [[ $1 == "wallpapers" ]]; then
+    array=("${LAYOUTS_WITH_WALLPAPERS[@]}")
+  else
+    array=("${LAYOUTS[@]}")
+  fi
+
+  #layout=$(setxkbmap -query | awk 'END{print $2}')
+  local current_layout=`xkblayout-state print "%s"`
+
+  if ! [[ ${array[*]} =~ "$current_layout" ]]; then
+    if [[ $FRONTEND == sway ]]; then
+      swaymsg input '*' xkb_layout ${LAYOUTS[0]}
+    fi
+    setxkbmap ${LAYOUTS[0]}
+  fi
+
+
+  for (( i = 0; i < ${#array[*]}; ++ i ))
+  do
+    if [[ ${array[$i]%% *} == "$current_layout" ]]; then
+      if [[ $i -eq $((${#array[*]}-1)) ]]; then
+        c=${array[0]}
+      else
+        c=${array[$i+1]}
+      fi
+      if [[ $FRONTEND == sway ]]; then
+        echo $c
+        swaymsg input '*' xkb_layout $c
+      fi
+      setxkbmap $c
+      if [[ $1 == "wallpapers" ]]; then
+        set_wallpaper "$HOME/scripts/xkbdlayout_wallpapers/$c.jpg"
+      else
+        set_wallpaper "$HOME/scripts/.wallpaper.jpg"
+      fi
+    fi
+  done
+}
+
+while getopts f:csw option
+do
+  case "${option}"
+    in
+    f) FRONTEND=${OPTARG};;
+    c) echo `xkblayout-state print "%s"` ;;
+    s) switch_layout ;;
+    w) switch_layout "wallpapers" ;;
+  esac
+done
+
+
+case $BLOCK_BUTTON in
+  1) setxkbmap $lang ;;
+esac
