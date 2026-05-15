@@ -1,0 +1,573 @@
+# See https://wiki.hyprland.org/Configuring/Monitors/
+# monitor=,preferred,auto,1
+monitor=,preferred,auto,auto
+
+# See https://wiki.hyprland.org/Configuring/Keywords/ for more
+
+# Execute your favorite apps at launch
+# exec-once = waybar & hyprpaper & firefox
+# Fire up apps
+# play_audiobook mpv mpd ~/.mpd.conf $HOME/scripts/play_audiobook mopidy telegram-desktop whatsdesk discord
+# dbus for gnome-keyring is required packages gnome-keyring libsecret libgnome-keyring
+exec-once = waybar
+exec-once = waybar -c {{ .chezmoi.homeDir }}/.config/waybar/config-top-hyprland
+exec-once = mako
+exec-once = dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY $HYPRLANDSOCK
+exec-once = kdeconnect-indicator
+exec-once = redshift-gtk -l 41.0028796547555:28.924632351045844
+exec-once = QT_QPA_PLATFORM=xcb megasync
+exec-once = mkfifo $HYPRLANDSOCK.wob && tail -f $HYPRLANDSOCK.wob | wob
+exec-once = $HOME/scripts/wallpapers -f hyprland -m bing
+1
+# Source a file (multi-file configs)
+# source = ~/1config/hypr/myColors.conf
+
+# For all categories, see https://wiki.hyprland.org/Configuring/Variables/
+input {
+  kb_layout = us,ara
+  kb_variant =
+  kb_model = pc101
+  kb_options = grp:caps_toggle,grp:alt_shift_toggle
+  kb_rules =
+  kb_file =
+  numlock_by_default = yes
+
+  follow_mouse = 2
+
+  touchpad {
+    disable_while_typing = yes
+    tap-to-click = yes
+    # tap_button_map = lrm
+    natural_scroll = yes
+    scroll_factor = 1.0
+    middle_button_emulation = on
+    drag_lock = on
+  }
+
+  sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+}
+
+general {
+  # See https://wiki.hyprland.org/Configuring/Variables/ for more
+
+  gaps_in = 2
+  gaps_out = 2
+  border_size = 2
+  col.active_border = rgba(33ccffee) rgba(00ff99ee) 45de
+  col.inactive_border = rgba(595959aa)
+  cursor_inactive_timeout = 3
+
+  layout = dwindle
+}
+
+decoration {
+  # See https://wiki.hyprland.org/Configuring/Variables/ for more
+
+  rounding = 0
+  blur = yes
+  blur_size = 3
+  blur_passes = 1
+  blur_new_optimizations = on
+
+  drop_shadow = yes
+  shadow_range = 4
+  shadow_render_power = 3
+  col.shadow = rgba(1a1a1aee)
+}
+
+animations {
+  enabled = yes
+
+  # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+
+  bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+
+  animation = windows, 1, 7, myBezier
+  animation = windowsOut, 1, 7, default, popin 80%
+  animation = border, 1, 10, default
+  animation = fade, 1, 7, default
+  animation = workspaces, 1, 6, default
+}
+
+dwindle {
+  # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
+  pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+  preserve_split = yes # you probably want this
+  col.group_border = 0x66777700
+  col.group_border_active = 0x66ffff00
+  no_gaps_when_only = no
+  special_scale_factor = 0.8
+  force_split = 0
+  use_active_for_splits = yes
+}
+
+master {
+  # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
+  new_is_master = true
+}
+
+gestures {
+  # See https://wiki.hyprland.org/Configuring/Variables/ for more
+  workspace_swipe = off
+}
+
+binds {
+  workspace_back_and_forth = yes
+}
+
+# Example per-device config
+# See https://wiki.hyprland.org/Configuring/Keywords/#executing for more
+device:epic mouse V1 {
+  sensitivity = -0.5
+}
+
+# Example windowrule v1
+# windowrule = float, ^(kitty)$
+# Example windowrule v2
+# windowrulev2 = float,^(kitty)$,title:^(kitty)$
+# See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
+
+# See https://wiki.hyprland.org/Configuring/Keywords/ for more
+$mainMod = SUPER
+
+# Notify daemon
+bind = $mainMod CTRL, space, exec, makoctl dismiss --all
+
+# Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
+# Terminal
+bind = $mainMod SHIFT, return, exec, kitty tmux
+
+# Program launcher
+# bind = $mainMod, R, exec, wofi --show drun
+bind = $mainMod, 27, exec, rofi -show combi
+# bind = $mainMod, 33, exec, dmenu_run
+#bind = $mainMod, 40 exec --no-startup-id i3-dmenu-desktop
+bind = $mainMod SHIFT, 33, exec, gmrun
+
+# kill focused window
+bind = $mainMod SHIFT, 54, killactive
+
+# change focus between tiling / floating windows
+bind = $mainMod, space, cyclenext
+
+# Screen Lock
+bind = $mainMod SHIFT CTRL, 46, exec, swaylock
+
+# enter fullscreen mode for the focused container
+bind = $mainMod, 41, fullscreen
+
+# Calculator
+bind = $mainMod, 21, exec, $HOME/.rofi/calc.sh
+bind = $mainMod, 54, exec, $HOME/.rofi/calc.sh
+
+# toggle tiling / floating
+bind = $mainMod, 28, togglefloating
+bind = $mainMod, 39, pin
+
+# Exit Hyprland
+bind = $mainMod SHIFT, 24, exit
+
+# bind = $mainMod, E, exec, dolphin
+
+# dwindle
+bind = $mainMod, P, pseudo,
+# bind = $mainMod, J, togglesplit,
+bind = $mainMod, G, togglegroup,
+bind = $mainMod, TAB, changegroupactive, f
+
+# Move focus with mainMod + arrow keys
+bind = $mainMod, 43, movefocus, l
+bind = $mainMod, 44, movefocus, d
+bind = $mainMod, 45, movefocus, u
+bind = $mainMod, 46, movefocus, r
+bind = $mainMod, left, movefocus, l
+bind = $mainMod, right, movefocus, r
+bind = $mainMod, up, movefocus, u
+bind = $mainMod, down, movefocus, d
+
+# Switch workspaces with mainMod + [0-9]
+bind = $mainMod, 1, workspace, 1
+bind = $mainMod, 2, workspace, 2
+bind = $mainMod, 3, workspace, 3
+bind = $mainMod, 4, workspace, 4
+bind = $mainMod, 5, workspace, 5
+bind = $mainMod, 6, workspace, 6
+bind = $mainMod, 7, workspace, 7
+bind = $mainMod, 8, workspace, 8
+bind = $mainMod, 9, workspace, 9
+bind = $mainMod, 0, workspace, 10
+
+# Move active window to a workspace with mainMod + SHIFT + [0-9]
+bind = $mainMod SHIFT, 1, movetoworkspace, 1
+bind = $mainMod SHIFT, 2, movetoworkspace, 2
+bind = $mainMod SHIFT, 3, movetoworkspace, 3
+bind = $mainMod SHIFT, 4, movetoworkspace, 4
+bind = $mainMod SHIFT, 5, movetoworkspace, 5
+bind = $mainMod SHIFT, 6, movetoworkspace, 6
+bind = $mainMod SHIFT, 7, movetoworkspace, 7
+bind = $mainMod SHIFT, 8, movetoworkspace, 8
+bind = $mainMod SHIFT, 9, movetoworkspace, 9
+bind = $mainMod SHIFT, 0, movetoworkspace, 10
+
+# Scroll through existing workspaces with mainMod + scroll
+bind = $mainMod, mouse_down, workspace, e+1
+bind = $mainMod, mouse_up, workspace, e-1
+
+# Move/resize windows with mainMod + LMB/RMB and dragging
+bindm = $mainMod, mouse:272, movewindow
+bindm = $mainMod, mouse:273, resizewindow
+
+# Function Keys
+# #bindsym XF86Power exec "sh ~/.config/awesome/scripts/shutdown.sh"
+bind = ,XF86MonBrightnessDown, exec, light -U 5 && light -G | cut -d'.' -f1 > $HYPRLANDSOCK.wob
+bind = ,XF86MonBrightnessUp, exec, light -A 5 && light -G | cut -d'.' -f1 > $HYPRLANDSOCK.wob
+# bindsym $mod+F4 exec "$HOME/.rofi/monitor_layout.sh"
+# bindsym $mod+Shift+F4 exec "$HOME/.rofi/rofi-randr"
+# bindsym XF86AudioPlay exec "$HOME/scripts/music toggle"
+# bindsym $mod+XF86AudioPlay exec "clerk"
+# # XF86AudioPlay with Ctrl to stop
+# bindsym Ctrl+XF86AudioPlay exec "$HOME/scripts/music stop"
+# # XF86AudioPrev to seek
+# bindsym XF86AudioPrev exec "$HOME/scripts/music seek-"
+# # XF86AudioPrev with Ctrl to previous track
+# bindsym Ctrl+XF86AudioPrev exec "$HOME/scripts/music prev"
+# # XF86AudioNext to seek
+# bindsym XF86AudioNext exec "$HOME/scripts/music seek+"
+# # XF86AudioNext with Ctrl to next track
+# bindsym Ctrl+XF86AudioNext exec "$HOME/scripts/music next"
+bind = ,XF86AudioLowerVolume, exec, $HOME/scripts/music volume- -f hyprland
+bind = ,XF86AudioRaiseVolume, exec, $HOME/scripts/music volume+ -f hyprland
+# bindsym XF86AudioMute exec "$HOME/scripts/music mute -f hyprland"
+
+# Workspaces apps
+windowrule = workspace 1 silent,^(kitty)$
+windowrule = workspace 1 silent,^(xterm)$
+windowrule = workspace 1 silent,^(urxvt)$
+windowrule = workspace 1 silent,^(aterm)$
+windowrule = workspace 1 silent,^(URxvt)$
+windowrule = workspace 1 silent,^(XTerm)$
+# assign [app_id="ord.kde.konsole"] $ws_terminal
+windowrule = workspace 1 silent,^(terminator)$
+# assign [app_id="gnome-terminal-server"] $ws_terminal
+windowrule = workspace 1 silent,^(Black Screen)$
+windowrule = workspace 1 silent,^(Alacritty)$
+
+windowrule = workspace 2,^(Kate)$
+windowrule = workspace 2,^(KDevelop)$
+windowrule = workspace 2,^(Codeblocks)$
+windowrule = workspace 2,^(Code::Blocks)$
+windowrule = workspace 2,^(DDD)$
+windowrule = workspace 2,^(kate4)$
+windowrule = workspace 2,^(Eclipse)$
+windowrule = workspace 2,^(Eeshcema)$
+windowrule = workspace 2,^(Eagle)$
+windowrule = workspace 2,^(Kicad)$
+windowrule = workspace 2,^(jetbrains-android-studio)$
+windowrule = workspace 2,^(jetbrains-studio)$
+windowrule = workspace 2,^(sun-awt-X11-XDialogPeer)$
+windowrule = workspace 2,^(jetbrians-idea-ce)$
+windowrule = workspace 2,^(sun-awt-X11-XFramePeer)$
+# assign [app_id="org.qt-project.qtcreator"] $ws_dev
+# assign [app_id="glade"] $ws_dev
+# assign [app_id="sqlitebrowser"] $ws_dev
+windowrule = workspace 2,^(Emacs)$
+windowrule = workspace 2,^(Gvim)$
+windowrule = workspace 2,^(Atom)$
+windowrule = workspace 2,^(Electron)$
+windowrule = workspace 2,^([Cc]ode(-oss)?)$
+# assign [app_id="gedit"] $ws_dev
+windowrule = workspace 2,^(Postman)$
+windowrule = workspace 2,^(assistant)$
+windowrule = workspace 2,^(Designer)$
+windowrule = workspace 2,^(kwrite)$
+windowrule = workspace 2,^(Linguist)$
+# assign [app_id="WindowsDaemon"] $ws_dev
+# assign [app_id="DBeaver"] $ws_dev
+# assign [title=".* \| Arduino .*"] $ws_dev
+# assign [app_id="wireshark"] $ws_dev
+# assign [app_id="org.pgadmin.pgAdmin4"] $ws_dev
+
+windowrule = workspace 3,^(Opera)$
+windowrule = workspace 3,^(firefox)$
+# assign [instance="vivaldi-stable"] $ws_web
+windowrule = workspace 3,^(Midori)$
+windowrule = workspace 3,^(Rekonq)$
+windowrule = workspace 3,^(Dillo)$
+windowrule = workspace 3,^(Arora)$
+windowrule = workspace 3,^(Chromium)$
+windowrule = workspace 3,^(nightly)$
+windowrule = workspace 3,^(gnome-minefield)$
+windowrule = workspace 3,^(Google-chrome-stable)$
+windowrule = workspace 3,^(Google-chrome)$
+windowrule = workspace 3,^(Epiphany)$
+# assign [app_id="org.qbittorrent.qBittorrent"] $ws_web
+# assign [app_id="deluge"] $ws_web
+# assign [app_id="filezilla"] $ws_web
+windowrule = workspace 3,^(Tor Browser)$
+windowrule = workspace 3,^(Uzbl-core)$
+windowrule = workspace 3,^(Netsurf-gtk3)$
+windowrule = workspace 3,^(Mldonkey_gui)$
+windowrule = workspace 3,^(Gtk-gnutella)$
+windowrule = workspace 3,^(QupZilla" instance="QupZilla Browser)$
+windowrule = workspace 3,^(Dwb)$
+windowrule = workspace 3,^(qutebrowser)$
+windowrule = workspace 3,^(Transmission-gtk)$
+
+# assign [title="LibreOffice"] $ws_office
+# assign [app_id="libreoffice-startcenter"] $ws_office
+# assign [app_id="soffice"] $ws_office
+windowrule = workspace 4,^(libreoffice-calc)$
+# assign [app_id="org.kde.calligra.*"] $ws_office
+windowrule = workspace 4,^(Gnucash)$
+windowrule = workspace 4,^(Gramps)$
+windowrule = workspace 4,^(TeXstudio)$
+windowrule = workspace 4,^(Gummi)$
+windowrule = workspace 4,^(Abiword)$
+# assign [app_id="gnumeric"] $ws_office
+windowrule = workspace 4,^(ghostwriter)$
+windowrule = workspace 4,^(Typora)$
+windowrule = workspace 4,^(OmegaT)$
+windowrule = workspace 4,^(tellico)$
+
+windowrule = workspace 5,^(Assistant)$
+# assign [app_id="org.kde.okular"] $ws_doc
+# assign [app_id="evince"] $ws_doc
+windowrule = workspace 5,^(EPDFviewer)$
+windowrule = workspace 5,^(xpdf)$
+windowrule = workspace 5,^(Xpdf)$
+# assign [app_id="anki"] $ws_doc
+windowrule = workspace 5,^(llpp)$
+# assign [app_id="org.pwmt.zathura"] $ws_doc
+windowrule = workspace 5,^(MuPDF)$
+# assign [app_id="calibre-gui"] $ws_doc
+# assign [app_id="calibre-edit-book"] $ws_doc
+# assign [app_id="sigil"] $ws_doc
+windowrule = workspace 5,^(libprs500-gui)$
+windowrule = workspace 5,^(FBReader)$
+# assign [app_id="simple-scan"] $ws_doc
+windowrule = workspace 5,^(Wine" instance="Kindle.exe)$
+windowrule = workspace 5,^(XDvi)$
+# assign [app_id="com.github.johnfactotum.Foliate"] $ws_doc
+# assign [app_id="xchm"] $ws_doc
+# assign [app_id="net.kchmviewer.kchmviewer"] $ws_doc
+
+windowrule = workspace 5,^(Gimp)$
+windowrule = workspace 5,^(CinePaint)$
+windowrule = workspace 5,^(krita)$
+# assign [app_id="org.inkscape.Inkscape"] $ws_doc
+windowrule = workspace 5,^(Kino)$
+# assign [instance="openshot.*"] $ws_doc
+windowrule = workspace 5,^(Cinelerra)$
+windowrule = workspace 5,^(Pitivi)$
+windowrule = workspace 5,^(Kdenlive)$
+windowrule = workspace 5,^(Audacity)$
+windowrule = workspace 5,^(Blender)$
+windowrule = workspace 5,^(Qcad-bin)$
+windowrule = workspace 5,^(Openscad)$
+windowrule = workspace 5,^(.*sweethome3d.*)$
+windowrule = workspace 5,^(Ghb)$
+# assign [app_id="mcomix"] $ws_doc
+windowrule = workspace 5,^(aegisub)$
+# assign [app_id="gaupol"] $ws_doc
+# assign [app_id="subtitleeditor"] $ws_doc
+# assign [app_id="gnome-subtitles"] $ws_doc
+
+# assign [app_id="thunar"] $ws_files
+windowrule = workspace 6,^(Konqueror)$
+windowrule = workspace 6,^(ark)$
+# assign [app_id="org.kde.dolphin"] $ws_files
+# assign [app_id="org.gnome.Nautilus"] $ws_files
+windowrule = workspace 6,^(emelfm)$
+# assign [app_id="nemo"] $ws_files
+windowrule = workspace 6,^(Pcmanfm)$
+
+# assign [app_id="TeamViewer"] $ws_vnc
+windowrule = workspace 7,^(Anydesk)$
+# assign [instance="vncviewer" class="Vncviewer"] $ws_vnc
+# assign [app_id="org.remmina.Remmina"] $ws_vnc
+
+# assign [instance="qemu-system-.*" class="Qemu-system.*"] $ws_vm
+# assign [instance="qtemu" class="Qtemu"] $ws_vm
+windowrule = workspace 8,^(Virt-manager)$
+# assign [title="Android Emulator.*"] $ws_vm
+# assign [app_id="dosbox"] $ws_vm
+# assign [app_id="waydroid"] $ws_vm
+
+windowrule = workspace 9,^(Skype)$
+windowrule = workspace 9,^(Pidgin)$
+# assign [app_id="empathy"] $ws_im
+windowrule = workspace 9,^(irssi)$
+windowrule = workspace 9,^(weechat)$
+windowrule = workspace 9,^(Epathy)$
+windowrule = workspace 9,^(Kopete)$
+windowrule = workspace 9,^(Cheese)$
+windowrule = workspace 9,^(Kamoso)$
+windowrule = workspace 9,^(Viber)$
+windowrule = workspace 9,^(ViberPC)$
+# assign [app_id="org.telegram.desktop"] $ws_im
+# assign [app_id="whatsapp-for-linux"] $ws_im
+windowrule = workspace 9,^(whatsdesk)$
+windowrule = workspace 9,^(discord)$
+# assign [app_id="zoom"] $ws_im
+windowrule = workspace 9,^(Hexchat)$
+windowrule = workspace 9,^(KVIrc)$
+# assign [app_id="org.kde.konversation"] $ws_im
+# assign [app_id="org.gnome.Polari"] $ws_im
+
+windowrule = workspace 10,^(vlc)$
+windowrule = workspace 10,^(Totem)$
+windowrule = workspace 10,^(MPlayer)$
+windowrule = workspace 10,^(smplayer)$
+# assign [app_id="mpv"] $ws_media
+windowrule = workspace 10,^(smtube)$
+# assign [instance="spotify" class="Spotify"] $ws_media
+windowrule = workspace 10,^(Gpodder)$
+windowrule = workspace 10,^(mpv)$
+
+# # Transparency options
+windowrule = opacity 0.75,^(Gvim)$
+windowrule = opacity 0.75,^(Emacs)$
+windowrule = opacity 0.75,^(Atom)$
+windowrule = opacity 0.75,^(Electron)$
+windowrule = opacity 0.9,^([Cc]ode(-oss)?)$
+windowrule = opacity 0.75,^(ghostwriter)$
+windowrule = opacity 0.75,^(Alacritty)$
+windowrule = opacity 0.75 0.25,^(kitty)$
+# for_window [app_id="gedit"] opacity set 0.75
+# for_window [app_id="org.kde.konsole"] opacity set 0.75
+windowrule = opacity 0.75, ^([Rr]ofi)$
+
+# Floating apps
+windowrule = float,^([Rr]ofi)$
+windowrule = float,^(Lxappearance)$
+windowrule = float,^(Seahorse)$
+windowrule = float,^(Pavucontrol)$
+windowrule = float,^(Speedcrunch)$
+windowrule = float,^(xfce4-panel)$
+windowrule = float,^(Gtk-recordMyDesktop)$
+# for_window [app_id="firefox" title="Password Required"] floating enable
+windowrule = float,^(Pinentry)$
+windowrule = float,^(zazu)$
+# for_window [title="Android Virtual Device Manager"] floating enable
+# for_window [title="Android Emulator.*"] floating enable
+# for_window [title="Android Emulator - Nexus_5X_API_28:5554"] floating enable
+# for_window [app_id="WindowsDaemon"] floating enable
+# for_window [app_id="nz.co.mega.megasync"] floating enable
+windowrule = float,^(MEGAsync)$
+windowrule = move 20% 20%,^(MEGAsync)$
+# for_window [instance="megasync"] floating enable
+# for_window [app_id="org.kde.kdeconnect.daemon"] floating enable
+# for_window [app_id="org.https://nomacs.nomacs"] floating enable
+# for_window [app_id="cpupower-gui"] floating enable
+windowrule = float,^(mpv-sticky-float)$
+windowrule = move 100%-25% 100%-25%,^(mpv-sticky-float)$
+
+# Sticky apps
+windowrule = pin,^(mpv-sticky-float)$
+
+
+
+
+
+
+
+
+
+# include "$HOME/.cache/wal/colors-sway"
+
+# # Options
+# focus_follows_mouse no
+# # force_focus_wrapping yes  use focus_wrapping
+
+# # Change keyboard layout
+# bindsym $mod+Shift+Escape exec $HOME/scripts/kbd_input_sway
+
+# # Minimization
+# set $minimize move scratchpad
+# set $unminimize scratchpad show
+# bind = $mainMod, 58, $minimize
+# bindcode $mod+Shift+58 $unminimize
+
+# # Screenshot
+# bindsym --release Print exec $HOME/scripts/screenshot -f sway -c fullscreen
+# bindsym --release Ctrl+Print exec $HOME/scripts/screenshot -f sway -c window
+# bindsym $mod+Print exec $HOME/scripts/screenshot -f sway -c teiler
+
+# # Searching the Web
+# bindcode $mod+Shift+61 exec rofi-surfraw
+
+# # Password Manager
+# bindcode $mod+Ctrl+33 exec rofi-pass
+
+# # TODO Browsing the filesystem
+# # bindcode $mod+26
+
+# move focused window
+# bindcode $mod+Shift+43 move left
+# bindcode $mod+Shift+44 move down
+# bindcode $mod+Shift+45 move up
+# bindcode $mod+Shift+46 move right
+# # move to another output
+# bindcode $mod+Ctrl+46 move container to output right
+# bindcode $mod+Ctrl+43 move container to output left
+# bindsym $mod+Ctrl+Right move workspace to output right
+# bindsym $mod+Ctrl+Left move workspace to output left
+
+# # alternatively, you can use the cursor keys:
+# bindsym $mod+Shift+Left move left
+# bindsym $mod+Shift+Down move down
+# bindsym $mod+Shift+Up move up
+# bindsym $mod+Shift+Right move right
+
+# # split in horizontal orientation
+# bind = $mainMod, 118, split 43
+
+# # split in vertical orientation
+# bindcode $mod+shift+55 split v
+
+# # change container layout (stacked, tabbed, toggle split)
+# workspace_layout tabbed
+# # bind = $mainMod, 39, layout stacking
+# bind = $mainMod, 25, layout tabbed
+# bind = $mainMod, 26, layout toggle split
+
+# # Monitors
+# set $monitor_primary "eDP-1"
+# set $monitor_hdmi "HDMI1"
+
+# # Workspace Monitors
+# workspace $ws_terminal output $monitor_primary
+# workspace $ws_dev output $monitor_primary
+# workspace $ws_web output $monitor_primary
+# workspace $ws_office output $monitor_primary
+# workspace $ws_doc output $monitor_primary
+# workspace $ws_files output $monitor_primary
+# workspace $ws_im output $monitor_primary
+# workspace $ws_media output $monitor_hdmi
+
+# # resize window (you can also use the mouse for that)
+# mode "resize" {
+# # These bindings trigger as soon as you enter the resize mode
+
+# # Pressing left will shrink the window’s width.
+# # Pressing right will grow the window’s width.
+# # Pressing up will shrink the window’s height.
+# # Pressing down will grow the window’s height.
+#   bindcode 43 resize shrink width 10 px or 10 ppt
+#   bindcode 44 resize grow height 10 px or 10 ppt
+#   bindcode 45 resize shrink height 10 px or 10 ppt
+#   bindcode 46 resize grow width 10 px or 10 ppt
+
+# # same bindings, but for the arrow keys
+#   bindsym Left resize shrink width 10 px or 10 ppt
+#   bindsym Down resize grow height 10 px or 10 ppt
+#   bindsym Up resize shrink height 10 px or 10 ppt
+#   bindsym Right resize grow width 10 px or 10 ppt
+
+# # back to normal: Enter or Escape
+#   bindsym Return mode "default"
+#   bindsym Escape mode "default"
+# }
+
+# bindcode $mod+Shift+27 mode "resize"
+
