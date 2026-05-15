@@ -1,0 +1,11 @@
+XXkb.group.base: 1
+XXkb.group.alt: 2
+XXkb.mainwindow.appicon: yes
+XXkb.mainwindow.geometry: 15x15+1265+0
+XXkb.mainwindow.xpm.1: en15.xpm
+XXkb.mainwindow.xpm.2: ru15.xpm
+XXkb.button.enable: no
+XXkb.controls.add_when_start: no
+XXkb.controls.add_when_change: yes
+XXkb.controls.focusout: yes
+XXkb.controls.mainwindow_delete: no

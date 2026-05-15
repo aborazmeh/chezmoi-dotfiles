@@ -1,0 +1,307 @@
+-------- Imports --------
+-- system imports
+import           Data.Map                         (fromList)
+import           System.Exit
+import           System.IO
+
+-- xmonad core
+import           XMonad
+import qualified XMonad.StackSet                  as W
+
+-- xmonad contrib
+import           XMonad.Actions.CopyWindow        (copy)
+import           XMonad.Actions.DynamicWorkspaces
+import           XMonad.Actions.SpawnOn           ()
+import           XMonad.Hooks.DynamicLog
+import           XMonad.Hooks.FadeInactive
+import           XMonad.Hooks.FadeWindows
+import           XMonad.Hooks.ManageDocks
+import           XMonad.Layout.Minimize
+import           XMonad.Prompt
+import           XMonad.Util.Run                  (spawnPipe)
+-- TODO kbd https://github.com/srhb/xmonad-kbd , http://projects.haskell.org/xmobar/#kbd-opts
+-- TODO specify apps to workspaces http://superuser.com/questions/478498/start-applications-on-specific-workspaces-in-xmonad
+-- http://askubuntu.com/questions/370430/assigning-an-interface-button-or-shortcut-to-sleep-sh-in-xmonad
+--https://www.google.com.tr/search?q=xmonad+media+keys&ie=utf-8&oe=utf-8&client=firefox-b-ab&gfe_rd=cr&ei=72kAWL7BL6f38Ae_qrLwDw
+{-import           XMonad.Actions.WorkspaceNames-}
+
+-------- Options --------
+myModMask = mod4Mask     -- Rebind Mod to the Windows key
+altMask = mod1Mask       -- Alt key
+myTerminal = "konsole"
+myBorderWidth = 2
+myNormalBorderColor = "#CCCCCC"
+myFocusedBorderColor = "#CD8B00"
+myFocusFollowsMouse = False
+myLayout = avoidStruts  $ minimize $ tiled ||| Mirror tiled ||| Full
+                           where
+                           -- default tiling algorithm partitions the screen into two panes
+                           tiled   = Tall nmaster delta ratio
+                           -- The default number of windows in the master pane
+                           nmaster = 1
+                           -- Default proportion of screen occupied by master pane
+                           ratio   = 1/2
+                           -- Percent of screen to increment by when resizing panes
+                           delta   = 3/100
+
+-- Dzen2 / Bars
+myXmonadBar = "dzen2 -x '0' -y '0' -h '15' -w '683' -ta 'l' -fg '#aaaaaa' -bg '#111111' -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -dock"
+myStatusBar = "conky -c ~/.xmonad/conkyrc | dzen2 -bg '#111111' -fg '#aaaaaa' -ta 'right' -h '15' -w '683' -x '683' -y '0' -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -dock"
+myBottomBar = "conky -c ~/.xmonad/conky-bottomrc | dzen2 -bg '#111111' -fg '#aaaaaa' -ta 'right' -y '768' -x '270' -h '17' -w '1096' -fn '-*-terminus-*-r-normal-*-*-120-*-*-*-*-iso8859-*' -dock"
+myBitmapsDir = "~/.xmonad/icons"
+myLogHook :: Handle -> X ()
+myLogHook h = dynamicLogWithPP $ defaultPP
+    {
+        ppCurrent           =   dzenColor "#ebac54" "#111111" . pad
+      , ppVisible           =   dzenColor "white" "#111111" . pad
+      , ppHidden            =   dzenColor "white" "#111111" . pad
+      , ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#111111" . pad
+      , ppUrgent            =   dzenColor "#ff0000" "#111111" . pad
+      , ppWsSep             =   " "
+      , ppSep               =   "  |  "
+      , ppLayout            =   dzenColor "#ebac54" "#111111" .
+                                (\x -> case x of
+                                    "ResizableTall"             ->      "^i(" ++ myBitmapsDir ++ "/tall.xbm)"
+                                    "Mirror ResizableTall"      ->      "^i(" ++ myBitmapsDir ++ "/mtall.xbm)"
+                                    "Full"                      ->      "^i(" ++ myBitmapsDir ++ "/full.xbm)"
+                                    "Simple Float"              ->      "~"
+                                    _                           ->      x
+                                )
+      , ppTitle             =   (" " ++) . dzenColor "green" "#111111" . dzenEscape
+      , ppOutput            =   hPutStrLn h
+    }
+
+-- [x, workspace, layout, screen]
+workspacesApps = [(x, "main") | x <- ["xterm" ,"urxvt" , "aterm","URxvt","XTerm","konsole","terminator","gnome-terminal"]]             -- main workspace
+                 ++
+                 [(x, "files") | x <- ["Thunar", "Konqueror", "Dolphin", "ark", "Nautilus","emelfm"]]                       -- Files Apps
+                 ++
+                 [(x, "web") | x <- ["Opera" , "Firefox" , "Rekonq" , "Dillo" , "Arora", "Chromium" , "nightly" , "minefield", "Google-chrome-stable", "google-chrome", "Epiphany", "Qbittorrent"]]          -- Web Apps
+                 ++
+                 [(x, "media") | x <- ["Vlc", "Totem", "MPlayer", "smplayer"]]          -- MultiMedia Apps
+                 ++
+                 [(x, "im") | x <- ["Skype", "Pidgin", "irssi", "Epathy", "Kopete", "Cheese", "Kamoso", "Viber", "ViberPC"]]         -- IM Apps
+                 ++
+                 [(x, "office") | x <- ["libreoffice", "libreoffice-calc", "Gnucash"]]          -- Office Apps
+                 ++
+                 [(x, "doc") | x <- ["Assistant" , "Okular" , "Evince" , "EPDFviewer" , "xpdf", "Xpdf", "Anki", "llpp", "Zathura", "MuPDF", "calibre-gui", "libprs500", "FBReader", "Simple-scan"]]          -- Reading Apps
+                 ++
+                 [(x, "dev") | x <- ["Kate", "KDevelop", "Codeblocks", "Code::Blocks" , "DDD", "kate4", "Eclipse", "Eeschema", "Eagle", "Kicad", "jetbrains-android-studio", "sun-awt-X11-XDialogPeer", "jetbrains-idea-ce", "sun-awt-X11-XFramePeer", "qtcreator-bin", "QtCreator", "sqlitebrowser", "Emacs", "Gvim"]]            -- Developing Apps
+                 ++
+                 [(x, "design") | x <- ["Gimp", "CinePaint", "Krita", "Inkscape", "Kino", "Openshot", "Cinelerra", "Pitivi", "Kdenlive", "Audacity", "Blender", "Qcad-bin", "Openscad", "com-eteks-sweethome3d-SweetHome3DBootstrap"]]            -- Designing Apps
+                 ++
+                 [(x, "vnc") | x <- ["TeamViewer.exe"]]            -- VNC Apps
+floatApps = ["Gimp", "Speedcrunch", "Vncviewer", "xfce4-panel", "smplayer"]
+myWorkspaces = ["main"] --, "files", "web", "media", "IM", "doc", "develop", "design", "graveyard"] -- ++ map show [4..8] ++ ["9:float"]
+myManageHook = composeAll $
+-- FIXME create workspace on the fly and removeEmptyWorkspaces
+    [ className =? (fst x)   --> doShift (snd x) | x <- workspacesApps ]
+    ++
+    [ className =? x --> doFloat | x <- floatApps ]
+mpdServer = "{{ .mpd.hostname }}"
+mpdPassword = "{{ .mpd.password }}"
+
+
+
+-------- Keys Bindings --------
+myKeys conf@(XConfig {XMonad.modMask = modMask}) = fromList $
+    -- launching and killing programs
+    [ ((modMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf) -- %! Launch terminal
+    , ((modMask,               xK_p     ), spawn "dmenu_run") -- %! Launch dmenu
+    , ((modMask .|. shiftMask, xK_p     ), spawn "gmrun") -- %! Launch gmrun
+    , ((modMask .|. shiftMask, xK_c     ), kill) -- %! Close the focused window
+
+    , ((modMask,               xK_space ), sendMessage NextLayout) -- %! Rotate through the available layout algorithms
+    , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf) -- %!  Reset the layouts on the current workspace to default
+
+    , ((modMask,               xK_n     ), refresh) -- %! Resize viewed windows to the correct size
+
+    -- move focus up or down the window stack
+    , ((modMask,               xK_Tab   ), windows W.focusDown) -- %! Move focus to the next window
+    , ((modMask .|. shiftMask, xK_Tab   ), windows W.focusUp  ) -- %! Move focus to the previous window
+    , ((modMask,               xK_j     ), windows W.focusDown) -- %! Move focus to the next window
+    , ((modMask,               xK_k     ), windows W.focusUp  ) -- %! Move focus to the previous window
+    {-, ((modMask,               xK_m     ), windows W.focusMaster  ) -- %! Move focus to the master window-}
+
+    -- modifying the window order
+    , ((modMask,               xK_Return), windows W.swapMaster) -- %! Swap the focused window and the master window
+    , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown  ) -- %! Swap the focused window with the next window
+    , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp    ) -- %! Swap the focused window with the previous window
+
+    -- resizing the master/slave ratio
+    , ((modMask,               xK_h     ), sendMessage Shrink) -- %! Shrink the master area
+    , ((modMask,               xK_l     ), sendMessage Expand) -- %! Expand the master area
+
+    -- floating layer support
+    , ((modMask,               xK_t     ), withFocused $ windows . W.sink) -- %! Push window back into tiling
+
+    -- increase or decrease number of windows in the master area
+    , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+    , ((modMask              , xK_period), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+
+    -- quit, or restart
+    {-, ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess)) -- %! Quit xmonad-}
+    , ((modMask              , xK_q     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
+
+    , ((modMask .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -")) -- %! Run xmessage with a summary of the default keybindings (useful for beginners)
+    -- repeat the binding for non-American layout keyboards
+    , ((modMask              , xK_question), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+
+    ]
+    ++
+    -- mod-[1..9] %! Switch to workspace N
+    -- mod-shift-[1..9] %! Move client to workspace N
+    {-[((m .|. modMask, k), windows $ f i)-}
+        {-| (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]-}
+        {-, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]-}
+    -- dynamic workspace
+    zip (zip (repeat (modMask)) [xK_1..xK_9]) (map (withNthWorkspace W.greedyView) [0..])
+    ++
+    zip (zip (repeat (modMask .|. shiftMask)) [xK_1..xK_9]) (map (withNthWorkspace W.shift) [0..])
+
+    ++
+    -- mod-{w,e,r} %! Switch to physical/Xinerama screens 1, 2, or 3
+    -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
+    [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+    ++
+    -- my key maps
+    [ ((modMask , xK_L), spawn "xscreensaver-command -lock")
+    , ((altMask, xK_space), spawn "rofi -combi-modi window,run,ssh -show combi")
+    , ((modMask, xK_r), spawn "rofi -combi-modi window,run,ssh -show combi")
+    , ((modMask, xK_c), spawn "rofi -show fb -modi fb:~/.rofi/calc.sh")
+    , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+    , ((0, xK_Print), spawn "scrot")
+    -- dynamic workspace
+    , ((modMask .|. shiftMask, xK_BackSpace), removeWorkspace)
+    , ((modMask .|. shiftMask, xK_v      ), selectWorkspace defaultXPConfig)
+    , ((modMask, xK_m                    ), withWorkspace defaultXPConfig (windows . W.shift))
+    , ((modMask .|. shiftMask, xK_m      ), withWorkspace defaultXPConfig (windows . copy))
+    , ((modMask .|. shiftMask, xK_r      ), renameWorkspace defaultXPConfig)
+    -- minimize windows
+    , ((altMask,               xK_m     ), withFocused minimizeWindow)
+    , ((altMask .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
+
+    -- Change keyboard layout
+    , ((modMask, xK_Escape), spawn "$HOME/scripts/xkbdlayout.sh")
+
+    -- Get the function keys to work
+    , ((0, 0x1008ff2a), spawn "sh ~/.config/awesome/scripts/shutdown.sh")  -- XF86Power
+    , ((0, 0x1008ff03), spawn "xbacklight -dec 15") --XF86MonBrightnessDown
+    , ((0, 0x1008ff02), spawn "xbacklight -inc 15") --XF86MonBrightnessUp
+    , ((0, 0x1008ff14), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " toggle") -- XF86AudioPlay
+    , ((controlMask, 0x1008ff14), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " stop") -- XF86AudioPlay with Ctrl to stop
+    , ((0, 0x1008ff16), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " seek -10") -- XF86AudioPrev to seek
+    , ((controlMask, 0x1008ff16), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " prev") -- XF86AudioPrev with Ctrl to previous track
+    , ((0, 0x1008ff17), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " seek +10") -- XF86AudioNext to seek
+    , ((controlMask, 0x1008ff17), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " next") -- XF86AudioNext
+    , ((0, 0x1008ff11), spawn "pulseaudio-ctl down; amixer set Master 4-") -- XF86AudioLowerVolume
+    , ((0, 0x1008ff13), spawn "pulseaudio-ctl up; amixer set Master 4+") -- XF86AudioRaiseVolume
+    {-, ((0, 0x1008ff12), ) -- XF86AudioMute-}
+
+    {-awful.key({modkey}, "F7", function() mpd:swap_device() end),-}
+    ]
+
+-------- main function --------
+main = do
+    dzenLeftBar <- spawnPipe myXmonadBar
+    dzenRightBar <- spawnPipe myStatusBar
+    spawnPipe myBottomBar
+    xmonad $ defaultConfig
+        { modMask = myModMask
+        , terminal = myTerminal
+        , borderWidth = myBorderWidth
+        , normalBorderColor = myNormalBorderColor
+        , focusedBorderColor = myFocusedBorderColor
+        , focusFollowsMouse = myFocusFollowsMouse
+        , XMonad.workspaces = myWorkspaces
+        , keys = myKeys
+        , manageHook = manageDocks <+> myManageHook -- make sure to include myManageHook definition from above
+                        <+> manageHook defaultConfig
+        , layoutHook = myLayout
+        , logHook = myLogHook dzenLeftBar >> fadeInactiveLogHook 0x99999999
+        }
+
+-- a copy of the default bindings in simple textual tabular format
+help :: String
+help = unlines ["The default modifier key is 'alt'. Default keybindings:",
+    "",
+    "-- launching and killing programs",
+    "mod-Shift-Enter  Launch xterminal",
+    "mod-p            Launch dmenu",
+    "mod-Shift-p      Launch gmrun",
+    "mod-Shift-c      Close/kill the focused window",
+    "mod-Space        Rotate through the available layout algorithms",
+    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
+    "mod-n            Resize/refresh viewed windows to the correct size",
+    "",
+    "-- move focus up or down the window stack",
+    "mod-Tab        Move focus to the next window",
+    "mod-Shift-Tab  Move focus to the previous window",
+    "mod-j          Move focus to the next window",
+    "mod-k          Move focus to the previous window",
+    {-"mod-m          Move focus to the master window",-}
+    "",
+    "-- modifying the window order",
+    "mod-Return   Swap the focused window and the master window",
+    "mod-Shift-j  Swap the focused window with the next window",
+    "mod-Shift-k  Swap the focused window with the previous window",
+    "",
+    "-- resizing the master/slave ratio",
+    "mod-h  Shrink the master area",
+    "mod-l  Expand the master area",
+    "",
+    "-- floating layer support",
+    "mod-t  Push window back into tiling; unfloat and re-tile it",
+    "",
+    "-- increase or decrease number of windows in the master area",
+    "mod-comma  (mod-,)   Increment the number of windows in the master area",
+    "mod-period (mod-.)   Deincrement the number of windows in the master area",
+    "",
+    "-- quit, or restart",
+    "mod-Shift-q  Quit xmonad",
+    "mod-q        Restart xmonad",
+    "mod-[1..9]   Switch to workSpace N",
+    "",
+    "-- Workspaces & screens",
+    "mod-Shift-[1..9]   Move client to workspace N",
+    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
+    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
+    "",
+    "-- Mouse bindings: default actions bound to mouse events",
+    "mod-button1  Set the window to floating mode and move by dragging",
+    "mod-button2  Raise the window to the top of the stack",
+    "mod-button3  Set the window to floating mode and resize by dragging",
+    "",
+    "-- My keybindings",
+    "alt-M Minimize windows",
+    "alt-Shift-M Restore next minimized window",
+    "mod-L Lock the screen",
+    "alt-space Lauhcn programs (,ssh, or windows) via rofi",
+    "mod-C Fast calculation via rofi",
+    "PrintSC Take a screenshot via scrot",
+    "control-PrintSC Wait 2 seconds then take a screenshot via scrot",
+    "",
+    "-- Dynamic Workspaces",
+    "mod-Shift-BackSpace Remove current workspace",
+    "mod-Shift-v Select a workspace via prompt",
+    "mod-m Move a window to a specific workspace",
+    "mod-Shift-m Copy a window to a specific workspace",
+    "mod-Shift-r Rename a workspace",
+    "",
+    "-- Function keys",
+    "XF86Power Logout, poweroff, restart, or hibernate",
+    "XF86MonBrightnessUp Increase monitor brightness",
+    "XF86MonBrightnessDown Decrease monitor brightness",
+    "XF86AudioPlay Play/Pause mpd",
+    "control-XF86AudioPlay Stop mpd",
+    "XF86AudioPrev Seek mpd -10 seconds",
+    "XF86AudioNext Seek mpd +10 seconds",
+    "control-XF86AudioPrev Play mpd previous track",
+    "control-XF86AudioNext Play mpd next track",
+    "XF86AudioLowerVolume Decrease volume by 4",
+    "XF86AudioRaiseVolume Increase volume by 4",
+    "XF86AudioMute Mute audio"
+    ]

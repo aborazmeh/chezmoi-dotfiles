@@ -1,0 +1,41 @@
+conky.config = {
+  background = false,
+  out_to_console = true,
+  out_to_x = false,
+  update_interval = 1.0,
+  total_run_times = 0,
+  override_utf8_locale = true,
+  use_spacer = none,
+  double_buffer = true,
+  own_window = true,
+  own_window_type = override,
+  own_window_transparent = true,
+  no_buffers = true,
+  uppercase = false,
+  total_run_times = 0,
+  mpd_host = "{{ .mpd.hostname }}",
+  mpd_password = "{{ .mpd.password }}",
+}
+conky.text = [[
+${if_mpd_playing}\
+^i($HOME/.xmonad/icons/play.xbm) \
+^fg(\#e54c62)\
+${mpd_artist}\
+^fg(), \
+^fg(\#c0c000)\
+${mpd_title} \
+^fg()[\
+${mpd_elapsed}/${mpd_length}\
+](\
+${mpd_percent}%\
+)\
+<\
+^i($HOME/.xmonad/icons/spkr_01.xbm)\
+${mpd_vol}%\
+${endif}\
+^fg()\
+<\
+^fg(\#1793d0)\
+^i($HOME/.xmonad/icons/arch_10x10.xbm)\
+^fg()\
+]]
