@@ -1,0 +1,37 @@
+"dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:0"
+Mod1+Shift + 1
+
+#ru layout
+"dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:1"
+Mod1+Shift + 2
+
+#ua layout
+"dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:2"
+Mod1+Shift + 3
+
+"dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.prev_layout"
+F12
+
+"$HOME/scripts/shutdown.sh"
+XF86Power
+
+"xbacklight -dec 15"
+XF86MonBrightnessDown
+
+"xbacklight -inc 15"
+XF86MonBrightnessUp
+
+"$HOME/scripts/i3blocks/music toggle"
+XF86AudioPlay
+
+"$HOME/scripts/i3blocks/music seek-"
+XF86AudioPrev
+
+"$HOME/scripts/i3blocks/music seek+"
+XF86AudioNext
+
+"pulseaudio-ctl down; amixer set Master 4-"
+XF86AudioLowerVolume
+
+"pulseaudio-ctl up; amixer set Master 4+"
+XF86AudioRaiseVolume
