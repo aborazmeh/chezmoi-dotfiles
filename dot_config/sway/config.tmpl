@@ -5,7 +5,8 @@ set $alt Mod1
 set $float-sticky-video floating enable, sticky enable, exec "$HOME/scripts/sway-move-to bottom-right"
 set $terminal ghostty -e tmux new-session -A -D -s main
 set $editor ghostty -e micro
-set $scratchpad $editor ~/MEGA/scratchpad.md
+
+set $scratchpad $editor {{ if eq .machine "home" -}} ~/MEGA/scratchpad.md {{- else -}} ~/scratchpad.md {{- end }}
 set $filemanager ghostty -e ranger
 set $browser firefox --new-tab about:blank
 set $mailclient thunderbird
@@ -63,8 +64,8 @@ show_marks yes
 font pango:DejaVu Sans Mono 8, FontAwesome 8
 include "$HOME/.cache/wal/colors-sway"
 # client.<class> <border> <background> <text> [<indicator> [<child_border>]]
-client.background $background $background $background
-client.focused $color0 $background $foreground $color7 $background
+# client.background $background $background $background
+# client.focused $color0 $background $foreground $color7 $background
 # |focused_inactive  | #333333 | #5f676a    | #ffffff | #484e50   | #5f676a      |
 # |focused_tab_title | #333333 | #5f676a    | #ffffff | n/a       | n/a          |
 # |unfocused         | #333333 | #222222    | #888888 | #292d2e   | #222222      |
@@ -389,7 +390,7 @@ assign [app_id="imhex"] $ws_dev
 assign [app_id="dev.zed.Zed"] $ws_dev
 
 assign [class="Opera"] $ws_web
-assign [app_id="firefox(-nightly|developeredition)?"] $ws_web
+assign [app_id="firefox(-nightly|-esr|developeredition)?"] $ws_web
 assign [app_id="crashreporter"] $ws_web
 assign [app_id="org.mozilla.Thunderbird"] $ws_web
 assign [instance="vivaldi-stable"] $ws_web
@@ -424,6 +425,7 @@ assign [app_id="org.gnome.Eolie"] $ws_web
 assign [app_id="aura-browser"] $ws_web
 assign [app_id="org.kde.angelfish"] $ws_web
 assign [app_id="zen"] $ws_web
+assign [app_id="brave-browser"] $ws_web
 
 assign [title="LibreOffice"] $ws_office
 assign [app_id="libreoffice-startcenter"] $ws_office
@@ -614,16 +616,22 @@ exec_always autotiling
 # Notify daemon
 exec swaync
 
+exec swayidle -w \
+         timeout 300  'swaylock' \
+         timeout 600  'swaymsg "output * dpms off"' \
+              resume  'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock'
+
 # Fire up apps
 exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
 exec kanata
+exec wlsunset -l $latitude -L $longitude
+{{- if eq .machine "home" }}
 exec megasync
 # exec play_audiobook mpv
 # exec mpd ~/.mpd.conf
 # exec $HOME/scripts/play_audiobook mopidy
 # exec $terminal
-exec wlsunset -l $latitude -L $longitude
-# exec 'wlsunset -l $(city.py $city latitude) -L $(city.py $city longitude)'
 exec kdeconnect-indicator
 # exec telegram-desktop
 # exec whatsdesk
@@ -637,20 +645,19 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSO
 # exec nm-applet --indicator
 # exec emacs --daemon
 # exec wluma
-exec swayidle -w \
-         timeout 300  'swaylock' \
-         timeout 600  'swaymsg "output * dpms off"' \
-              resume  'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock'
 # exec udiskie --automount --tray --notify --appindicator
 # exec wl-paste -t text --watch clipman store
+{{- end }}
 
 # Wallpaper
 output "*" bg ~/Pictures/backgrounds/wallpaper.png fill
+{{- if eq .machine "home" }}
 # exec_always $HOME/scripts/wallpapers -m bing -f sway
 
 # reload configs on changes
 # exec "$HOME/scripts/reload-configs"
+{{- end }}
 
 # System config
 include /etc/sway/config.d/*
+
