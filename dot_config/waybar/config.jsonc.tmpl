@@ -1,8 +1,8 @@
 {
   "layer": "top",
   "position": "bottom",
-  "modules-left": [ {{ if eq .device "laptop" -}} "backlight", "battery", {{- end -}} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
-  "modules-center": [ {{ if eq .machine "home" -}} "custom/clock", "custom/praytimes" {{- else -}} "clock" {{- end }} ],
+  "modules-left": [ {{ if eq .device "laptop" -}} "backlight", "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
+  "modules-center": [ "custom/clock" {{- if eq .machine "home" }}, "custom/praytimes" {{- end }} ],
   "modules-right": [ "tray" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .device "laptop" }}, "bluetooth" {{- end }} ],
   "clock": {
     "interval": 60,

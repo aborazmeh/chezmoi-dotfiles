@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+################################
+# Shows info about the weather (in Cincinnati) from accuweather.com
+#
+# TODO: completely rewrite, probably using openweather APIs
+# TODO: make location configurable
+# TODO: make temperature unit configurable
+#
+# @return {Number(degrees Fahrenheit)}: Current temperature in Cincinnati
+################################
+
+ORF_IFO=$IFS
+
+function set_icon() {
+  # FIXME doesn't work
+  if [[ $1 =~ 'thunder' ]]; then
+    echo -n ""
+  elif [[ $1 =~ 'rain' ]]; then
+    echo -n ""
+  elif [[ $1 =~ 'snow' ]]; then
+    echo -n ""
+  elif [[ $1 =~ 'cloud' ]]; then
+    echo -n ""
+  else
+    echo -n ""
+  fi
+}
+
+function get_weather() {
+  URL='{{ .accuweather_url }}'
+  SITE="$(curl -s "$URL")"
+
+  weather="$(echo "$SITE" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $13 }'| head -1)"
+  temp="$(echo "$SITE" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $12 }'| head -1)"
+
+  if [[ $weather =~ 'thunder' ]]; then
+    icon=""
+    color="#6b10ab"
+  elif [[ $weather =~ 'rain' ]]; then
+    icon=""
+    color="#00009f"
+  elif [[ $weather =~ 'snow' ]]; then
+    icon=""
+    color="#00009f"
+  elif [[ $weather =~ 'cloud' ]]; then
+    icon=""
+    color="#7e7e7e"
+  else
+    sunrise=`solunar  -c {{ .city | lower }} | grep Sunrise | awk '{print $2}' | xargs -i date -d {} +%s`
+    sunset=`solunar  -c {{ .city | lower }} | grep Sunset | awk '{print $2}' | xargs -i date -d {} +%s`
+    if [[ `date` > $sunset && `date` < $sunrise ]]; then
+      icon=""
+    else
+      icon=""
+    fi
+    color="#ffff00"
+  fi
+
+  full="<span foreground=\"$color\">$icon $temp°</span>"
+  short="<span foreground=\"$color\">$temp°</span>"
+
+  echo $full
+  echo $short
+}
+
+ get_weather
+
+function notify_weather(){
+  html=$(curl -s "https://www.timeanddate.com/weather/{{ .country | lower }}/{{ .city | lower }}")
+  IFS=$'\r\n' GLOBIGNORE='*' command eval  'date=($(echo $html | pup --color "#wt-14d td .wt-dn text{}"))'
+  IFS=$'\r\n' GLOBIGNORE='*' command eval  'status=($(echo $html | pup --color "#wt-14d td .mtt attr{title}"))'
+  IFS=$'\r\n' GLOBIGNORE='*' command eval  'temp=($(echo $html | pup --color "#wt-14d td p text{}"))'
+
+  # FIXME show icons in notification
+  for (( i = 0; i <= 14; i++ )); do
+    text="$text\n${date[$i]}/$(date +%m) $(set_icon {status[$i]}) $(echo -n ${temp[$i]} | sed 's/ //g')"
+  done
+
+  notify-send "$text"
+}
+
+case $BLOCK_BUTTON in
+  1 ) notify_weather;;
+esac

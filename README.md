@@ -7,6 +7,7 @@
   latitude =
   city =
   country =
+  accuweather_url = "https://www.accuweather.com/en/us/new-york/10021/weather-forecast/349727"
   timezone = "America/New_York"
   fullname =
   email =
@@ -25,4 +26,8 @@
   hostname =
   password =
   readonly_password =
+[data.qbittorrent]
+  hostname =
+  username =
+  password =
 ```

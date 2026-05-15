@@ -1,0 +1,15 @@
+MODULES= date kbd_layouts_i3ipc {{- if eq .machine "home" }} exchange music {{- end }}
+
+all:
+	@rustup default stable
+	$(foreach module,$(MODULES),cargo build --release --package=$(module);)
+
+install:
+	@mkdir -p bar
+	$(foreach module,$(MODULES),mv target/release/$(module) bar;)
+
+uninstall:
+	@rm -rf bar
+
+clean:
+	@rm -rf target

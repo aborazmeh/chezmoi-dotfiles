@@ -1,0 +1,49 @@
+use serde_json;
+use std::fs;
+use swayipc::{Connection, Event, EventType, Fallible};
+
+fn main() -> Fallible<()> {
+  let json: serde_json::Value = serde_json::from_str(
+    &fs::read_to_string("{{ .chezmoi.homeDir }}/scripts/languages.json").expect("Unable to read file"),
+  )
+  .expect("JSON was not well-formatted");
+
+  for input_dev in Connection::new().unwrap().get_inputs().unwrap().iter() {
+    if input_dev.input_type == "keyboard" {
+      print_output(input_dev.xkb_active_layout_name.to_owned().unwrap(), &json);
+      break;
+    }
+  }
+  for event in Connection::new()?.subscribe([EventType::Input])? {
+    match event? {
+      Event::Input(event) => print_output(event.input.xkb_active_layout_name.unwrap(), &json),
+      _ => unreachable!(),
+    }
+  }
+  Ok(())
+}
+
+fn print_output(layout: String, json: &serde_json::Value) {
+  let emoji = match json.get(&layout[..2].to_lowercase()) {
+      Some(x) => match x.get("emoji") {
+        Some(x) => x,
+        None => {
+          println!("{}", layout);
+          return;
+        }
+      },
+      None => {
+        println!("{}", layout);
+        return;
+      }
+    }
+    .as_str().expect(&layout);
+
+  println!(
+    "{}",
+    serde_json::json! ({
+      "text": emoji,
+      "tooltip": layout,
+    })
+  );
+}

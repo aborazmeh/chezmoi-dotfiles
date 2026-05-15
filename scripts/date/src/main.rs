@@ -1,0 +1,133 @@
+use args::{argparse, Frontend};
+use serde_json;
+use date::Date;
+
+fn main() {
+  let args = argparse();
+  let date = Date::new();
+
+  if args.calendar == true {
+    date.next_calendar();
+  }
+
+  match args.frontend {
+    Frontend::I3blocks =>
+    // echo "<b>$holiday_icon $(date +%H:%M)</b> $(date +%d/%m/%Y) == $(hijri_date) ( $("$HOME"/scripts/moon_phases))"
+    {
+      println!(
+        "<b>{}</b> {} == {} هـ",
+        date.time(),
+        date.g_date_short(),
+        date.h_date_short(),
+      );
+      println!("{} {}", date.time(), date.g_date_shorty());
+      println!("#FF5500")
+    }
+
+    Frontend::Waybar => {
+      println!(
+        "{}",
+        serde_json::json! ({
+          //   "$(holiday) $(date +%H:%M)"
+          "text": date.time(),
+          //   "$(long_date)$(holiday text)"
+          "tooltip": date.long_date()
+        })
+      );
+    }
+  }
+}
+
+// #!/bin/bash
+
+// FILENAME="$(dirname "$0")/.calendar"
+// if [ ! -f "${FILENAME}" ]; then
+//   echo gregorian > "${FILENAME}"
+// fi
+
+// CALENDAR=$(<"${FILENAME}")
+
+// function next_calendar() {
+//   case "${CALENDAR}"
+//     in
+//     gregorian) CAL=hijri;;
+//     hijri) CAL=jalali;;
+//     *) CAL=gregorian;;
+//   esac
+
+//   echo $CAL > "${FILENAME}"
+//   CALENDAR=$(<"${FILENAME}")
+//   echo "${CALENDAR}"
+// }
+
+// function arabize() {
+//   read -r text
+//   text=$(echo "${text}" | sed -E 's/^([0-9]{1,2})\/ ([0-9]{1,2})\/(1[0-9]{3}) A.H - (.+?) - (.+)/\3\/\2\/\1هـ - \4، \1 \5 \3هـ/')
+//   declare -A strings=(
+//     [0]=٠ [1]=١ [2]=٢ [3]=٣ [4]=٤ [5]=٥ [6]=٦ [7]=٧ [8]=٨ [9]=٩   # Digits
+//     [Muharram]=المحرم [Safar]=صفر [Rabi I]="ربيع الأول" [Rabi II]="ربيع الثاني" [Jumada I]="جمادى الأولى" [Jumada II]="جمادى الآخرة" [Rajab]=رجب [Shaaban]=شعبان [Ramadan]=رمضان [Shawwal]=شوال [Thul-Qiaadah]="ذو القعدة" [Thul-Hijja]="ذو الحجة"   # Months
+//     [Sabt]=السبت [Ahad]=الأحد [Ithnain]=الإثنين [Thulatha]=الثلاثاء [Arbiaa]=الأربعاء [Khamees]=الخميس [Jumaa]=الجمعة   # Days
+//   )
+//   for i in "${!strings[@]}"; do
+//     text="${text//$i/${strings[$i]}}"
+//   done
+//   echo "${text}"
+// }
+
+// function hijri_date () {
+//   idate --simple | perl -pe 's/\(.+?\)//g' | arabize
+// }
+
+// function long_date() {
+//   case "${CALENDAR}"
+//     in
+//     hijri) hijri_date;;
+//     jalali) jdate +%E;;
+//     *) date +%A,\ %d\ %B\ %Y;;
+//   esac
+// }
+
+// while getopts f:c option
+// do
+//   case "${option}"
+//     in
+//     f) FRONTEND=${OPTARG};;
+//     c) next_calendar;;
+//     *) ;;
+//   esac
+// done
+
+// function holiday() {
+//   if [[ $CALENDAR == gregorian ]]; then
+//     DAY=$(date +%d)
+//     MONTH=$(date +%m)
+//     holiday=$(jq ".holidays.TR.days[\"${MONTH}-${DAY}\"]" < "$(dirname "$0")"/../node_modules/date-holidays/data/holidays.json)
+//     # Gregorian Turkish holidays
+//     if [[ $holiday != null ]]; then
+//       holiday_icon=""
+//       holiday_text=$(echo "$holiday" | jq -r .name.tr | dos2unix)
+//     fi
+
+//   elif [[ $CALENDAR == gregorian ]]; then
+//     holiday=$(jq -r ".[\"${MONTH}-${DAY}\"]|map(.)|join(\"\\\n\")" 2>/dev/null < hijri_events.json)
+//     regex="^([0-9]+)/\s?([0-9]+)/"
+//     if [[ "$(idate --simple)" =~ $regex ]]; then
+//       DAY=${BASH_REMATCH[1]}
+//       MONTH=${BASH_REMATCH[2]}
+//     fi
+//     if [[ $holiday != null ]]; then
+//       holiday_icon=""
+//       [[ $CALENDAR == hijri ]] && holiday_text=$holiday
+//     fi
+//   fi
+
+//   if [[ $1 == text ]]; then
+//     [[ -n $holiday_text ]] && echo -n "\n${holiday_text}"
+//   else
+//     echo -n "${holiday_icon}"
+//   fi
+// }
+
+// case $BLOCK_BUTTON in
+//   1 ) notify-send "$holiday_text" ;;
+// esac

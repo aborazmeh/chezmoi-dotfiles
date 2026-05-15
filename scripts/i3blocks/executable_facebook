@@ -1,0 +1,11 @@
+#!/bin/bash
+
+facebook_count=`sqlite3 ~/.newsboat/cache.db "SELECT COUNT(*) FROM rss_item WHERE unread = 1 AND feedurl LIKE '%facebook.com%' "`
+
+if [[ $facebook_count -gt 0 ]]; then
+  echo " ($facebook_count)"
+  echo "#3b5998"
+  case $BLOCK_BUTTON in
+    1 ) notify-send "`sqlite3 ~/.newsboat/cache.db "SELECT title FROM rss_item WHERE feedurl LIKE 'https://www.facebook.com%' AND unread = 1 ORDER BY pubDate DESC LIMIT 10"`" ;;
+  esac
+fi

@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+# https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)
+
+HOST={{ .qbittorrent.hostname }}
+USER={{ .qbittorrent.username }}
+PASS={{ .qbittorrent.password }}
+COOKIE_FILE=$(mktemp)
+
+curl -s -c "$COOKIE_FILE" \
+  -d "username=$USER&password=$PASS" \
+  "$HOST/api/v2/auth/login" 2>&1 >/dev/null
+
+while getopts f:c:j option; do
+  case "${option}" in
+  f) FRONTEND=${OPTARG} ;;
+  j) JSON=${option} ;;
+  c) COMMAND=${OPTARG} ;;
+  *) ;;
+  esac
+done
+
+html_escape() {
+  echo "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
+}
+
+function toggle_alt_speed_limits() {
+  curl --request POST -s -b $COOKIE_FILE ${HOST}/api/v2/transfer/toggleSpeedLimitsMode
+}
+
+function bytes_to_human_readable() {
+  # https://gist.github.com/agunnerson-ibm/efca449565a3e7356906
+  read -r bytes
+  precision=2
+  local abbrevs=(
+    $((1 << 60)):ZiB
+    $((1 << 50)):EiB
+    $((1 << 40)):TiB
+    $((1 << 30)):GiB
+    $((1 << 20)):MiB
+    $((1 << 10)):KiB
+    $((1)):bytes
+  )
+
+  if [[ ${bytes} -lt 100000 ]]; then
+    return
+  else
+    for item in "${abbrevs[@]}"; do
+      local factor="${item%:*}"
+      local abbrev="${item#*:}"
+      if [[ "${bytes}" -ge "${factor}" ]]; then
+        local size
+        size="$(bc -l <<<"${bytes} / ${factor}")"
+        printf " %.*f %s/s" "${precision}" "${size}" "${abbrev}"
+        break
+      fi
+    done
+  fi
+}
+
+# connection_status=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/sync/maindata" | jq -j .server_state.connection_status)      # [connected, filrewalled, disconnected]
+download_speed=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/transfer/info" | jq -j .dl_info_speed | bytes_to_human_readable)
+use_alt_speed_limits=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/sync/maindata" | jq -j .server_state.use_alt_speed_limits) # http://${HOST}/api/v2/transfer/speedLimitsMode
+# seeding_torrents=$() # pausedUP stalledUP forcedUP
+# active_torrents=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/torrents/info?filter=active" | jq length)
+downloading_torrents=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/torrents/info?filter=downloading" | jq -j 'sort_by(.progress) | reverse | .[] | (.state | if .=="pausedDL" then "" elif index("down") or index("forcedDL") then "" elif index("meta") or index("Meta") then "" end), "  %", (.progress * 100 | tostring | if index(".") then .[:index(".") + 3] else . end), " ", .name, "\n"' | head -n 10 | cut -c -30 | sed -z 's/\n$//g' | sed -z 's/\n/\\n/g')
+total_torrents=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/torrents/info" | jq length)
+compelted_torrents=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/torrents/info?filter=completed" | jq length)
+total_progress=$(curl -s -b $COOKIE_FILE "${HOST}/api/v2/torrents/info" | jq 'map(.progress) | add / length | .* 10000 | round | ./ 100')
+
+if [[ $use_alt_speed_limits == true ]]; then
+  color="f00"
+  class='alt-speed'
+else
+  color="fff"
+  class=''
+fi
+
+if [[ $total_torrents -gt 0 ]]; then
+  text="${compelted_torrents}/${total_torrents} (%$total_progress) ${download_speed}"
+else
+  text=""
+fi
+
+if [[ $FRONTEND == "dzen" ]]; then
+  text="^fg(red)${text}^fg()"
+elif [[ $FRONTEND == "i3blocks" ]]; then
+  text="<span foreground='#$color'>${text}</span>"
+elif [[ $FRONTEND == "polybar" ]]; then
+  text="%{F#$color}${text}%{F-}"
+fi
+
+if [[ -z $JSON ]]; then
+  echo -n "$text"
+else
+  echo \{\"text\" : \""$text"\", \"tooltip\" : \""$(html_escape "$downloading_torrents")"\" , \"class\" : \""$class"\"\}
+fi
+
+case $BLOCK_BUTTON in
+1) toggle_alt_speed_limits ;;
+esac
+
+case $COMMAND in
+"alt-speed-limits") toggle_alt_speed_limits ;;
+esac
+
+rm "$COOKIE_FILE"
