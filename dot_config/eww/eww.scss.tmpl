@@ -1,0 +1,312 @@
+{{ if stat (joinPath .chezmoi.homeDir ".cache/wal/colors.scss") }}
+@import '{{ .chezmoi.homeDir }}/.cache/wal/colors.scss';
+{{ end }}
+
+$bar-background: rgba(#3a3a3a, .5);
+$urgent: #eb4d4b; // #f53c3c
+$pulseaudio: #be9d17;
+$pulseaudio-muted-bg: #66797A;
+$pulseaudio-muted-fg: #214937;
+$disk: #66A9A9;
+$backlight: #5a7d7d;
+$fern: #2b9457;
+$network: #1E567B;
+$exchange: #718E55;
+$weather: #555;
+$alt-state: #c1a100;
+$torn-chain: #35b9b9;
+
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+  font-family: Roboto, 'Font Awesome 5', 'SFNS Display', Helvetica, Arial, sans-serif;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+}
+
+// Global Styles
+.top-window,
+.bottom-window {
+  background-color: $bar-background;
+  color: #b0b4bc;
+}
+
+tooltip,
+menu {
+  padding: 5px;
+  background: rgba(black, .7);
+  border-radius: 7px;
+}
+
+.sway-mode {
+  margin: 0 4px;
+  color: $color0;
+  background-color: $color7;
+  border-bottom: 3px solid $color8;
+}
+
+.workspaces {
+  button {
+    color: $color2;
+    padding: 0 10px;
+    transition: color .2s;
+    border-bottom: 3px solid $color2;
+
+    &.focused {
+      color: rgba($color1, .8);
+      border-color: rgba($color1, .8);
+      background-color: darken($bar-background, 5);
+    }
+
+    &.urgent {
+      color: #111;
+      background-color: $urgent;
+      border-bottom-color: darken($urgent, 15);
+    }
+
+    &:hover {
+      color: $color1;
+      border-color: $color1;
+    }
+  }
+}
+
+@mixin metric-mixin($bg-color, $color, $next-element-bg: false, $hover-brightness: 9, $hover-effect: true) {
+  color: $color;
+  background-color: $bg-color;
+  border-bottom-color: darken($bg-color, 15);
+
+  @if $hover-effect {
+    &:hover {
+      background-color: lighten($bg-color, $hover-brightness);
+
+      &+.right-triangle {
+        color: lighten($bg-color, $hover-brightness);
+      }
+    }
+
+  }
+
+  @if $next-element-bg {
+    &+.right-triangle {
+      color: $bg-color;
+      background-color: $next-element-bg;
+      border-bottom: 4px solid darken($next-element-bg, 15);
+    }
+  }
+}
+
+%top-right {
+  padding: 0 10px;
+  transition: border-bottom .2s;
+
+  &:hover {
+    border-bottom: 4px solid #ccc;
+  }
+}
+
+%blinking {
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.mertic-eventbox {
+  transition: background-color .2s;
+  border-bottom: 4px solid transparent;
+
+  &.backlight {
+    @include metric-mixin($backlight, #ccc, #ccc);
+  }
+
+  &.battery {
+    @include metric-mixin(#ccc, black, $pulseaudio, $hover-effect: false);
+
+    &.Charging {
+      @include metric-mixin($fern, black, $pulseaudio, $hover-effect: false);
+    }
+
+    &.warning:not(.Charging) {
+      @include metric-mixin(#c1a100, black, $pulseaudio, $hover-effect: false);
+    }
+
+    &.critical:not(.Charging) {
+      @include metric-mixin($urgent, #eee, $pulseaudio, $hover-effect: false);
+      @extend %blinking;
+    }
+  }
+
+  &.volume {
+    @include metric-mixin($pulseaudio, #111, $fern, $hover-effect: true);
+
+    &.muted {
+      @include metric-mixin($pulseaudio-muted-bg, $pulseaudio-muted-fg, $fern);
+    }
+  }
+
+  &.cpu {
+    @include metric-mixin($fern, #ccc, #A66724);
+  }
+
+  &.temperature {
+    @include metric-mixin(#A66724, #ccc, #71437E);
+
+    &.critical {
+      @include metric-mixin($urgent, #ccc);
+    }
+  }
+
+  &.ram {
+    @include metric-mixin(#71437E, #ccc, $disk);
+  }
+
+  &.disk {
+    @include metric-mixin($disk, #111, $network);
+  }
+
+  &.network {
+    @include metric-mixin($network, #ccc, $exchange);
+
+    &.disconnected {
+      @include metric-mixin($urgent, #111, $exchange);
+    }
+  }
+
+  &.exchange {
+    @include metric-mixin($exchange, #111, $weather, $hover-effect: false);
+  }
+
+  &.weather {
+    @include metric-mixin($weather, #ccc, $bar-background, $hover-effect: false);
+  }
+}
+
+.metric {
+  margin: 0 5px;
+  padding: 0 5px;
+  font-size: 12px;
+  font-weight: bold;
+
+  &.backlight {
+    margin-right: 5px;
+  }
+
+  scale trough {
+    all: unset;
+    background-color: #4e4e4e;
+    border-radius: 50px;
+    min-height: 3px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+
+    highlight {
+      all: unset;
+      background-color: #D35D6E;
+      color: #000000;
+      border-radius: 10px;
+    }
+  }
+}
+
+.praytimes.close {
+  background: $urgent;
+  color: #ccc;
+  @extend %blinking;
+}
+
+.keyboard {
+  margin-right: .5rem;
+}
+
+.top-right {
+  font-size: 16px;
+}
+
+.swaync {
+  @extend %top-right;
+
+  &.notification {
+    color: $urgent;
+  }
+}
+
+@mixin color-and-bottom-border($color) {
+  & {
+    color: $color;
+  }
+
+  &:hover {
+    border-bottom-color: $color
+  }
+}
+
+.torn {
+  @extend %top-right;
+
+  &.traveling {
+    @include color-and-bottom-border($alt-state)
+  }
+
+  &.returning {
+    @include color-and-bottom-border($fern)
+  }
+
+  &.error,
+  &.hospital {
+    @include color-and-bottom-border($urgent)
+  }
+
+  &.jail {
+    @include color-and-bottom-border(#817e7c)
+  }
+
+  &.chain {
+    background-color: $torn-chain;
+
+    &:hover {
+      border-bottom-color: darken($torn-chain, 15);
+    }
+  }
+
+  &.chain-critical {
+    background: $urgent;
+    color: $torn-chain;
+    @extend %blinking;
+  }
+
+  // TODO
+  // &.abroad {}
+  // &.racing {}
+}
+
+.qbittorrent {
+  @extend %top-right;
+  padding: 0;
+
+  &.alt-speed {
+    color: $alt-state;
+    border-bottom-color: $alt-state;
+  }
+}
+
+.music {
+  @extend %top-right;
+
+  &.paused {
+    color: $alt-state;
+
+    &:hover {
+      border-bottom-color: $alt-state;
+    }
+  }
+}
+
+@keyframes blink {
+  to {
+    background-color: #ccc;
+    color: black;
+  }
+}

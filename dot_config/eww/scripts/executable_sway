@@ -1,0 +1,46 @@
+#!/bin/bash
+
+output_workspace() {
+  local json_icons='{"1":"", "2": "", "3": "󰈹", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "10": ""}'
+  local buttons=$(swaymsg -t get_workspaces | jq --argjson icons "$json_icons" -j '.[] | "(button ", if .focused then ":class \"focused\"" elif .urgent then ":class \"urgent\"" else empty end, " :onclick \"swaymsg workspace ", .name, "\" \"", if $icons[.name] then $icons[.name] else .name end, "\")"')
+  echo -e "(box :class 'workspaces' :orientation 'h' :space-evenly true :halign 'start' :spacing 0 $buttons)"
+}
+
+subscribe_workspace() {
+  output_workspace
+  swaymsg -t subscribe '["workspace"]' | while read -r line; do
+    if [[ "$line" =~ "change" ]]; then
+      output_workspace
+      subscribe_workspace
+    fi
+  done
+}
+
+output_window_title() {
+  swaymsg -t get_tree | jq -r '.. | select(.type?) | select(.focused==true).name'
+}
+
+subscribe_window_title() {
+  output_window_title
+  swaymsg -t subscribe '["window"]'  | while read -r line; do
+    if [[ "$line" =~ "change" ]]; then
+      output_window_title
+      subscribe_window_title
+    fi
+  done
+}
+
+subscribe_mode() {
+  swaymsg -t subscribe '["mode"]' | jq -rc '.change' | while read -r mode; do
+    echo $mode
+    subscribe_mode
+  done
+}
+
+if [[ $1 == workspaces ]]; then
+  subscribe_workspace
+elif [[ $1 == window_title ]]; then
+  subscribe_window_title
+elif [[ $1 == mode ]]; then
+  subscribe_mode
+fi

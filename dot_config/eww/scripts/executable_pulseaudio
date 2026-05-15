@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+output() {
+  echo "{\"volume\":$(pamixer --get-volume | sed 's/%//'), \"muted\": $(pamixer --get-mute)}"
+}
+
+output
+pactl subscribe | grep --line-buffered "sink" | while read -r event; do output; done

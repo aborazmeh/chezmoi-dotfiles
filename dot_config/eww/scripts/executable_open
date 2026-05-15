@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+args=("$@")
+case $1 in
+torn)
+  $HOME/scripts/torn --open;;
+terminal)
+  alacritty --command ${args[@]:1};;
+*)
+  $1;;
+esac

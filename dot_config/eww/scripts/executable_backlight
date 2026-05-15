@@ -1,0 +1,22 @@
+#!/bin/bash
+
+BACKLIGHT_DIR="/sys/class/backlight"
+BACKLIGHT_DEV=$(ls "$BACKLIGHT_DIR")
+BRIGHTNESS_FILE="$BACKLIGHT_DIR/$BACKLIGHT_DEV/brightness"
+MAX_BRIGHTNESS_FILE="$BACKLIGHT_DIR/$BACKLIGHT_DEV/max_brightness"
+
+calculate_percentage() {
+  current_brightness=$(cat "$BRIGHTNESS_FILE")
+  max_brightness=$(cat "$MAX_BRIGHTNESS_FILE")
+  percentage=$(((current_brightness * 100) / max_brightness))
+  echo "$percentage"
+}
+
+watch_brightness() {
+  while inotifywait -qq -e modify "$BRIGHTNESS_FILE"; do
+    calculate_percentage
+  done
+}
+
+calculate_percentage
+watch_brightness

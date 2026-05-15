@@ -1,0 +1,333 @@
+(defwidget right-triangle [?class] (box :class `right-triangle ${class}` ""))
+(defwidget left-triangle [?class] (box :class `left-triangle ${class}` ""))
+
+(defwidget metric [label ?class ?value ?tooltip ?onchange ?onclick ?onrightclick ?onmiddleclick ?onscroll]
+  (eventbox
+    :onclick onclick
+    :onrightclick onrightclick
+    :onmiddleclick onmiddleclick
+    :onscroll onscroll
+    :class "mertic-eventbox ${class}"
+    :tooltip tooltip
+    (box
+      :class "metric ${class}"
+      :orientation "h"
+      :space-evenly false
+    (box :class "label" label)
+    ; (scale :min 0
+    ;        :max 101
+    ;        :active {onchange != ""}
+    ;        :value value
+    ;        :onchange onchange)
+  )))
+
+;; top-bar
+
+;; top-left: workspaces
+(deflisten workspaces :initial ""
+  `scripts/sway workspaces`)
+
+(deflisten sway_mode :initial "default"
+  `scripts/sway mode`)
+
+(defwidget top-left []
+  (eventbox
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    (box
+      :space-evenly false
+      (box
+        :class "sway-mode"
+        `${sway_mode == "default" ? "" : sway_mode}`)
+      (literal :content {workspaces}))))
+
+;; top-center
+(deflisten window_title :initial ""
+  `scripts/sway window_title`)
+
+(defwidget top-center []
+  (eventbox
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    {window_title}))
+
+;; TODO top-right
+(deflisten swaync :initial ""
+  `swaync-client -swb`)
+
+(defwidget swaync []
+  (eventbox
+    :class `swaync ${swaync.class} ${swaync.alt}`
+    :tooltip {swaync.tooltip}
+    :onclick "swaync-client -t -sw"
+    :onrightclick "swaync-client -d -sw"
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    (box :class "swaync" `${ swaync.class == "dnd-none" || swaync.class == "dnd-notification" ? "󰂛" : "󰂚" } ${ swaync.alt == "notification" ? swaync.text : "" }`)))
+
+(defpoll torn
+  :interval "1s"
+  :initial ""
+  `$HOME/scripts/torn --json --emoji`)
+
+(defwidget torn []
+  (eventbox
+    :class `torn ${torn.class}`
+    :onclick 'scripts/open torn'
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    (box
+      :class "torn"
+      :tooltip {torn.tooltip}
+      {torn.text})))
+
+(defpoll qbittorrent
+  :interval "1s"
+  `$HOME/scripts/i3blocks/qbittorrent -j`)
+
+(defwidget qbittorrent [] 
+  (eventbox
+    :class `qbittorrent ${qbittorrent.class}`
+    :onclick `xdg-open http://localhost:7012/`
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    (box
+      :class "qbittorrent"
+      :tooltip {qbittorrent.tooltip}
+      :onrightclick `$HOME/scripts/i3blocks/qbittorrents -c alt-speed-limits`
+      `${qbittorrent.text == "" ? "" : "   ${qbittorrent.text}"}`)))
+
+(defpoll music
+  :interval "1s"
+  `$HOME/scripts/bar/music -f sway`)
+
+(defwidget music [] 
+  (eventbox
+    :class `music ${music.class}`
+    :onclick `$HOME/scripts/bar/music -f sway toggle`
+    :onrightclick `$HOME/scripts/bar/music -f sway stop`
+    :onmiddleclick "$HOME/scripts/bar/music -f sway bookmark"
+    :onscroll "[[ {} == up ]] && $HOME/scripts/bar/music -f sway seek+ || $HOME/scripts/bar/music -f sway seek-"
+    (box
+      :class "music"
+      :tooltip {music.tooltip}    ;; FIXME HTML
+      {music.text})))
+
+(defwidget top-right []
+  (eventbox
+    :onscroll "[[ {} == down ]] && swaymsg workspace next || swaymsg workspace prev"
+    (box
+      :class "top-right"
+      :spacing 0
+      :space-evenly false
+      :halign "end"
+      (music)
+      (qbittorrent)
+      (torn)
+      (swaync))))
+
+;; top-bar definition
+(defwidget top-bar []
+  (centerbox :orientation "h"
+    (top-left)
+    (top-center)
+    (top-right)))
+
+;; top-window definition
+(defwindow top-window
+  :monitor 0 ;; Optional for X11
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "10px"
+                      :anchor "top center")
+  :reserve (struts :side "top" :distance "4%")
+  (top-bar))
+
+;; bottom-bar
+
+;; bottom-left:
+(deflisten backlight :initial ""
+  `scripts/backlight`)
+
+(defwidget backlight []
+  (metric
+      :class "backlight"
+      :label `${backlight < 50 ? "" : "" }`
+      :onclick "killall wlsunset ; swaymsg exec 'wlsunset -T 3500 -t 1'"
+      :onrightclick "killall wlsunset"
+      :onscroll "[[ {} == up ]] && light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob || light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"))
+
+(defwidget battery []
+  (metric
+      :class `battery ${EWW_BATTERY.BAT1.status} ${EWW_BATTERY.BAT1.capacity <= 15 ? "critical" : EWW_BATTERY.BAT1.capacity <= 30 ? "warning" : ""}`
+      :label `${ EWW_BATTERY.BAT1.status == "Charging" ? (EWW_BATTERY.BAT1.capacity <= 15 ? "󰢜" : EWW_BATTERY.BAT1.capacity <= 35 ? "󰂇" : EWW_BATTERY.BAT1.capacity <= 50 ? "󰢝" : EWW_BATTERY.BAT1.capacity <= 85 ? "󰢞" : "󰂄") : (EWW_BATTERY.BAT1.capacity <= 15 ? "" : EWW_BATTERY.BAT1.capacity <= 35 ? "" : EWW_BATTERY.BAT1.capacity <= 50 ? "" : EWW_BATTERY.BAT1.capacity <= 85 ? "" : "") }    %${EWW_BATTERY.BAT1.capacity}`))
+
+(deflisten volume :initial ""
+  `scripts/pulseaudio`)
+
+(defwidget volume []
+  (metric
+      :class `volume ${volume.muted ? 'muted' : ''}`
+      ; :label `${volume == 0 ? "🔇" : volume < 25 ? "🔈" : volume < 75 ? "🔉" : "🔊"} ${volume > 0 ? "%${volume}" : ''}`
+      :label `${volume.muted == 'muted' ? "" : volume.volume < 35 ? "" : ""}    ${volume.volume > 0 ? "%${volume.volume}" : ''}`
+      :onchange "pamixer --set-volume {}"
+      :onclick "$HOME/scripts/bar/music -f sway mute"
+      :onrightclick "scripts/open pavucontrol"
+      :onscroll "[[ {} == up ]] && $HOME/scripts/bar/music -f sway volume+ || $HOME/scripts/bar/music -f sway volume-"))
+
+(defwidget cpu []
+  (metric
+    :class "cpu"
+    :onclick "scripts/open cpupower-gui"
+    :label `  %${round(((EWW_CPU.avg)), 0)}`))
+
+(defwidget temperature []
+  (metric
+    :class `temperature ${EWW_TEMPS.ACPITZ_TEMP1 > 80 ? "critical" : ""}`
+    :onclick "scripts/open terminal btm"
+    :label `  ${EWW_TEMPS.ACPITZ_TEMP1}°C`))
+
+(defwidget ram []
+  (metric
+    :class "ram"
+    :onclick "scripts/open terminal btm"
+    :label {EWW_RAM}    ;; FIXME
+    :label `   %${round(EWW_RAM.used_mem_perc, 0)}`
+    :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}))
+
+(defwidget disk []
+  (metric
+      :class "disk"
+      ; TODO "tooltip-format": "{free} remaining of {total} on `/` [{percentage_used}%]",
+      :label "🖴 %${round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}"
+      :onclick "scripts/open terminal nnn"
+      :onmiddleclick "scripts/open terminal ranger"
+      :onrightclick "scripts/open terminal ncdu ~"
+      :value {round(EWW_DISK["/"].used_perc, 0)}))
+
+(defwidget network []
+  (metric
+    ; TODO "format-ethernet": "   {bandwidthDownOctets}  {bandwidthUpOctets}",
+    ; TODO "format-disconnected": "",
+    ; TODO "tooltip-format": "{ifname}",
+    ; TODO "tooltip-format-wifi": "{ipaddr}\n{essid} ({signalStrength}%) ",
+    ; TODO "tooltip-format-ethernet": "{ifname} ",
+    ; TODO "tooltip-format-disconnected": "Disconnected",
+    :class "network"      ; TODO disconnected
+    :onclick "scripts/open terminal nmtui"
+    :label `      ${EWW_NET.wlp8s0.NET_DOWN}    ${EWW_NET.wlp8s0.NET_UP}`
+  ))
+
+(defpoll exchange
+  :interval "5s"
+  :initial ""
+  `$HOME/scripts/bar/exchange USDTRY EURTRY USDSYP TRYSYP --json 2> /dev/null`)
+
+(defwidget exchange []
+  (metric
+    :class "exchange"
+    :tooltip {exchange.tooltip}
+    :label `     ${exchange.text}`))
+
+(defpoll weather
+  :interval "10m"
+  :initial ""
+  `$HOME/scripts/weather waybar 2> /dev/null`)
+
+(defwidget weather []
+  (metric
+    :class "weather"
+    :tooltip {weather.tooltip}
+    :label {weather.text}))
+
+(defwidget bottom-left []
+  (box
+    :spacing 0
+    :class "bottom-left"
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    (backlight)
+    (right-triangle)
+    (battery)
+    (right-triangle)
+    (volume)
+    (right-triangle)
+    (cpu)
+    (right-triangle)
+    (temperature)
+    (right-triangle)
+    (ram)
+    (right-triangle)
+    (disk)
+    (right-triangle)
+    (network)
+    (right-triangle)
+    (exchange)
+    (right-triangle)
+    (weather)
+    (right-triangle)))
+
+;; bottom-center: time
+
+(defpoll time :interval "1s"
+  "$HOME/scripts/bar/date -f waybar")
+
+(defpoll prayer-times :interval "10s"
+  "$HOME/scripts/prayertimes -jf waybar 2> /dev/null")
+
+(defwidget bottom-center []
+  (box
+    :spacing 10
+    :class "bottom-center"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (button
+      :tooltip {time.tooltip}
+      :onclick `$HOME/scripts/bar/date -f waybar -c`
+      `   ${time.text}`)
+    (box
+      :class `praytimes ${prayer-times.class}`
+      :tooltip {prayer-times.tooltip}
+      `🕌 ${prayer-times.text}`)))
+
+;; bottom-right
+(deflisten keyboard :initial ""
+  `$HOME/scripts/bar/kbd_layouts_i3ipc`)
+
+(defwidget keyboard []
+  (eventbox
+      :onclick `swaymsg input '*' xkb_switch_layout next`
+      :onrightclick `swaymsg input '*' xkb_switch_layout prev`
+      :onscroll "[[ {} == down ]] && swaymsg input '*' xkb_switch_layout next || swaymsg input '*' xkb_switch_layout prev"
+      (box
+        :class "keyboard"
+        :tooltip {keyboard.tooltip}
+        {keyboard.text})))
+
+(defwidget bottom-right []
+  (box
+    :spacing 10
+    :class "bottom-center"
+    :orientation "h"
+    :space-evenly false
+    :halign "end"
+    (systray :pack-direction "btt")
+    (keyboard)))
+
+;; bottom-bar definition
+(defwidget bottom-bar []
+  (centerbox :orientation "h"
+    (bottom-left)
+    (bottom-center)
+    (bottom-right)))
+
+;; bottom-window definition
+(defwindow bottom-window
+  :monitor 0 ;; Optional for X11
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "10px"
+                      :anchor "bottom center")
+  :reserve (struts :side "top" :distance "4%")
+  (bottom-bar))
