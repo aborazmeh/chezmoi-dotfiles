@@ -1,0 +1,554 @@
+;; -*- mode: emacs-lisp -*-
+(defun dotspacemacs/layers ()
+  ;; <SPC f e R> (Vim style) or <M-m f e R> (Emacs style) to install them.
+  (setq-default
+    dotspacemacs-configuration-layer-path '()
+    dotspacemacs-configuration-layers
+    '(
+       (colors :variables
+         colors-colorize-identifiers 'all
+         colors-enable-nyan-cat-progress-bar t)
+       git
+       version-control
+       finance
+       (auto-completion :variables
+         auto-completion-return-key-behavior 'complete
+         auto-completion-tab-key-behavior 'cycle
+         auto-completion-complete-with-key-sequence nil
+         auto-completion-complete-with-key-sequence-delay 0.1
+         auto-completion-private-snippets-directory nil
+         auto-completion-enable-snippets-in-popup t
+         ;; to enable manual non-automatic invocation of docstring tooltips, set it to 'manual. The tooltip can be invoked manually by pressing M-h.
+         auto-completion-enable-help-tooltip t
+         auto-completion-enable-sort-by-usage t)
+       evil-cleverparens
+       (markdown :variables markdown-live-preview-engine 'vmd)
+       )
+    ;; List of additional packages that will be installed.
+    dotspacemacs-additional-packages '(yafolding
+                                        focus
+                                        writeroom-mode
+                                        format-all
+                                        ibuffer-vc
+                                        highlight-escape-sequences
+                                        )
+
+    ;; A list of packages that cannot be updated.
+    dotspacemacs-frozen-packages '()
+    ;; A list of packages that will not be installed and loaded.
+    dotspacemacs-excluded-packages '(exec-path-from-shell)
+    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+    dotspacemacs-install-packages 'used-only))
+
+(defun dotspacemacs/init ()
+  "Initialization function."
+  (setq-default
+    dotspacemacs-elpa-https t
+    dotspacemacs-elpa-timeout 5
+    dotspacemacs-check-for-update nil
+    dotspacemacs-elpa-subdirectory nil
+    ;; One of `vim', `emacs' or `hybrid'.
+    dotspacemacs-editing-style 'vim
+    dotspacemacs-verbose-loading t
+    ;; Default value is `official', `random' chooses a random text banner in
+    ;; `core/banners'  directory.
+    dotspacemacs-startup-banner 'official
+    ;; Possible values for list-type are:
+    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
+    dotspacemacs-startup-lists '((recents . 5))
+    dotspacemacs-startup-buffer-responsive t
+    dotspacemacs-scratch-mode 'emacs-lisp-mode
+    ;; <SPC> T n to cycle to the next theme in the list
+    dotspacemacs-themes '(spacemacs-dark
+                           dracula
+                           spacemacs-light)
+    dotspacemacs-colorize-cursor-according-to-state t
+    dotspacemacs-default-font '("Source Code Pro"
+                                 :size 13
+                                 :weight normal
+                                 :width normal
+                                 :powerline-scale 2.5)
+    dotspacemacs-leader-key ","
+    dotspacemacs-emacs-command-key "SPC"
+    dotspacemacs-ex-command-key ":"
+    dotspacemacs-emacs-leader-key "M-m"
+    dotspacemacs-major-mode-leader-key ","
+    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+    dotspacemacs-distinguish-gui-tab nil
+    dotspacemacs-remap-Y-to-y$ nil
+    dotspacemacs-retain-visual-state-on-shift t
+    dotspacemacs-visual-line-move-text nil
+    dotspacemacs-ex-substitute-global nil
+    dotspacemacs-default-layout-name "Default"
+    dotspacemacs-display-default-layout nil
+    dotspacemacs-auto-resume-layouts nil
+    dotspacemacs-large-file-size 1
+    ;; Possible values are `original', `cache' and `nil'.
+    dotspacemacs-auto-save-file-location 'nil
+    dotspacemacs-max-rollback-slots 5
+    dotspacemacs-helm-resize nil
+    dotspacemacs-helm-no-header nil
+    ;; Options are `bottom', `top', `left', or `right'.
+    dotspacemacs-helm-position 'bottom
+    dotspacemacs-helm-use-fuzzy 'always
+    dotspacemacs-enable-paste-transient-state nil
+    dotspacemacs-which-key-delay 0.4
+    ;; Possible values are `right', `bottom' and `right-then-bottom'
+    dotspacemacs-which-key-position 'right-then-bottom
+    dotspacemacs-loading-progress-bar t
+    dotspacemacs-fullscreen-at-startup nil
+    dotspacemacs-fullscreen-use-non-native nil
+    dotspacemacs-maximized-at-startup nil
+    dotspacemacs-active-transparency 90
+    dotspacemacs-inactive-transparency 90
+    dotspacemacs-show-transient-state-title t
+    dotspacemacs-show-transient-state-color-guide t
+    dotspacemacs-mode-line-unicode-symbols t
+    dotspacemacs-smooth-scrolling t
+    dotspacemacs-line-numbers t
+    ;; Possible values are `evil' and `origami'.
+    dotspacemacs-folding-method 'evil
+    dotspacemacs-smartparens-strict-mode nil
+    dotspacemacs-smart-closing-parenthesis nil
+    ;; Possible values are `any', or `nil'
+    dotspacemacs-highlight-delimiters 'all
+    dotspacemacs-persistent-server nil
+    dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+    dotspacemacs-default-package-repository nil
+    ;; Possible values are `all', `trailing', `changed' or `nil'.
+    dotspacemacs-whitespace-cleanup nil
+    ))
+
+(defun dotspacemacs/user-init ()
+  "Initialization function for user code."
+
+  ;; FIXME
+  (setq evil-want-C-u-scroll t)
+
+  ;; tabwidth
+  (defun setup-tab-width (n)
+    ;; Emacs lisp
+    (setq lisp-body-indent nil)
+    (setq lisp-indent-offset n)
+    ;; java/c/c++
+    (setq c-basic-offset n)
+    ;; python
+    (setq python-tab-width n)
+    ;; shell scripting
+    (setq sh-basic-offset n)
+    (setq sh-indentation n)
+    ;; web development
+    (setq coffee-tab-width n)           ; coffeescript
+    (setq javascript-indent-level n)    ; javascript-mode
+    (setq js-indent-level n)         ; js-mode
+    (setq js2-basic-offset n) ; js2-mode, in latest js2-mode, it's alias of js-indent-level
+    (setq web-mode-markup-indent-offset n) ; web-mode, html tag in html file
+    (setq web-mode-css-indent-offset n)    ; web-mode, css in html file
+    (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
+    (setq css-indent-offset n)           ; css-mode
+    )
+  (setup-tab-width 2) ; indent 2 spaces width
+
+  ;; Fira Code Font
+  ;; 
+  ;; Fira code symbols in emacs. You need to grab the Fira Code Symbol font for this to work.
+  ;; https://github.com/tonsky/FiraCode/files/412440/FiraCode-Regular-Symbol.zip 
+
+  ;; This works when using emacs --daemon + emacsclient
+  (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+  ;; This works when using emacs without server/client
+  (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+  ;; I haven't found one statement that makes both of the above situations work, so I use both for now
+
+  (defconst fira-code-font-lock-keywords-alist
+    (mapcar (lambda (regex-char-pair)
+              `(,(car regex-char-pair)
+                 (0 (prog1 ()
+                      (compose-region (match-beginning 1)
+                        (match-end 1)
+                        ;; The first argument to concat is a string containing a literal tab
+                        ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+      '(("\\(www\\)"                   #Xe100)
+         ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+         ("\\(\\*\\*\\*\\)"             #Xe102)
+         ("\\(\\*\\*/\\)"               #Xe103)
+         ("\\(\\*>\\)"                  #Xe104)
+         ("[^*]\\(\\*/\\)"              #Xe105)
+         ("\\(\\\\\\\\\\)"              #Xe106)
+         ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+         ("\\({-\\)"                    #Xe108)
+         ("\\(\\[\\]\\)"                #Xe109)
+         ("\\(::\\)"                    #Xe10a)
+         ("\\(:::\\)"                   #Xe10b)
+         ("[^=]\\(:=\\)"                #Xe10c)
+         ("\\(!!\\)"                    #Xe10d)
+         ("\\(!=\\)"                    #Xe10e)
+         ("\\(!==\\)"                   #Xe10f)
+         ("\\(-}\\)"                    #Xe110)
+         ("\\(--\\)"                    #Xe111)
+         ("\\(---\\)"                   #Xe112)
+         ("\\(-->\\)"                   #Xe113)
+         ("[^-]\\(->\\)"                #Xe114)
+         ("\\(->>\\)"                   #Xe115)
+         ("\\(-<\\)"                    #Xe116)
+         ("\\(-<<\\)"                   #Xe117)
+         ("\\(-~\\)"                    #Xe118)
+         ("\\(#{\\)"                    #Xe119)
+         ("\\(#\\[\\)"                  #Xe11a)
+         ("\\(##\\)"                    #Xe11b)
+         ("\\(###\\)"                   #Xe11c)
+         ("\\(####\\)"                  #Xe11d)
+         ("\\(#(\\)"                    #Xe11e)
+         ("\\(#\\?\\)"                  #Xe11f)
+         ("\\(#_\\)"                    #Xe120)
+         ("\\(#_(\\)"                   #Xe121)
+         ("\\(\\.-\\)"                  #Xe122)
+         ("\\(\\.=\\)"                  #Xe123)
+         ("\\(\\.\\.\\)"                #Xe124)
+         ("\\(\\.\\.<\\)"               #Xe125)
+         ("\\(\\.\\.\\.\\)"             #Xe126)
+         ("\\(\\?=\\)"                  #Xe127)
+         ("\\(\\?\\?\\)"                #Xe128)
+         ("\\(;;\\)"                    #Xe129)
+         ("\\(/\\*\\)"                  #Xe12a)
+         ("\\(/\\*\\*\\)"               #Xe12b)
+         ("\\(/=\\)"                    #Xe12c)
+         ("\\(/==\\)"                   #Xe12d)
+         ("\\(/>\\)"                    #Xe12e)
+         ("\\(//\\)"                    #Xe12f)
+         ("\\(///\\)"                   #Xe130)
+         ("\\(&&\\)"                    #Xe131)
+         ("\\(||\\)"                    #Xe132)
+         ("\\(||=\\)"                   #Xe133)
+         ("[^|]\\(|=\\)"                #Xe134)
+         ("\\(|>\\)"                    #Xe135)
+         ("\\(\\^=\\)"                  #Xe136)
+         ("\\(\\$>\\)"                  #Xe137)
+         ("\\(\\+\\+\\)"                #Xe138)
+         ("\\(\\+\\+\\+\\)"             #Xe139)
+         ("\\(\\+>\\)"                  #Xe13a)
+         ("\\(=:=\\)"                   #Xe13b)
+         ("[^!/]\\(==\\)[^>]"           #Xe13c)
+         ("\\(===\\)"                   #Xe13d)
+         ("\\(==>\\)"                   #Xe13e)
+         ("[^=]\\(=>\\)"                #Xe13f)
+         ("\\(=>>\\)"                   #Xe140)
+         ("\\(<=\\)"                    #Xe141)
+         ("\\(=<<\\)"                   #Xe142)
+         ("\\(=/=\\)"                   #Xe143)
+         ("\\(>-\\)"                    #Xe144)
+         ("\\(>=\\)"                    #Xe145)
+         ("\\(>=>\\)"                   #Xe146)
+         ("[^-=]\\(>>\\)"               #Xe147)
+         ("\\(>>-\\)"                   #Xe148)
+         ("\\(>>=\\)"                   #Xe149)
+         ("\\(>>>\\)"                   #Xe14a)
+         ("\\(<\\*\\)"                  #Xe14b)
+         ("\\(<\\*>\\)"                 #Xe14c)
+         ("\\(<|\\)"                    #Xe14d)
+         ("\\(<|>\\)"                   #Xe14e)
+         ("\\(<\\$\\)"                  #Xe14f)
+         ("\\(<\\$>\\)"                 #Xe150)
+         ("\\(<!--\\)"                  #Xe151)
+         ("\\(<-\\)"                    #Xe152)
+         ("\\(<--\\)"                   #Xe153)
+         ("\\(<->\\)"                   #Xe154)
+         ("\\(<\\+\\)"                  #Xe155)
+         ("\\(<\\+>\\)"                 #Xe156)
+         ("\\(<=\\)"                    #Xe157)
+         ("\\(<==\\)"                   #Xe158)
+         ("\\(<=>\\)"                   #Xe159)
+         ("\\(<=<\\)"                   #Xe15a)
+         ("\\(<>\\)"                    #Xe15b)
+         ("[^-=]\\(<<\\)"               #Xe15c)
+         ("\\(<<-\\)"                   #Xe15d)
+         ("\\(<<=\\)"                   #Xe15e)
+         ("\\(<<<\\)"                   #Xe15f)
+         ("\\(<~\\)"                    #Xe160)
+         ("\\(<~~\\)"                   #Xe161)
+    
+         ("\\(</>\\)"                   #Xe163)
+         ("\\(~@\\)"                    #Xe164)
+         ("\\(~-\\)"                    #Xe165)
+         ("\\(~=\\)"                    #Xe166)
+         ("\\(~>\\)"                    #Xe167)
+         ("[^<]\\(~~\\)"                #Xe168)
+         ("\\(~~>\\)"                   #Xe169)
+         ("\\(%%\\)"                    #Xe16a)
+         ;;("\\(x\\)"                     #Xe16b)
+         ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+         ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+         ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
+
+  (defun add-fira-code-symbol-keywords ()
+    (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+
+  (add-hook 'prog-mode-hook
+    #'add-fira-code-symbol-keywords)
+  )
+
+(defun dotspacemacs/user-config ()
+  "Configuration function for user code."
+
+  ;; Customizations
+  ;; let version control follow symlinks
+  (setq vc-follow-symlinks t)
+
+  ;; Abbreviations
+  (setq abbrev-file-name "~/.abbrev_defs")
+  (setq save-abbrevs 'silently)
+  (add-to-list 'auto-mode-alist '("\\.abbrev_defs\\'" . emacs-lisp-mode))
+  (setq-default abbrev-mode t)
+
+
+
+  ;; Move text Up / Down with Alt + Arrows
+  (move-text-default-bindings)
+
+  ;; Google Translation Settings
+  (setq google-translate-default-source-language nil)
+  (setq google-translate-default-target-language "ar")
+  (setq google-translate-translation-directions-alist '(("Detect" . "ar")))
+  (setq paradox-github-token "ad72174e266db1d006e5aef368ecba69f6b54484")
+  (setq helm-swoop-split-direction 'split-window-vertically)
+
+  ;; Writing
+  (spacemacs|add-toggle darkroom-mode
+    :status darkroom-mode
+    :on (darkroom-mode)
+    :off (darkroom-mode -1)
+    :documentation "Turn on darkroom mode."
+    :evil-leader "dr")
+
+  (defun my-writing ()
+    (auto-complete-mode t)
+    (focus-mode t)
+    (visual-line-mode t)
+    (set-frame-font "Source Code Pro 19" nil)
+    (writeroom-mode t))
+
+  (add-hook 'markdown-mode-hook #'my-writing)
+  (add-hook 'gfm-mode-hook #'my-writing)
+
+  ;; LaTeX
+  (setq TeX-engine 'xetex)
+  (setq-default TeX-PDF-mode t)
+  (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.latex?\\'" . LaTeX-mode))
+  (add-to-list 'auto-mode-alist '("\\.tex$" . LaTeX-mode))
+  (add-hook 'latex-mode 'outline-minor-mode)  ; Folding
+  (add-hook 'LaTex-mode 'outline-minor-mode)  ; Folding
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode)  ; Previewing
+  ;; Math completion
+  ;; (add-to-list 'company-backends 'company-math-symbols-unicode)
+  ;; (add-to-list 'company-backends 'math-symbol-list-basic)
+  ;; (add-to-list 'company-backends 'math-symbol-list-extended)
+  ;; (add-to-list 'company-backends 'math-symbol-list-packages)
+  ;; (add-to-list 'company-backends 'math-symbol-list-latex-commands)
+  ;; CDLatex
+  (add-hook 'latex-mode 'cdlatex-mode)
+  (add-hook 'LaTex-mode 'cdlatex-mode)
+  ;; BibTeX
+  (setq org-ref-default-bibliography '("~/Papers/references.bib")
+    org-ref-pdf-directory "~/Papers/"
+    org-ref-bibliography-notes "~/Papers/notes.org")
+  (setq org-ref-open-pdf-function
+    (lambda (fpath)
+      (start-process "zathura" "*helm-bibtex-zathura*" "/usr/bin/zathura" fpath)))
+
+
+
+  ;; C / C++
+  ;; Bind clang-format-region to C-M-tab in all modes:
+  (global-set-key [C-M-tab] 'clang-format-region)
+  ;; Bind clang-format-buffer to tab on the c++-mode only:
+  (add-hook 'c++-mode-hook 'clang-format-bindings)
+  (defun clang-format-bindings ()
+    (define-key c++-mode-map [tab] 'clang-format-buffer))
+
+  ;; Perl
+  (add-to-list 'auto-mode-alist '("\\.t\\'" . cperl-mode))
+  ;; (setq plsense-popup-help-key "C-:")
+  ;; (setq plsense-display-help-buffer-key "M-:")
+  ;; (setq plsense-jump-to-definition-key "C->")
+  ;; Make config suit for you. About the config item, eval the following sexp.
+  ;; (customize-group "plsense")
+  ;; Do setting recommemded configuration
+  ;; (plsense-config-default)
+  (defun perltidy-dwim (arg)
+    "Perltidy a region of the entire buffer"
+    (interactive "P")
+    (let ((old-point (point))
+           (old-mark (mark t))
+           (currconf (current-window-configuration))
+           (buffer (generate-new-buffer "*perltidy*"))
+           (start)
+           (end))
+      (if (and mark-active transient-mark-mode)
+        (setq start (region-beginning)
+          end (region-end))
+        (setq start (point-min)
+          end (point-max)))
+      ;; set the PERLTIDY environment variable to the closest instance
+      ;; of .perltidyrc, but keep its value if it was set before.
+      (let ((old-perltidy-env (getenv "PERLTIDY")))
+        (setenv "PERLTIDY" (or old-perltidy-env
+                             (expand-file-name
+                               (locate-dominating-file (buffer-file-name) ".perltidyrc"))))
+        (shell-command-on-region start end "perltidy" buffer)
+        (setenv "PERLTIDY" old-perltidy-env))
+      (delete-region start end)
+      (insert-buffer buffer)
+      (kill-buffer buffer)    
+      (goto-char (min old-point (point-max)))
+      (if old-mark (push-mark (min old-mark (point-max)) t))
+      (set-window-configuration currconf)))
+  (add-hook 'cperl-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c t") 'perltidy-dwim)
+      (spacemacs/set-leader-keys "="  'perltidy-dwim)
+      ))
+
+  ;; web-mode
+  (setq web-mode-enable-engine-detection t)
+  (add-to-list 'auto-mode-alist '("\\.tt\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.ep\\'" . web-mode))
+  (setq web-mode-engines-alist
+    '(("template-toolkit"    . "\\.tt\\'")
+       ("mojolicious"        . "\\.ep\\'")
+       )
+    )
+
+  ;; Javascript
+  (setq-default js2-basic-offset 2)
+  (setq-default js-indent-level 2)
+
+
+  ;; ledger-mode
+  (setq ledger-post-amount-alignment-column 68)
+  (setq ledger-clear-whole-transactions t)
+  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+  (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+
+  ;; Geolocation
+  (setq calendar-location-name "{{ .city }}, {{ .country }}"
+    calendar-latitude {{ .latitude }}
+    calendar-longitude {{ .longitude }})
+  (setq sunshine-appid "c0bc0f33bc658e7347c87a619876622c")
+  (setq sunshine-location "34096,Turkey")
+  (setq sunshine-units 'metric)
+  (setq sunshine-show-icons t)
+
+  ;; Aliases
+  ;; cperl-mode is preferred to perl-mode
+  ;; "Brevity is the soul of wit" <foo at acm.org>
+  (defalias 'perl-mode 'cperl-mode)
+  (defalias 'scroll-ahead 'scroll-up)
+  (defalias 'scroll-behind 'scroll-down)
+
+  ;; Functions
+  (defun change-bidi-direction ()
+    (interactive)
+    (if (eq bidi-paragraph-direction 'left-to-right)
+      (setq bidi-paragraph-direction 'right-to-left)
+      (setq bidi-paragraph-direction 'left-to-right))
+    )
+
+  (defun open-cheat-sheet ()
+    ;; TODO make it temporary or use helm
+    "Open spacemacs cheatsheet"
+    (interactive)
+    (org-open-link-from-string
+      (concat "[[~/.cheat/emacs.org::"
+        (symbol-name
+          (cond ((eq major-mode 'inferior-emacs-lisp-mode) 'lisp-mode)
+            (t major-mode)))
+        "]]")))
+
+  ;; Hooks
+  (add-hook 'prog-mode-hook 'fci-mode)
+  (add-hook 'prog-mode-hook 'yafolding-mode)
+  (add-hook 'prog-mode-hook 'aggressive-indent-mode)
+  (add-hook 'prog-mode-hook 'pretty-mode)
+  (add-hook 'prog-mode-hook (lambda ()
+                              (interactive)
+                              (highlight-indentation-mode)
+                              (set-face-background 'highlight-indentation-face "#444")
+                              ))
+  (add-hook 'prog-mode-hook 'hes-mode)
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html\.ep\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'prog-mode-hook 'syntax-subword-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'org-mode-hook (lambda ()
+                             (define-key org-mode-map (kbd "M-o") 'ace-link-org)))
+  (add-hook 'ert-results-mode-hook (lambda ()
+                                     (define-key ert-results-mode-map "o" 'ace-link-help)))
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize))
+  (spacemacs/toggle-evil-cleverparens-on)
+  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+
+  ;; Key Bindings
+  (bind-key [f5] (lambda ()
+                   (interactive)
+                   (insert (format-time-string "%Y-%m-%dT%H:%M:%S"))))
+  (bind-key [f7] 'flyspell-mode)
+  (bind-key [f8] 'toggle-word-wrap)
+  (bind-key "C-=" 'er/expand-region)
+  (bind-key [\M-tab] 'yas-expand)
+  (bind-key [\C-tab] 'yafolding-toggle-element)
+  (bind-key [\C-\M-tab] 'yafolding-toggle-all)
+  (bind-key [C-\S-f9] 'neotree)
+  (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+  (define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
+  (define-key evil-normal-state-map "gx" 'browse-url-at-point)
+  (spacemacs/set-leader-keys
+    "#" 'spacemacs/alternate-buffer
+    "]" 'git-gutter+-next-hunk
+    "[" 'git-gutter+-previous-hunk
+    "aa" 'change-bidi-direction
+    "cs" 'open-cheat-sheet
+    "bi" 'ibuffer
+    "N"  'neotree
+    "=" 'format-all-buffer
+    )
+
+  ;; TODO 
+  (bind-key "C-S-c C-S-c" 'mc/edit-lines)
+  (bind-key "C->" 'mc/mark-next-like-this)
+  (bind-key "C-<" 'mc/mark-previous-like-this)
+  (bind-key "C-c C-<" 'mc/mark-all-like-this)
+  (bind-key "M-o" 'ace-link-addr)
+  )
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+  '(package-selected-packages
+     (quote
+       (lv format-all jeison writeroom-mode visual-fill-column olivetti focus darkroom sublimity origami transient csv-mode org-category-capture ghub let-alist autothemer white-sand-theme rebecca-theme org-mime exotica-theme winum unfill solarized-theme madhat2r-theme fuzzy latex-preview-pane latex-pretty-symbols company-math math-symbol-lists cdlatex company-auctex auctex-latexmk auctex mu4e-maildirs-extension mu4e-alert ht rainbow-mode rainbow-identifiers color-identifiers-mode powershell vmd-mode nginx-mode yaml-mode mwim ibuffer-projectile company-quickhelp wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy theme-changer sunshine rase osx-location ledger-mode flycheck-ledger selectric-mode typo engine-mode evil-commentary evil-snipe evil-cleverparens ahk-mode disaster company-c-headers cmake-mode clang-format web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor js-doc company-tern tern coffee-mode xkcd fasd spotify helm-spotify multi typit mmt pacmacs dash-functional 2048-game emoji-cheat-sheet-plus company-emoji web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data ox-reveal ox-twbs syntax-subword skewer-mode js2-mode simple-httpd plsense yaxception paredit multiple-cursors ibuffer-vc zonokai-theme zenburn-theme zen-and-art-theme xterm-color underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme shell-pop seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme multi-term monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme intero insert-shebang inkpot-theme hlint-refactor hindent heroku-theme hemisu-theme helm-hoogle hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flycheck-haskell flatui-theme flatland-theme fish-mode firebelly-theme farmhouse-theme espresso-theme eshell-z eshell-prompt-extras esh-help dracula-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-shell company-ghci company-ghc ghc haskell-mode company-cabal color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme mmm-mode markdown-toc markdown-mode gh-md highlight-escape-sequences yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic pretty-mode yafolding ranger dracula-theme-theme flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck auto-dictionary helm-company helm-c-yasnippet company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl org-projectile org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot smeargle orgit org magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+ '(paradox-automatically-star t)
+ '(send-mail-function (quote smtpmail-send-it)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
