@@ -7,7 +7,7 @@
 {{- end }}
 
 {{- if ne .machine "home" }}
-.xmonad
+.ledgerrc
 
 .ncmpcpp
 

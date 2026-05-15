@@ -32,6 +32,8 @@ Create template file
   hostname =
   username =
   password =
+[data.ledger]
+  dir =
 ```
 
 Then run
