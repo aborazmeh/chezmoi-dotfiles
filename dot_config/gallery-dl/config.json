@@ -1,0 +1,17 @@
+{
+  "extractor": {
+    "instagram": {
+      "cookies": [
+        "chrome"
+      ]
+    },
+    "patreon": {
+      "cookies": [
+        "chrome"
+      ]
+    },
+    "twitter": {
+      "cookies": ["chrome"]
+    }
+  }
+}
