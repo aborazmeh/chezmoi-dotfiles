@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import os, re, tempfile, math
+from newspaper import Article
+from bs4 import BeautifulSoup
+from urllib.parse import urlparse
+
+with open(os.environ['QUTE_HTML'].replace('file://', ''), 'r') as fp:
+  if match := re.match(r'^<!-- READABILITY: (.+?) -->', fp.read()):
+    with open(os.environ['QUTE_FIFO'], 'w') as fifo:
+      exit(fifo.write('open ' + match.group(1)))
+
+cssfile = os.path.join(os.environ.get('QUTE_DATA_DIR', os.path.expanduser('~/.local/share/qutebrowser')),'userscripts/readability.css')
+
+def get_lang_dir(html):
+  soup = BeautifulSoup(html, features='html.parser')
+  return (
+    soup.html.attrs.get('lang'),
+    soup.html.attrs.get('dir'),
+  )
+
+def get_estimated_time(text):
+  word_count = len(text.split())
+  return math.ceil(word_count / 200)
+
+with open(os.environ['QUTE_HTML'], 'r', encoding='utf-8') as source:
+  data = source.read()
+  lang, dir = get_lang_dir(data)
+
+with open(os.path.join(os.environ.get('QUTE_DATA_DIR', os.path.expanduser('~/.local/share/qutebrowser')),'userscripts/readability.html'), 'r') as header:
+  HEADER = header.read()
+
+url = os.environ['QUTE_URL']
+article = Article(url, keep_article_html=True)
+article.download()
+article.parse()
+domain = urlparse(url).netloc
+estimated_time = get_estimated_time(article.text)
+date = article.publish_date.isoformat()[:10] if article.publish_date else ""
+percent = lambda x, y: round(x + x * (y/100))
+
+content = HEADER % (url, lang or 'en', dir or 'ltr', article.title, cssfile, url, domain, article.title, ' & '.join(article.authors), date, f'{percent(estimated_time, -10)}—{percent(estimated_time, 10)} minutes', article.article_html)
+content = content.replace('<body>', '<body class="qute-readability">')
+
+target_name = os.path.join(tempfile.gettempdir(), 'qute_readability.html')  # TODO use temp file
+with open(target_name, 'w', encoding='utf-8') as target:
+  target.write(content.lstrip())
+with open(os.environ['QUTE_FIFO'], 'w') as fifo:
+    fifo.write('open file://%s' % target_name)

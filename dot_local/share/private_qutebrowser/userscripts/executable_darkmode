@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+import os
+
+filename = os.path.expanduser("~/.QUTE_DARKMODE")
+if os.path.isfile(filename):
+    os.unlink(filename)
+else:
+    open(filename, "w").close()
+
+with open(os.environ["QUTE_FIFO"], "w") as fifo:
+    fifo.write("restart")
