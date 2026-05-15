@@ -1,0 +1,10 @@
+# Save all files using title.ext template
+--output "%(title) [%(id)s].%(ext)s"
+--continue
+# --no-part
+--ignore-errors
+# --restrict-filenames
+# --no-mtime
+--add-metadata
+--embed-thumbnail
+--trim-filenames 100
