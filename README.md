@@ -7,4 +7,5 @@
   country =
   fullname =
   email =
+  password_manager = "bw" # = "bitwarden" / "vaultwarden" or "pass"
 ```
