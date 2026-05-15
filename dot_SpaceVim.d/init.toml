@@ -1,0 +1,154 @@
+#=============================================================================
+# dark_powered.toml --- dark powered configuration example for SpaceVim
+# Copyright (c) 2016-2017 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg at 163.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+    colorscheme = "one"
+    background = "dark"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = true
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "arrow"
+    statusline_inactive_separator = "arrow"
+    buffer_index_type = 4
+    enable_tabline_filetype_icon = true
+    enable_statusline_display_mode = false
+    # autocomplete_method = "coc"
+    autocomplete_method = "deoplete"
+    bootstrap_before = "myspacevim#before"
+    bootstrap_after = "myspacevim#after"
+
+# [[layers]]
+# name = 'autocomplete'
+# auto-completion-return-key-behavior = "complete"
+# auto-completion-tab-key-behavior = "smart"
+
+[[layers]]
+name = "colorscheme"
+#
+# [[layers]]
+# name = 'fzf'
+#
+# [[layers]]
+# name = 'tmux'
+#
+# [[layers]]
+# name = 'shell'
+# default_position = 'top'
+# default_height = 30
+#
+# [[layers]]
+# name = 'VersionControl'
+# enable_gtm_status = true
+#
+# [[layers]]
+# name = 'git'
+# git-plugin = 'gina'
+
+# [[layers]]
+# name = 'lsp'
+# filetypes = [
+  # 'python'
+  # 'sh',
+  # # 'javascript',
+  # # 'vue'
+# ]
+# [layers.override_cmd]
+# c = ['ccls', '--log-file=/tmp/ccls.log']
+# cpp = ['ccls', '--log-file=/tmp/ccls.log']
+#
+# [[layers]]
+# name = 'gtags'
+#
+# [[layers]]
+# name = 'lang#javascript'
+#
+# [[layers]]
+# name = 'lang#html'
+#
+# [[custom_plugins]]
+# name = 'pangloss/vim-javascript'
+
+# [[layers]]
+# name = 'lang#python'
+
+# [[layers]]
+# name = 'lang#markdown'
+
+# [[layers]]
+# name = 'lang#vim'
+
+# [[layers]]
+# name = 'lang#c'
+#
+# [[layers]]
+# name = 'lang#haskell'
+
+# [[custom_plugins]]
+# name = 'tpope/vim-speeddating'
+
+# [[custom_plugins]]
+# name =  'esneider/YUNOcommit.vim'
+#
+# [[custom_plugins]]
+# name = 'kshenoy/vim-signature'
+#
+# [[custom_plugins]]
+# name = 'junegunn/goyo.vim'
+#
+# [[custom_plugins]]
+# name = 'junegunn/limelight.vim'
+#
+# [[custom_plugins]]
+# name = 'reedes/vim-pencil'
+
+# [[custom_plugins]]
+# name = 'ehamberg/vim-cute-python'
+
+# [[custom_plugins]]
+# name = 'luochen1990/rainbow'
+#
+# [[custom_plugins]]
+# name = 'lfilho/cosco.vim'
+#
+# [[custom_plugins]]
+# name = 'nathanaelkane/vim-indent-guides'
+
+# [[custom_plugins]]
+# name = 'dylanaraps/wal.vim'
+
+# [[custom_plugins]]
+# name = 'bkad/CamelCaseMotion'
+
+# [[custom_plugins]]
+# name = 'vim-scripts/YankRing.vim'
+
+# [[custom_plugins]]
+# name = 'ActivityWatch/aw-watcher-vim'
+
+# FIXME it prints arbitray text
+# [[custom_plugins]]
+# name = 'tpope/vim-endwise'
+#
+# TODO
+# Plug 'thaerkh/vim-workspace'
+# let g:workspace_session_name = '.vim/sessions'
+#
+# Plug 'editorconfig/editorconfig-vim'
+# Plugin 'Konfekt/FastFold'
+# Plug 'tmhedberg/SimpylFold'
+# let g:SimpylFold_docstring_preview=1
+# Plug 'tpope/vim-dispatch'
+# Plug 'janko-m/vim-test'
+# Plug 'dbeniamine/cheat.sh-vim'
+# " Plug 'jeaye/color_coded'
