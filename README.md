@@ -1,7 +1,7 @@
 ```toml
 # ~/.config/chezmoi/chezmoi.toml
 [data]
-  location = "home" # or "work", "server" ...
+  machine = "home" # or "work", "server" ...
   longitude =
   latitude =
   city =

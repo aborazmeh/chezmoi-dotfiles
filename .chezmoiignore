@@ -5,3 +5,43 @@
 .xprofile
 .xinitrc
 {{- end }}
+
+{{- if ne .machine "home" }}
+.xmonad
+
+.ncmpcpp
+
+.local/share/pandoc
+
+GNUstep
+.xmonad
+
+.vifm
+
+.config/mpd
+.config/mopidy
+
+.config/gallery-dl
+
+.config/i3blocks/config-top
+
+.config/calcure
+.config/calcurse
+.config/khal
+.taskrc
+
+.config/nheko
+
+.config/vdirsyncer
+
+.mozilla
+.abbref_defs
+.screenrc
+
+.spacemacs
+.SpaceVim.d
+{{- end }}
+
+{{- if ne .chezmoi.osRelease.id "arch" }}
+.yaourtrc
+{{- end }}
