@@ -19,4 +19,8 @@
   url =
   username =
   password =
+[data.mpd]
+  hostname =
+  password =
+  readonly_password =
 ```
