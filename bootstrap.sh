@@ -325,6 +325,33 @@ install_packages() {
   success "Package installation complete."
 }
 
+run_scripts_makefile() {
+  section "Scripts Makefile"
+
+  local scripts_dir="$HOME/scripts"
+  local bar_dir="$scripts_dir/bar"
+  local makefile="$scripts_dir/Makefile"
+
+  if [[ ! -f "$makefile" ]]; then
+    info "No Makefile found at $makefile, skipping."
+    return 0
+  fi
+
+  if [[ -d "$bar_dir" ]]; then
+    if [[ -z "$(ls -A "$bar_dir")" ]]; then
+      info "Directory $bar_dir is empty, running Makefile..."
+      (cd "$scripts_dir" && make)
+      success "Makefile executed."
+    else
+      info "Directory $bar_dir has files, skipping Makefile."
+    fi
+  else
+    info "Directory $bar_dir does not exist, running Makefile..."
+    (cd "$scripts_dir" && make)
+    success "Makefile executed."
+  fi
+}
+
 main() {
   echo -e "${BOLD}"
   echo "╔══════════════════════════════════════════════╗"
@@ -337,6 +364,7 @@ main() {
   require unzip
 
   install_packages || warn "Package install step encountered errors."
+  run_scripts_makefile || warn "Scripts Makefile encountered errors."
   setup_tmux || warn "tmux setup encountered errors."
   setup_nnn_plugins || warn "nnn plugin setup encountered errors."
   setup_zinit || warn "zinit setup encountered errors."
