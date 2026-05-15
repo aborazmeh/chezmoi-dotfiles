@@ -1,0 +1,108 @@
+{
+  DontLinkWorkspaces = NO;
+  FTitleColor = "#ffffff";
+  MenuDisabledColor = "#666666";
+  WindowShortcut2Key = None;
+  IconTitleBack = "#384246";
+  PixmapPath = (
+    "/home/charlok/GNUstep/Library/WindowMaker/Pixmaps",
+    "/home/charlok/GNUstep/Library/WindowMaker/Backgrounds",
+    "/usr/share/WindowMaker/Pixmaps",
+    "/usr/share/WindowMaker/Backgrounds",
+    "/usr/X11R6/include/X11/pixmaps",
+    "/usr/local/share/pixmaps",
+    "/usr/share/pixmaps"
+  );
+  FTitleBack = (mhgradient, "#384246", "rgb:50/5a/5e", "rgb:20/2a/2e");
+  DoNotMakeAppIconsBounce = NO;
+  MiniwindowTitleBalloons = YES;
+  ShadeKey = "Mod1+S";
+  MaximusKey = None;
+  WindowShortcut7Key = None;
+  OpaqueResize = NO;
+  MenuTextBack = (mhgradient, "#a2a0a5", "rgb:c2/c0/c5", "rgb:82/80/85");
+  WindowPlacement = smart;
+  RaiseAppIconsWhenBouncing = NO;
+  ResizeIncrement = 0;
+  AutoFocus = NO;
+  CycleWorkspaces = YES;
+  WindowShortcut8Key = None;
+  OpaqueMoveResizeKeyboard = NO;
+  IconificationStyle = none;
+  WindowShortcut10Key = None;
+  IconTitleColor = white;
+  TitleJustify = left;
+  GroupNextKey = None;
+  SingleClickLaunch = NO;
+  Attraction = NO;
+  MenuTextColor = "#000000";
+  DisableBlinking = NO;
+  AntialiasedText = YES;
+  MenuTitleColor = "#ffffff";
+  WindowShortcut3Key = None;
+  LowerKey = "Mod4+Down";
+  FocusPrevKey = "Shift+Mod2+Tab";
+  WindowListKey = None;
+  SmoothWorkspaceBack = YES;
+  WindowRelaunchKey = None;
+  WorkspaceNameDisplayPosition = top;
+  WindowShortcut4Key = None;
+  NoWindowOverDock = NO;
+  ScreenSwitchKey = None;
+  WorkspaceBack = (solid, black);
+  HighlightTextColor = "#000000";
+  MenuTitleBack = (mhgradient, "#384246", "rgb:50/5a/5e", "rgb:20/2a/2e");
+  EdgeResistance = 17;
+  WindowShortcut9Key = None;
+  MouseWheelAction = SwitchWorkspaces;
+  HelpBalloons = YES;
+  HMaximizeKey = None;
+  MoveResizeKey = None;
+  AutoArrangeIcons = YES;
+  AppIconBalloons = YES;
+  HighlightColor = "#ffffff";
+  WindowTitleFont = "DejaVu Sans Mono:slant=0:weight=80:width=100:pixelsize=12";
+  GroupPrevKey = None;
+  Workspace8Key = "Mod4+8";
+  WindowPlaceOrigin = (187, 240);
+  Workspace9Key = "Mod4+9";
+  MinimizeAllKey = None;
+  Workspace10Key = "Mod4+0";
+  LHMaximizeKey = None;
+  WindowShortcut5Key = None;
+  RootMenuKey = None;
+  HideOthersKey = "Shift+Mod1+M";
+  ResizebarBack = (solid, "#a2a0a5");
+  IconPath = (
+    "/home/charlok/GNUstep/Library/Icons",
+    "/usr/share/WindowMaker/Icons",
+    "/usr/share/WindowMaker/Pixmaps",
+    "/usr/X11R6/include/X11/pixmaps",
+    "/home/charlok/GNUstep/Library/WindowMaker/Pixmaps",
+    "/usr/share/icons",
+    "/usr/local/share/pixmaps",
+    "/usr/share/pixmaps"
+  );
+  Workspace4Key = "Mod4+4";
+  RaiseKey = "Mod4+Up";
+  Workspace5Key = "Mod4+5";
+  Workspace6Key = "Mod4+6";
+  PTitleBack = (mhgradient, "#68686a", "rgb:51/50/55", "rgb:80/80/80");
+  WindowShortcut6Key = None;
+  OpenTransientOnOwnerWorkspace = YES;
+  CycleActiveHeadOnly = NO;
+  Workspace7Key = "Mod4+7";
+  UTitleColor = "#000000";
+  ViKeyMenus = NO;
+  BounceAppIconsWhenUrgent = NO;
+  CirculateRaise = YES;
+  UTitleBack = (mhgradient, "#a2a0a5", "rgb:c2/c0/c5", "rgb:82/80/85");
+  Workspace1Key = "Mod4+1";
+  PTitleColor = "#ffffff";
+  ResizeDisplay = floating;
+  Workspace2Key = "Mod4+2";
+  Workspace3Key = "Mod4+3";
+  WindowShortcut1Key = None;
+  ShowClipTitle = NO;
+  RHMaximizeKey = None;
+}

@@ -1,0 +1,212 @@
+{
+  Dock = {
+    AutoRaiseLower = No;
+    Applications768 = (
+      {
+        Forced = No;
+        Name = Logo.WMDock;
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,0";
+        Lock = No;
+        Command = "-";
+      },
+      {
+        Forced = No;
+        Name = groupLeader.WPrefs;
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,1";
+        Lock = Yes;
+        Command = "/usr/lib/GNUstep/Applications/WPrefs.app/WPrefs";
+      },
+      {
+        Forced = No;
+        Name = wmsystemtray0.wmsystemtray;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,8";
+        Lock = Yes;
+        PasteCommand = "wmsystemtray -s --fill-rows %s";
+        Command = "wmsystemtray -s --fill-rows";
+      },
+      {
+        Forced = No;
+        Name = wmMoonClock.wmMoonClock;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,4";
+        Lock = Yes;
+        PasteCommand = "wmMoonClock %s";
+        Command = wmMoonClock;
+      },
+      {
+        Forced = No;
+        Name = wmnet.WMNET;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,7";
+        Lock = Yes;
+        PasteCommand = "wmnet %s";
+        Command = "wmnet -W wlp3s0";
+      },
+      {
+        Forced = No;
+        Name = wmsm.wmsm;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,5";
+        Lock = Yes;
+        PasteCommand = "wmsm %s";
+        Command = "wmsm -t3 -m";
+      },
+      {
+        Forced = No;
+        Name = wmtop.wmtop;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,6";
+        Lock = Yes;
+        PasteCommand = "wmtop %s";
+        Command = wmtop;
+      },
+      {
+        Forced = No;
+        Name = wmtime.wmtime;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,2";
+        Lock = Yes;
+        PasteCommand = "wmtime %s";
+        Command = wmtime;
+      },
+      {
+        Forced = No;
+        Name = wmweather.wmweather;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,3";
+        Lock = Yes;
+        PasteCommand = "wmweather -s OSDI %s";
+        Command = "wmweather -s OSDI -m -t 3";
+      }
+    );
+    Applications = (
+      {
+        Forced = No;
+        Name = Logo.WMDock;
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,0";
+        Lock = No;
+        Command = "-";
+      },
+      {
+        Forced = No;
+        Name = groupLeader.WPrefs;
+        BuggyApplication = No;
+        AutoLaunch = No;
+        Position = "0,1";
+        Lock = Yes;
+        Command = "/usr/lib/GNUstep/Applications/WPrefs.app/WPrefs";
+      },
+      {
+        Forced = No;
+        Name = wmsystemtray0.wmsystemtray;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,8";
+        Lock = Yes;
+        PasteCommand = "wmsystemtray -s --fill-rows %s";
+        Command = "wmsystemtray -s --fill-rows";
+      },
+      {
+        Forced = No;
+        Name = wmMoonClock.wmMoonClock;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,4";
+        Lock = Yes;
+        PasteCommand = "wmMoonClock %s";
+        Command = wmMoonClock;
+      },
+      {
+        Forced = No;
+        Name = wmnet.WMNET;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,7";
+        Lock = Yes;
+        PasteCommand = "wmnet %s";
+        Command = "wmnet -W wlp3s0";
+      },
+      {
+        Forced = No;
+        Name = wmsm.wmsm;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,5";
+        Lock = Yes;
+        PasteCommand = "wmsm %s";
+        Command = "wmsm -t3 -m";
+      },
+      {
+        Forced = No;
+        Name = wmtop.wmtop;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,6";
+        Lock = Yes;
+        PasteCommand = "wmtop %s";
+        Command = wmtop;
+      },
+      {
+        Forced = No;
+        Name = wmtime.wmtime;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,2";
+        Lock = Yes;
+        PasteCommand = "wmtime %s";
+        Command = wmtime;
+      },
+      {
+        Forced = No;
+        Name = wmweather.wmweather;
+        BuggyApplication = No;
+        AutoLaunch = Yes;
+        Position = "0,3";
+        Lock = Yes;
+        PasteCommand = "wmweather -s OSDI %s";
+        Command = "wmweather -s OSDI -m -t 3";
+      }
+    );
+    Lowered = Yes;
+    Position = "-64,0";
+  };
+  Clip = {
+    Forced = No;
+    Name = Logo.WMClip;
+    BuggyApplication = No;
+    AutoLaunch = No;
+    Position = "0,0";
+    Lock = No;
+    Command = "-";
+  };
+  Applications = ();
+  Drawers = ();
+  Workspaces = (
+    {
+      Clip = {
+        AutoRaiseLower = No;
+        AutoCollapse = No;
+        Applications = ();
+        Collapsed = No;
+        AutoAttractIcons = No;
+        Lowered = Yes;
+      };
+      Name = "Workspace 1";
+    }
+  );
+  Workspace = "Workspace 1";
+}
