@@ -1,0 +1,7 @@
+set selection-clipboard clipboard
+set continuous-hist-save true
+set database plain
+set scroll-page-aware true
+
+# map <Space> scroll half-down
+# map <S-Space> scroll half-up
