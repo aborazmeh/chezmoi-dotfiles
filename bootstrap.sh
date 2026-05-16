@@ -206,6 +206,8 @@ PACKAGES=(
   yazi
   sway
   swaync
+  swaylock
+  swayidle
   waybar
   rofi
   lazygit
@@ -221,6 +223,8 @@ PACKAGES=(
   btm
   btop
   nnn
+  atuin
+  wlsunset
 )
 
 resolve_pkg() {
