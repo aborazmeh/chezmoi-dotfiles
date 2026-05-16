@@ -41,6 +41,9 @@ GNUstep
 .abbref_defs
 .screenrc
 
+.mplayer
+smplayer
+
 .spacemacs
 .SpaceVim.d
 

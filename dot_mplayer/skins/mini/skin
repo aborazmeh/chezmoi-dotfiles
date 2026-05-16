@@ -1,0 +1,28 @@
+section = movieplayer
+
+ window = main
+
+  ;base=bitmap,x,y
+  ; x:            | y:
+  ;  -  0: left   |  -  0: top
+  ;  - -1: center |  - -1: center
+  ;  - -2: right  |  - -2: bottom
+  base = main, -2, -2
+  ;button=bitmap,x,y,sx,sy,msg
+  ; 1. bitmap: pressed  | x,y: position in window
+  ; 2. bitmap: released | msg: name of system message
+  ; 3. bitmap: disabled | sx,sy: size of button
+  button = play,     17, 2, 16, 10, evPlaySwitchToPause
+  button = pause,    18, 2, 16, 10, evPauseSwitchToPlay
+  button = stop,      4, 2, 12, 10, evStop
+  
+  ; hpotmeter=buttonbitmaps,sx,sy,phasebitmaps,phases,default value,x,y,sx,sy,msg
+  hpotmeter=pos, 14, 9, NULL, 100,  0, 35, 5, 153, 9, evSetMoviePosition
+
+  end
+
+  window = sub
+    base = main, 0, 0
+  end
+
+end

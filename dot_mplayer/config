@@ -1,0 +1,9 @@
+# Write your default config options here!
+#msglevel=all=-1
+#osdlevel=0
+#ontop=1
+aspect=2
+subcp=utf-8
+font='Sans'
+ao=pulse
+mixer-channel=Master
