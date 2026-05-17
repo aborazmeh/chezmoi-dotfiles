@@ -48,6 +48,8 @@ smplayer
 .SpaceVim.d
 
 scripts/i3blocks
+
+.rtorrentrc
 {{- end }}
 
 {{- if ne .chezmoi.osRelease.id "arch" }}
