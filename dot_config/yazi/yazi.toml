@@ -47,17 +47,17 @@ beautify = [{ run = 'beautify "$1" ', block = true, for = "unix" }]
 
 [open]
 rules = [
-  { name = "*/", use = [
+  { name = "*/", mime = "inode/directory", use = [
     "edit",
     "open",
     "reveal",
   ] },
-  { name = "*.{py,js,ts,html,css,md,yaml,yml,json,toml,xml,c,cpp,h,hpp,java,sh,bash,zsh,go,sql,pl,pm,lua,rb,rs}", use = [
+  { name = "*.{py,js,ts,html,css,md,yaml,yml,json,toml,xml,c,cpp,h,hpp,java,sh,bash,zsh,go,sql,pl,pm,lua,rb,rs}", mime = "text/*", use = [
     "beautify",
     "open",
     "edit",
   ] },
-  { name = "*.m3u", use = [
+  { name = "*.m3u", mime = "audio/x-mpegurl", use = [
     "play",
     "edit",
   ] },
@@ -81,7 +81,7 @@ rules = [
     "extract",
     "reveal",
   ] },
-  { name = "*.cb[7rzt]", use = [
+  { name = "*.cb[7rzt]", mime = "application/zip", use = [
     "comic",
     "reveal",
     "extract",
@@ -90,7 +90,7 @@ rules = [
     "pdf",
     "reveal",
   ] },
-  { name = "*.epub", use = [
+  { name = "*.epub", mime = "application/epub+zip", use = [
     "open",
     "calibre",
     "reveal",
@@ -108,7 +108,7 @@ rules = [
     "edit",
     "reveal",
   ] },
-  { name = "*", use = [
+  { name = "*", mime = "*/*", use = [
     "open",
     "edit",
     "reveal",
@@ -116,13 +116,12 @@ rules = [
 ]
 
 [plugin]
-prepend_previewers = [
-  { mime = "video/*", run = "noop" },
-  { name = "*.mp4", run = "noop" },
-]
+prepend_previewers = [{ mime = "video/*", run = "noop" }]
 prepend_preloaders = [{ mime = "video/*", run = "noop" }]
 
 [[plugin.prepend_fetchers]]
 id = "git"
 name = "*"
+mime = "*/*"
 run = "git"
+group = "git"
