@@ -1,0 +1,28 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Scripts Makefile  ━━━\033[0m"
+
+scripts_dir="$HOME/scripts"
+bar_dir="$scripts_dir/bar"
+makefile="$scripts_dir/Makefile"
+
+if [[ ! -f "$makefile" ]]; then
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  No Makefile found at $makefile, skipping."
+  exit 0
+fi
+
+if [[ -d "$bar_dir" ]]; then
+  if [[ -z "$(ls -A "$bar_dir")" ]]; then
+    echo -e "\033[0;36m\033[1m[INFO]\033[0m  Directory $bar_dir is empty, running Makefile..."
+    (cd "$scripts_dir" && make && make install)
+    echo -e "\033[0;32m\033[1m[OK]\033[0m    Makefile executed."
+  else
+    echo -e "\033[0;36m\033[1m[INFO]\033[0m  Directory $bar_dir has files, skipping Makefile."
+  fi
+else
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Directory $bar_dir does not exist, running Makefile..."
+  (cd "$scripts_dir" && make && make install)
+  echo -e "\033[0;32m\033[1m[OK]\033[0m    Makefile executed."
+fi
+{{ end -}}

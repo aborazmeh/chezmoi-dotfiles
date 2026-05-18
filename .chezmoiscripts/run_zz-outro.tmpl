@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+echo -e "\n\033[0;32m\033[1mAll done!\033[0m"
+echo "You may want to:"
+echo "  • Restart your shell (or run: exec \$SHELL)"
+echo "  • Open tmux and run: <prefix> I  (to install tmux plugins if using tpm)"
+echo "  • Check warnings above for any packages that need manual attention"
+{{ end -}}

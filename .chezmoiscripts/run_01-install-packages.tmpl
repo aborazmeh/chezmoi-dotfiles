@@ -1,0 +1,55 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Package installation  ━━━\033[0m";
+
+{{ $distro := "" -}}
+{{ if eq .chezmoi.osRelease.id "arch" "manjaro" "endeavouros" "garuda" -}}
+  {{ $distro = "arch" -}}
+{{ else if eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint" "pop" -}}
+  {{ $distro = "debian" -}}
+{{ else if eq .chezmoi.osRelease.id "fedora" "rhel" "centos" "almalinux" -}}
+  {{ $distro = "fedora" -}}
+{{ end -}}
+
+echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
+
+{{ $packages := list "starship" "yazi" "sway" "swaylock" "swayidle"
+"waybar" "rofi" "lazygit" "gitui" "tmuxp" "tmux" "vim" "neovim" "micro"
+"btop" "nnn" "atuin" "wlsunset" "ripgrep" "git-delta"
+-}}
+{{ $distroPackages := dict
+  "arch" (list "fd" "swaync" "bottom"
+    "ttf-firacode-nerd" "ttf-nerd-fonts-symbols")
+  "debian" (list "sway-notification-center" "btm"
+    "fd-find" "fonts-hosny-amiri" "fonts-firacode")
+  "fedora" (list "fd-find" "swaync" "bottom"
+    "amiri-fonts" "fira-code-fonts" "nerd-fonts-symbols")
+-}}
+
+{{ if eq $distro "arch" -}}
+
+{{- $aurHelper := "pacman -S --needed" -}}
+{{- if lookPath "yay" -}}
+  {{- $aurHelper = "yay -S --needed" -}}
+{{- else if lookPath "paru" -}}
+  {{- $aurHelper = "paru" -}}
+{{- end -}}
+
+echo -e "\033[0;36m\033[1m[INFO]\033[0m  Using AUR helper: {{ $aurHelper }}";
+
+sudo {{ $aurHelper }} {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
+
+echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
+{{ else if eq $distro "debian" "ubuntu" "kali" -}}
+sudo apt install {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
+echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
+{{ else if eq $distro "fedora" -}}
+{{ else -}}
+  echo -e "\033[1m[ERROR]\033[0m Unsupported distro. Please install packages manually: {{ $packages | join " " }}" >&2;
+{{ end -}}
+
+{{ else if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+brew install ripgrep
+{{ end -}}

@@ -1,0 +1,13 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Ranger plugins  ━━━\033[0m"
+
+# local ranger_plugins="$HOME/.config/ranger/plugins"
+# mkdir -p "$ranger_plugins"
+
+# TODO: add plugin repos here, for example:
+# clone_or_update "https://github.com/example/ranger-plugin.git" \
+#                 "$ranger_plugins/plugin-name"
+echo -e "\033[1;33m\033[1m[TODO]\033[0m  Ranger plugin setup."
+{{ end -}}

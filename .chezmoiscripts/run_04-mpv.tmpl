@@ -1,0 +1,13 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  mpv plugins  ━━━\033[0m"
+
+# local mpv_scripts="$HOME/.config/mpv/scripts"
+# mkdir -p "$mpv_scripts"
+
+# TODO: add plugin repos here, for example:
+# clone_or_update "https://github.com/example/mpv-plugin.git" \
+#                 "$mpv_scripts/plugin-name"
+echo -e "\033[1;33m\033[1m[TODO]\033[0m  mpv plugin setup."
+{{ end -}}

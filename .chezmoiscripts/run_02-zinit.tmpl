@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+echo -e "\n\033[1m━━━  zinit (zsh plugin manager)  ━━━\033[0m"
+  {{ if not (lookPath "zinit") -}}
+    if zsh -ic 'type zinit &>/dev/null' 2>/dev/null; then
+      echo -e "\033[0;36m\033[1m[INFO]\033[0m  zinit function already exists in zsh"
+    else
+      echo -e "\033[0;36m\033[1m[INFO]\033[0m  Installing zinit …"
+      bash -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+      echo -e "\033[0;32m\033[1m[OK]\033[0m    zinit installed"
+    fi
+  {{ else -}}
+    echo -e "\033[0;36m\033[1m[INFO]\033[0m  zinit already installed"
+  {{ end -}}
+{{ end -}}
