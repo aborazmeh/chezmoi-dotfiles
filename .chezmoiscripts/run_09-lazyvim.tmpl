@@ -1,0 +1,13 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  LazyVim  ━━━\033[0m"
+
+if grep -qF 'require("config.lazy")' $HOME/.config/nvim/init.lua 2>/dev/null; then
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  LazyVim already installed, skipping.";
+else
+  git clone https://github.com/LazyVim/starter ~/.config/nvim
+  rm -rf ~/.config/nvim/.git
+  echo -e "\033[0;32m\033[1m[OK]\033[0m    LazyVim installed."
+fi
+{{ end -}}
