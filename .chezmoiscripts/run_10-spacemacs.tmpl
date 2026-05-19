@@ -1,0 +1,16 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  (spacemacs)  ━━━\033[0m"
+
+if [ ! -d "$HOME/.emacs.d" ]; then
+  git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+  if [ $? -eq 0 ]; then
+    echo -e "\033[0;32m\033[1m[OK]\033[0m    spacemacs installed."
+  else
+    echo -e "\033[0;31m\033[1m[ERROR]\033[0m Failed to clone spacemacs repository" >&2
+  fi
+else
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Directory $HOME/.emacs.d already exists, skipping."
+fi
+{{ end -}}
