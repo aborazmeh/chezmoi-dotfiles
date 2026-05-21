@@ -50,6 +50,11 @@ smplayer
 scripts/i3blocks
 
 .rtorrentrc
+
+.asoundrc
+.festivalrc
+.slrnrc
+.surfraw.conf
 {{- end }}
 
 {{- if ne .chezmoi.osRelease.id "arch" }}
