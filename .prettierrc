@@ -1,0 +1,45 @@
+{
+  "plugins": [
+    "prettier-plugin-go-template"
+  ],
+  "semi": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": false,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "goTemplateBracketSpacing": true,
+  "overrides": [
+    {
+      "files": [
+        "*.tmpl"
+      ],
+      "options": {
+        "parser": "go-template",
+        "printWidth": 80
+      }
+    },
+    {
+      "files": [
+        "*.html",
+        "*.css",
+        "*.scss",
+        "*.sass",
+        "*.less",
+        "*.styl"
+      ],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": [
+        "*.md"
+      ],
+      "options": {
+        "proseWrap": "preserve",
+        "embeddedLanguageFormatting": "auto"
+      }
+    }
+  ]
+}

@@ -1,3 +1,9 @@
+node_modules
+.prettierrc
+packages.json
+pnpnm-lock.yaml
+.vscode
+
 .config/Code/User/tasks.json
 
 {{- if eq .chezmoi.os "darwin" "linux" }}
