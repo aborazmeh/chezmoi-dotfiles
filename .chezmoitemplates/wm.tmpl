@@ -1,0 +1,37 @@
+{{- /*
+  Detect current windowing system (X11 or Wayland) on Linux
+  Returns: "wayland", "x11", or "" (empty if unknown/not on Linux)
+*/ -}}
+
+{{ $session_type := "" -}}
+
+{{ if eq .chezmoi.os "linux" -}}
+  {{- /* Method 1: Check XDG_SESSION_TYPE environment variable */ -}}
+  {{ if env "XDG_SESSION_TYPE" -}}
+    {{ $session_type = env "XDG_SESSION_TYPE" | lower | trim -}}
+  {{ end -}}
+  
+  {{- /* Method 2: Fallback to checking for wayland-display/WAYLAND_DISPLAY */ -}}
+  {{ if not $session_type -}}
+    {{ if or (env "WAYLAND_DISPLAY") (lstat "/run/user/*/wayland-*") -}}
+      {{ $session_type = "wayland" -}}
+    {{ else if or (env "DISPLAY") (lstat "/tmp/.X11-unix/X0") -}}
+      {{ $session_type = "x11" -}}
+    {{ end -}}
+  {{ end -}}
+  
+  {{- /* Method 3: Use loginctl (most reliable for systemd-based systems) */ -}}
+  {{ if not $session_type -}}
+    {{ $whoami := output "whoami" | trim -}}
+    {{ $session_line := output "loginctl" | toString | regexFind (printf ".*%s.*" $whoami) -}}
+    {{ if $session_line -}}
+      {{ $session_id := $session_line | regexFind "[0-9]+" | first -}}
+      {{ if $session_id -}}
+        {{ $type_output := output "loginctl" "show-session" $session_id "-p" "Type" | trim -}}
+        {{ $session_type = $type_output | replaceAllRegex "Type=" "" | lower | trim -}}
+      {{ end -}}
+    {{ end -}}
+  {{ end -}}
+{{ end -}}
+
+{{ $session_type -}}

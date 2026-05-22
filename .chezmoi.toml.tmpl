@@ -1,0 +1,54 @@
+{{ $machine := promptStringOnce . "machine" "Machine (home)" -}}
+
+{{ $chassisType := includeTemplate ".chezmoitemplates/chassis.tmpl" . -}}
+{{ $timezone := includeTemplate ".chezmoitemplates/timezone.tmpl" . -}}
+{{ $wm := includeTemplate ".chezmoitemplates/wm.tmpl" . -}}
+
+{{ if eq $machine "home" -}}
+encryption = "gpg"
+[gpg]
+  recipient = "{{ promptStringOnce .chezmoi.config.gpg "recipient" "recipient" }}"
+{{ end -}}
+
+[data]
+  machine = "{{ $machine }}" # or "work", "server" ...
+  chassis_type = "{{ or (promptStringOnce . "chassis_type" (printf "chassis type (%s)" $chassisType)) $chassisType }}"  # or "desktop"
+  longitude = "{{ promptStringOnce . "longitude" "longitude"  }}"
+  latitude = "{{ promptStringOnce . "latitude" "latitude"  }}"
+  city = "{{ promptStringOnce . "city" "city" }}"
+  country = "{{ promptStringOnce . "country" "country" }}"
+  accuweather_url = "{{ promptStringOnce . "accuweather_url" "accuweather_url" }}"
+  timezone = "{{ or (promptStringOnce . "timezone" (printf "timezone (%s)" $timezone)) $timezone }}"
+  fullname = "{{ promptStringOnce . "fullname" "fullname" }}"
+  email = "{{ promptStringOnce . "email" "email" }}"
+  wm = "{{ or (promptStringOnce . "wm" (printf "windowing system (%s)" $wm)) $wm }}" # or "x11"
+  password_manager = "{{ or (promptStringOnce . "password_manager" "password manager (bw)") "bw" }}" # = "bitwarden" / "vaultwarden" or "pass"
+  network_interface = "{{ or (promptStringOnce . "network_interface" "network interface (enp3s0)") "enp3s0" }}"
+  emacs_framework = "{{ or (promptStringOnce . "emacs_framework" "emacs framework (spacemacs)" ) "spacemacs" }}" # or doomemacs
+
+[data.env]
+  path = ["~/.local/bin", "~/bin"]
+
+{{ if eq $machine "home" -}}
+[data.calcure]
+  holiday_country = "{{ or (promptStringOnce . "calcure.holiday_country" (printf "calcure holiday country (%s)" .country)) .country }}"
+
+[data.vdirsyncer]
+  url = "{{ promptStringOnce . "vdirsyncer.url" "vdirsyncer url" }}"
+  username = "{{ promptStringOnce . "vdirsyncer.username" "vdirsyncer username" }}"
+  password = "{{ promptStringOnce . "vdirsyncer.password" "vdirsyncer password" }}"
+
+[data.mpd]
+  hostname = "{{ or (promptStringOnce . "mpd.hostname" (printf "mpd hostname (%s)" .chezmoi.hostname)) .chezmoi.hostname }}"
+  port = {{ or (promptIntOnce . "mpd.port" "mpd port (6600)") 6600 }}
+  password = "{{ promptStringOnce . "mpd.password" "mpd password" }}"
+  readonly_password = "{{ promptStringOnce . "mpd.readonly_password" "mpd readonly password" }}"
+
+[data.qbittorrent]
+  hostname = "{{ promptStringOnce . "qbittorrent.hostname" "qbittorrent hostname" }}"
+  username = "{{ promptStringOnce . "qbittorrent.username" "qbittorrent username" }}"
+  password = "{{ promptStringOnce . "qbittorrent.password" "qbittorrent password" }}"
+
+[data.ledger]
+  dir = "{{ promptStringOnce . "ledger.dir" "ledger dir" }}"
+{{ end -}}

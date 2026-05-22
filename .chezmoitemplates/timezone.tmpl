@@ -1,0 +1,14 @@
+{{- /* Simple cross-platform timezone detection */ -}}
+{{ $tz := "" -}}
+{{ if eq .chezmoi.os "windows" -}}
+  {{ $tz = output "powershell" "-NoProfile" "-Command" "(Get-TimeZone).Id" | trim -}}
+{{ else if eq .chezmoi.os "darwin" -}}
+  {{ $tz = output "systemsetup" "-gettimezone" | replaceAllRegex "Time Zone: " "" | trim -}}
+{{ else if eq .chezmoi.os "linux" -}}
+  {{ if lookPath "timedatectl" -}}
+    {{ $tz = output "timedatectl" "show" "--property=Timezone" "--value" | trim -}}
+  {{ else if lstat "/etc/timezone" -}}
+    {{ $tz = include "readFileNoLineBreak" "/etc/timezone" -}}
+  {{ end -}}
+{{ end -}}
+{{ $tz -}}
