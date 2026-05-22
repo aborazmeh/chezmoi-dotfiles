@@ -1,0 +1,22 @@
+{{ $emacsFramework := or .emacs_framework "spacemacs" -}}
+{{ if and (eq .chezmoi.os "linux") (eq $emacsFramework "spacemacs" "doomemacs") -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  ({{ $emacsFramework }})  ━━━\033[0m"
+
+if [ ! -d "$HOME/.emacs.d" ]; then
+  {{ if eq $emacsFramework "spacemacs" }}
+    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+  {{ else if $emacsFramework "doomemacs" }}
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+    ~/.config/emacs/bin/doom install
+  {{ end }}
+  if [ $? -eq 0 ]; then
+    echo -e "\033[0;32m\033[1m[OK]\033[0m    {{ $emacsFramework }} installed."
+  else
+    echo -e "\033[0;31m\033[1m[ERROR]\033[0m Failed to clone {{ $emacsFramework }} repository" >&2
+  fi
+else
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Directory $HOME/.emacs.d already exists, skipping."
+fi
+{{ end -}}

@@ -1,5 +1,11 @@
 .config/Code/User/tasks.json
 
+{{- if eq .chezmoi.os "darwin" "linux" }}
+  {{- if ne .emacs_framework "spacemacs" }}
+    .spacemacs
+  {{- end }}
+{{- end }}
+
 {{- if ne .wm "x11" }}
 .Xdefaults
 .Xresources
@@ -46,7 +52,6 @@ GNUstep
 .mplayer
 smplayer
 
-.spacemacs
 .SpaceVim.d
 
 scripts/i3blocks
