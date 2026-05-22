@@ -1,3 +1,5 @@
+.config/Code/User/tasks.json
+
 {{- if ne .wm "x11" }}
 .Xdefaults
 .Xresources

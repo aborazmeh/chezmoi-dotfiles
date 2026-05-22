@@ -2,6 +2,9 @@ Create template file (running `chezmoi data` shows all available variables)
 
 ```toml
 # ~/.config/chezmoi/chezmoi.toml
+encryption = "gpg"
+[gpg]
+    recipient =
 [data]
   machine = "home" # or "work", "server" ...
   device = "laptop" # or "desktop"

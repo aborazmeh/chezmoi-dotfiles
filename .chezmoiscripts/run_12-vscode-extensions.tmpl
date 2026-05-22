@@ -1,0 +1,45 @@
+{{ if and (eq .chezmoi.os "linux") (lookPath "code") -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Visual Studio Code extensions  ━━━\033[0m";
+
+{{ $extensionList := .vscode.extensions.essentials -}}
+{{ if eq .machine "home" -}}
+{{ $extensionList = .vscode.extensions.extras | append $extensionList -}}
+{{ end -}}
+VSCODE_EXTENSIONS=({{ $extensionList | quoteList | join " " }})
+
+installed=0
+skipped=0
+
+for ext in "${VSCODE_EXTENSIONS[@]}"; do
+  if code --list-extensions | grep -q "^${ext}$"; then
+    echo -e "\033[0;36m[INFO]\033[0m ${ext} already installed, skipping";
+    ((skipped++))
+  else
+    echo -e "\033[0;36m[INFO]\033[0m Installing: ${ext}";
+    if code --install-extension "$ext"; then
+      echo -e "\033[0;32m[OK]\033[0m Successfully installed: ${ext}";
+      ((installed++))
+    else
+      echo -e "\033[1m[ERROR]\033[0m Failed to install: ${ext}" >&2;
+    fi
+  fi
+done
+
+echo -e "\033[0;36m[INFO]\033[0m ${installed} installed, ${skipped} already present";
+
+current_exts=$(code --list-extensions)
+unlisted=()
+
+for ext in $current_exts; do
+  [[ ! " ${VSCODE_EXTENSIONS[@]} " =~ " ${ext} " ]] && unlisted+=("$ext")
+done
+
+if [ ${#unlisted[@]} -gt 0 ]; then
+  echo -e "\033[0;36m[INFO]\033[0m Locally installed extensions not in chezmoi configs:";
+  printf "   • %s\n" "${unlisted[@]}";
+fi
+
+echo -e "\033[0;32m[OK]\033[0m Visual Studio Code extensions installed.";
+{{ end -}}
