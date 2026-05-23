@@ -1,0 +1,10 @@
+{{ $filename := printf
+  "%s/.local/share/chezmoi/Pictures/private_backgrounds/%s.lock.webp"
+  .chezmoi.homeDir
+  .chezmoi.osRelease.id
+-}}
+{{ if lstat $filename -}}
+{{ $filename -}}
+{{ else -}}
+{{ .chezmoi.homeDir }}/.local/share/chezmoi/Pictures/private_backgrounds/arch.lock.webp
+{{- end -}}

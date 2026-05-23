@@ -652,7 +652,7 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSO
 {{- end }}
 
 # Wallpaper
-output "*" bg ~/Pictures/backgrounds/wallpaper.png fill
+output "*" bg ~/Pictures/backgrounds/wallpaper.webp fill
 {{- if eq .machine "home" }}
 # exec_always $HOME/scripts/wallpapers -m bing -f sway
 

@@ -5,7 +5,7 @@ indicator-caps-lock
 indicator-radius=100
 indicator-thickness=10
 scaling=stretch
-image=$HOME/Pictures/backgrounds/lock.png
+image=$HOME/Pictures/backgrounds/lock.webp
 inside-color=1d2021
 inside-clear-color=222222
 inside-ver-color=ff99441c

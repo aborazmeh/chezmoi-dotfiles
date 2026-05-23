@@ -1,3 +1,4 @@
+Pictures/backgrounds/{arch,debian,kali,slackware,ubuntu}*
 node_modules
 .prettierrc
 packages.json
