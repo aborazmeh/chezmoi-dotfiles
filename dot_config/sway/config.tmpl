@@ -64,8 +64,8 @@ show_marks yes
 font pango:DejaVu Sans Mono 8, FontAwesome 8
 include "$HOME/.cache/wal/colors-sway"
 # client.<class> <border> <background> <text> [<indicator> [<child_border>]]
-# client.background $background $background $background
-# client.focused $color0 $background $foreground $color7 $background
+client.background $background $background $background
+client.focused $color0 $background $foreground $color7 $background
 # |focused_inactive  | #333333 | #5f676a    | #ffffff | #484e50   | #5f676a      |
 # |focused_tab_title | #333333 | #5f676a    | #ffffff | n/a       | n/a          |
 # |unfocused         | #333333 | #222222    | #888888 | #292d2e   | #222222      |
@@ -445,7 +445,7 @@ assign [class="Typora"] $ws_office
 assign [class="OmegaT"] $ws_office
 assign [app_id="org.kde.tellico"] $ws_office
 assign [app_id="obsidian"] $ws_office
-assign [class="Joplin"] $ws_office
+assign [app_id="@joplin/app-deskop"] $ws_office
 assign [class="marktext"] $ws_office
 
 assign [class="Assistant"] $ws_doc

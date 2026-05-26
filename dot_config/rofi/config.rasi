@@ -1,5 +1,5 @@
 @import "theme.rasi"
-// @import "~/.cache/wal/colors-rofi-light"
+@import "~/.cache/wal/colors-rofi-light"
 // @import "~/.cache/wal/colors-rofi-dark"
 
 configuration {

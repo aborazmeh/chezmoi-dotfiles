@@ -1,0 +1,252 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/python3
+
+import os
+import json
+from pathlib import Path
+
+{{- $filename := printf
+  "%s/.local/share/chezmoi/Pictures/private_backgrounds/%s.wallpaper.json"
+  .chezmoi.homeDir
+  .chezmoi.osRelease.id
+-}}
+{{ if not (lstat $filename) -}}
+{{ $filename = printf "%s/.local/share/chezmoi/Pictures/private_backgrounds/arch.wallpaper.json" .chezmoi.homeDir -}}
+{{- end }}
+
+def scss(c: dict) -> str:
+    return "\n".join(f"${k}: {v};" for k, v in colors.items())
+
+
+def kitty(c: dict) -> str:
+    return "\n".join(
+        f"{k:<12} {c[k]}"
+        for k in ["foreground", "background", "cursor"]
+        + [f"color{j}" for i in range(8) for j in (i, i + 8)]
+    )
+
+
+def waybar(c: dict) -> str:
+    return "\n".join(f"@define-color {k} {v};" for k, v in colors.items())
+
+
+def wezterm(c: dict) -> str:
+    return "\n".join([c[f"color{i}"] for i in range(16)])
+
+
+def sway(c: dict) -> str:
+    return "\n".join(f"set ${key} {value}" for key, value in c.items())
+
+
+def jsonc(c: dict) -> str:
+    return json.dumps(
+        {
+            "alpha": 100,
+            "special": {k: c[k] for k in ["background", "foreground", "cursor"]},
+            "colors": {k: c[k] for k in c if k.startswith("color")},
+        },
+        indent=2,
+    )
+
+
+def rofi(c: dict, theme: str = "light") -> str:
+    bg, fg = colors["background"], colors["foreground"]
+
+    if theme == "dark":
+        bg, fg = fg, bg
+
+    return f"""* {{`{{
+    active-background: {colors["color2"]};
+    active-foreground: @foreground;
+    normal-background: @background;
+    normal-foreground: @foreground;
+    urgent-background: {colors["color1"]};
+    urgent-foreground: @foreground;
+
+    alternate-active-background: @background;
+    alternate-active-foreground: @foreground;
+    alternate-normal-background: @background;
+    alternate-normal-foreground: @foreground;
+    alternate-urgent-background: @background;
+    alternate-urgent-foreground: @foreground;
+
+    selected-active-background: {colors["color1"]};
+    selected-active-foreground: @foreground;
+    selected-normal-background: {colors["color2"]};
+    selected-normal-foreground: @foreground;
+    selected-urgent-background: {colors["color3"]};
+    selected-urgent-foreground: @foreground;
+
+    background-color: @background;
+    background: {fg};
+    foreground: {bg};
+    border-color: @background;
+    spacing: 2;
+}}
+
+#window {{
+    background-color: @background;
+    border: 0;
+    padding: 2.5ch;
+}}
+
+#mainbox {{
+    border: 0;
+    padding: 0;
+}}
+
+#message {{
+    border: 2px 0px 0px;
+    border-color: @border-color;
+    padding: 1px;
+}}
+
+#textbox {{
+    text-color: @foreground;
+}}
+
+#inputbar {{
+    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}}
+
+#textbox-prompt-colon {{
+    expand: false;
+    str: ":";
+    margin: 0px 0.3em 0em 0em;
+    text-color: @normal-foreground;
+}}
+
+#listview {{
+    fixed-height: 0;
+    border: 2px 0px 0px;
+    border-color: @border-color;
+    spacing: 2px;
+    scrollbar: true;
+    padding: 2px 0px 0px;
+}}
+
+#element {{
+    border: 0;
+    padding: 1px;
+}}
+
+#element.normal.normal {{
+    background-color: @normal-background;
+    text-color: @normal-foreground;
+}}
+
+#element.normal.urgent {{
+    background-color: @urgent-background;
+    text-color: @urgent-foreground;
+}}
+
+#element.normal.active {{
+    background-color: @active-background;
+    text-color: @active-foreground;
+}}
+
+#element.selected.normal {{
+    background-color: @selected-normal-background;
+    text-color: @selected-normal-foreground;
+}}
+
+#element.selected.urgent {{
+    background-color: @selected-urgent-background;
+    text-color: @selected-urgent-foreground;
+}}
+
+#element.selected.active {{
+    background-color: @selected-active-background;
+    text-color: @selected-active-foreground;
+}}
+
+#element.alternate.normal {{
+    background-color: @alternate-normal-background;
+    text-color: @alternate-normal-foreground;
+}}
+
+#element.alternate.urgent {{
+    background-color: @alternate-urgent-background;
+    text-color: @alternate-urgent-foreground;
+}}
+
+#element.alternate.active {{
+    background-color: @alternate-active-background;
+    text-color: @alternate-active-foreground;
+}}
+
+#scrollbar {{
+    width: 4px;
+    border: 0;
+    handle-width: 8px;
+    padding: 0;
+}}
+
+#sidebar {{
+    border: 2px 0px 0px;
+    border-color: @border-color;
+}}
+
+#button {{
+    text-color: @normal-foreground;
+}}
+
+#button.selected {{
+    background-color: @selected-normal-background;
+    text-color: @selected-normal-foreground;
+}}
+
+#inputbar {{
+    spacing: 0;
+    text-color: @normal-foreground;
+    padding: 1px;
+}}
+
+#case-indicator {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}
+
+#entry {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}
+
+#prompt {{
+    spacing: 0;
+    text-color: @normal-foreground;
+}}`}}"""
+
+
+def nnn(c: dict) -> str:
+    hex_to_xterm = lambda h: str(round(int(h[1:], 16) / 0xFFFFFF * 255))
+    c = {k: hex_to_xterm(v) for k, v in c.items()}
+    f = lambda s: f"{int(c[s]):X}"
+    return f'BLK="{f("color8")}" CHR="{f("color8")}" DIR="{f("color4")}" EXE="{f("color4")}" REG="{f("color7")}" HARDLINK="{f("color6")}" SYMLINK="{f("color6")}" MISSING="{f("color1")}" ORPHAN="{f("color8")}" FIFO="{f("color5")}" SOCK="{f("color4")}" OTHER="{f("color4")}"\nexport NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"'
+
+
+def write_file(filename: str, text: str) -> None:
+    Path(os.path.expanduser("~/.cache/wal")).mkdir(parents=True, exist_ok=True)
+    with open(os.path.expanduser(f"~/.cache/wal/{filename}"), "w") as fp:
+        # with open(os.path.expanduser(f"~/.cache/wal/{filename}"), "w") as fp:
+        fp.write(text)
+
+
+if __name__ == "__main__":
+    print("\n\033[1m━━━  Colorscheme  ━━━\033[0m")
+
+    with open("{{ $filename }}", "r") as fp:
+        colors = json.load(fp)
+
+    write_file("colors-sway", sway(colors))
+    write_file("colors", wezterm(colors))
+    write_file("colors-waybar.css", waybar(colors))
+    write_file("colors-kitty.conf", kitty(colors))
+    write_file("colors.scss", scss(colors))
+    write_file("colors.json", jsonc(colors))
+    write_file("colors-rofi-light.rasi", rofi(colors, "light"))
+    write_file("colors-rofi-dark.rasi", rofi(colors, "dark"))
+    write_file("colors-nnn.sh", nnn(colors))
+
+    print("\033[0;32m\033[1m[OK]\033[0m    Colorscheme created.")
+{{ end -}}
