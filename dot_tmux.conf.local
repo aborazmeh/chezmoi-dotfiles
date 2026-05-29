@@ -29,6 +29,35 @@ unbind-key -T prefix C-c
 bind-key Bspace run-shell -b '/usr/bin/python -m ranger_tmux.drop'
 #-#-# end_of_ranger_tmux_config #-#-#
 
+# switch windows alt+number
+bind-key -n M-1 select-window -t 1
+bind-key -n M-2 select-window -t 2
+bind-key -n M-3 select-window -t 3
+bind-key -n M-4 select-window -t 4
+bind-key -n M-5 select-window -t 5
+bind-key -n M-6 select-window -t 6
+bind-key -n M-7 select-window -t 7
+bind-key -n M-8 select-window -t 8
+bind-key -n M-9 select-window -t 9
+
+# Zellij like bindings
+bind -n M-n split-window -v
+bind -n M-p split-window -h
+bind -n M-h select-pane -L
+bind -n M-j select-pane -D
+bind -n M-k select-pane -U
+bind -n M-l select-pane -R
+bind -n M-H resize-pane -L 5
+bind -n M-J resize-pane -D 5
+bind -n M-K resize-pane -U 5
+bind -n M-L resize-pane -R 5
+bind -n M-< swap-pane -U
+bind -n M-> swap-pane -D
+bind -n M-{ swap-pane -U
+bind -n M-\} swap-pane -D
+bind -n M-] select-pane -t :.+
+bind -n M-[ select-pane -t :.-
+
 
 # -- session creation ----------------------------------------------------------
 
