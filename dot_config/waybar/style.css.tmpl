@@ -1,6 +1,6 @@
-{{ if stat (joinPath .chezmoi.homeDir ".cache/wal/colors-waybar.css") }}
+{{ if stat (joinPath .chezmoi.homeDir ".cache/wal/colors-waybar.css") -}}
 @import '{{ .chezmoi.homeDir }}/.cache/wal/colors-waybar.css';
-{{ end }}
+{{- end }}
 
 @define-color red #ad1818;
 @define-color gray #64727d;
@@ -236,6 +236,21 @@ window#waybar.hidden {
 
 #temperature.critical {
   background: @urgent;
+}
+
+#keyboard-state {
+  margin-right: 2px;
+}
+
+#keyboard-state label {
+  margin-right: 1px;
+  padding: 0 2px;
+}
+
+#keyboard-state label.locked {
+  font-weight: bold;
+  color: black;
+  background: @alt-state;
 }
 
 #custom-keyboard {
