@@ -44,17 +44,16 @@
   },
   "bluetooth": {
     "format": "",
-  	"format-on": " {status}",
-  	"format-off": "",
-  	"format-disabled": "", // an empty format will hide the module
-  	"format-connected": " {device_alias}",
-  	"format-connected-battery": " {device_alias} {device_battery_percentage}%",
-  	// "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
-  	"tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-  	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-  	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-  	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-
+    "format-on": " {status}",
+    "format-off": "",
+    "format-disabled": "", // an empty format will hide the module
+    "format-connected": " {device_alias}",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
     "on-click": "ghostty --command=bluetoothctl"
   },
   "backlight": {
@@ -104,10 +103,11 @@
       "car": "",
       "default": ["", ""]
     },
-    "on-click": "$HOME/scripts/bar/music -f sway mute",
+    {{ $m := printf "%s/scripts/bar/music" .chezmoi.homeDir | lstat -}}
+    "on-click": "{{ or (and $m "$HOME/scripts/bar/music -f sway mute") "amixer -D pulse set Master toggle" }}",
     "on-click-right": "pavucontrol",
-    "on-scroll-up": "$HOME/scripts/bar/music -f sway volume+",
-    "on-scroll-down": "$HOME/scripts/bar/music -f sway volume-"
+    "on-scroll-up": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") "amixer -D pulse set Master unmute 5%+" }}",
+    "on-scroll-down": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") "amixer -D pulse set Master unmute 5%-" }}"
   },
   "cpu": {
     "format": "  {usage}%",
