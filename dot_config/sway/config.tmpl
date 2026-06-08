@@ -391,6 +391,7 @@ assign [app_id="dev.zed.Zed"] $ws_dev
 assign [app_id="org.gnome.Meld"] $ws_dev
 assign [app_id="org.kde.kdiff3"] $ws_dev
 assign [class="jadx-gui-JadxGUI"] $ws_dev
+assign [app_id="devin-desktop"] $ws_dev
 
 assign [class="Opera"] $ws_web
 assign [app_id="firefox(-nightly|-esr|developeredition)?"] $ws_web
@@ -517,6 +518,7 @@ assign [app_id="dosbox"] $ws_vm
 assign [class="org.dosbox.*"] $ws_vm
 assign [app_id="waydroid"] $ws_vm
 assign [class="steam"] $ws_vm
+assign [class="Genymotion( Player)?"] $ws_vm
 
 assign [class="Skype"] $ws_im
 assign [class="Pidgin"] $ws_im
@@ -572,6 +574,7 @@ for_window [app_id="kitty"] opacity set 0.90
 for_window [app_id="org.kde.konsole"] opacity set 0.75
 for_window [app_id="foot"] opacity set 0.75
 for_window [app_id="rofi"] opacity set 0.75
+
 # Floating apps
 for_window [window_role="pop-up"] floating enable
 for_window [class="Lxappearance"] floating enable
@@ -608,6 +611,7 @@ for_window [app_id="ranger-choosefiles"] floating enable
 for_window [app_id="com.rafaelmardojai.Blanket"] floating enable
 for_window [app_id="^gimp.*" title="Open Location"] floating enable
 for_window [app_id="org.kde.tellico" title="^Edit Entry - .*"] floating enable
+for_window [class="Genymotion Player"] floating enable
 
 # Misc
 # for_window [urgent="latest"] focus
