@@ -1,0 +1,159 @@
+{{ if eq .machine "home" -}}
+  {{ $encryptedFile := joinPath .chezmoi.sourceDir "dot_newsbeuter" "urls.asc" -}}
+  {{ include $encryptedFile | decrypt | print -}}
+{{ else -}}
+
+queries
+"query:أخبار:unread = \"yes\" and tags # \"arabic\" and tags # \"news\"" query
+"query:News:unread = \"yes\" and tags # \"news\" and tags # \"english\"" query
+
+"query:Technology:unread = \"yes\" and tags # \"technology\"" query
+"query:Culture:unread = \"yes\" and tags # \"culture\"" query
+"query:Health:unread = \"yes\" and tags # \"health\"" query
+"query:Economics:unread = \"yes\" and tags # \"economics\"" query
+"query:Business:unread = \"yes\" and tags # \"business\"" query
+
+"query:Books:unread = \"yes\" and tags # \"books\"" query
+"query:Podcasts:unread = \"yes\" and tags # \"podcast\"" query
+"query:Unread Articles:unread = \"yes\"" query
+
+Books
+http://feeds.feedburner.com/brainpickings/rss "~The Marginalian [Brain Pickings]" books culture english
+https://boringbooks.net/feed "~كتب مملة" books culture arabic
+https://lithub.com/feed/ "~Literary Hub" books culture english
+https://bookriot.com/feed/ "~Book Riot" books culture english
+https://bobonbooks.com/feed/ "~Bob on Books" books culture english
+https://literariness.org/feed/ "~Literary Theory and Criticism" books culture english
+https://www.theguardian.com/books/rss "~The Guardian | Books" books culture english
+https://feeds.feedburner.com/nybooks "~The New York Review of Books" books culture english
+https://rss.nytimes.com/services/xml/rss/nyt/Books/Review.xml "~The New York Times - Books" books culture english
+https://www.newyorker.com/feed/tag/books/rss "~The New Yorker - Books" books culture english
+https://longreads.com/feed ~Longreads books culture english
+https://lrb.co.uk/feeds/rss "~London Review of Books" books culture english
+https://www.bookpage.com/feed/ "~BookPage" books culture english
+https://feeds.feedburner.com/TheParisReviewBlog "~The Paris Review" books culture english
+
+Technology
+https://archlinux.org/feeds/news "~Archlinux" technology linux english
+http://slashdot.org/slashdot.rss ~Slashdot technology news opensource english
+https://www.wired.com/rss ~Wired technology english
+https://theprivacydad.com/feed/ "~The Privacy Dad" technology english
+https://techcrunch.com/feed "~Tech Crunch" technology english
+
+Cybersecurity
+https://feeds.feedburner.com/TheHackersNews "~The Hacker News" technology cybersecurity english
+https://pentesterlab.com/blog/feed "~Pentester Lab" technology cybersecurity english
+https://www.darkreading.com/rss.xml "~Dark Reading" technology cybersecurity english
+https://www.schneier.com/feed/ "~Schneier on Security" technology cybersecurity politics english
+https://www.krebsonsecurity.com/feed/ "~Krebs on Security" technology cybersecurity english
+https://www.pentestpartners.com/feed/ "~Pen Test Partners Blog" technology cybersecurity english
+https://www.offensive-security.com/feed/ "~Offensive Security Blog" technology cybersecurity english
+https://www.securityweek.com/rss.xml "~SecurityWeek" technology cybersecurity english
+https://www.cert.ssi.gouv.fr/feed/ "~ANSSI CERT Blog" technology cybersecurity french
+https://www.siberbulten.com/feed "~Siber Bülten" technology cybersecurity turkish
+
+Devops
+https://devops.com/feed "~DevOps.com" technology devops english
+https://kubernetes.io/feed.xml "~Kubernetes Official Blog" technology devops english
+https://thenewstack.io/feed/ "~The New Stack" technology devops english
+https://aws.amazon.com/blogs/devops/feed/ "~ technology Blog" technology devops english
+https://azure.microsoft.com/en-us/blog/feed/ "~ technology Blog" technology devops english
+https://about.gitlab.com/atom.xml "~GitLab Blog" technology devops english
+https://circleci.com/blog/feed.xml "~CircleCI Blog" technology devops english
+https://hashicorp.com/blog/feed.xml "~HashiCorp Blog" technology devops english
+
+AI/ML - Data Science
+https://blog.google/rss/ "~Google Blog" technology AI english
+https://openai.com/blog/rss "~OpenAI Blog" technology AI english
+https://machinelearningmastery.com/feed/ "~Machine Learning Mastery" technology AI english
+https://towardsdatascience.com/feed "~Towards Data Science" technology AI english
+https://www.microsoft.com/en-us/research/feed/ "~Microsoft Research Blog" technology AI english
+https://www.actuia.com/feed "~ActuIA" technology AI french
+https://www.kdnuggets.com/feed "~KDnuggets" technology data-science english
+https://www.analyticsvidhya.com/feed "~Analytics Vidhya" technology data-science AI english
+https://feeds.feedburner.com/RBloggers "~R-Bloggers" technology data-science english
+
+Programming
+https://www.smashingmagazine.com/feed/ "~Smashing Magazine" technology webdev  design english
+https://css-tricks.com/feed/ "~CSS-Tricks" technology programming webdev design english
+https://dev.to/feed "~DEV Community" technology programming webdev english
+https://www.sitepoint.com/feed/ "~SitePoint" technology webdev english
+
+Free Software
+https://opensource.com/feed "~Opensource.com" floss community english
+https://www.linuxjournal.com/node/feed "~Linux Journal" technology linux english
+https://planet.debian.org/rss20.xml "~Planet Debian" technology linux english
+https://planet.gnome.org/rss20.xml "~Planet GNOME" technology linux english
+https://planet.kde.org/rss20.xml "~Planet KDE" technology linux english
+https://opensourcefeed.org/feed "~OpenSourceFeed" technology linux english
+https://aitnews.com/feed "~AIT Arabic Tech" technology linux arabic
+https://www.omgubuntu.co.uk/feed "~OMG! Ubuntu" technology linux english
+https://www.phoronix.com/rss.php "~Phoronix" technology linux english
+https://www.linux.com/feed "~Linux.com" technology linux english
+https://distrowatch.com/news/dw.xml "~DistroWatch Weekly" technology linux english
+
+Electronics
+https://www.hackaday.com/feed/ "~Hackaday Security" technology cybersecurity english
+
+News
+https://www.alternet.org/feeds/feed.rss "~Alternet" news english
+http://rss.cnn.com/rss/cnn_topstories.rss "~CNN - Top Stories" news english
+http://feeds.bbci.co.uk/news/rss.xml "~BBC - Top Stories" news english
+http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml "~BBC" news english
+https://www.aljazeera.net/feed "~الجزيرة" news arabic
+http://arabic.cnn.com/rss "~CNN Arabic" news arabic
+http://www.bbc.co.uk/arabic/index.xml "~BBC Arabic" news arabic
+https://arabi21.com/Rss/SectionNewsRSS?id=320 "~عربي21 - سياسة دولية" news arabic
+https://arabi21.com/Rss/SectionNewsRSS?id=288 "~عربي21 - سياسة عربية" news arabic
+https://chaski.huffpost.com/us/auto/vertical/world-news "~HuffPost - World" news english
+https://www.newyorker.com/feed/news "~The New Yorker - News" news english
+https://www.theguardian.com/rss "~The Guardian" news english
+https://www.independent.co.uk/rss ~Independent news english
+https://theintercept.com/feed/?lang=en "~The Intercept_" news english
+https://feeds.skynews.com/feeds/rss/world.xml "~Sky News - World" news english
+https://rss.nytimes.com/services/xml/rss/nyt/World.xml "~The New York Times - World" news english
+https://feeds.washingtonpost.com/rss/world "~Washington Post - World" news english
+https://feeds.a.dj.com/rss/RSSWorldNews.xml "~The Wall Street Journal - World" news english
+https://www.reutersagency.com/feed/?best-types=reuters-news-first&post_type=best "~Reuters - News First" news english
+http://rss.lemonde.fr/c/205/f/3050/index.rss "~Le Monde" news french
+https://legrandcontinent.eu/fr/feed/ "~Le Grand Continent" news french
+http://feeds.lefigaro.fr/c/32266/f/438191/index.rss "~Le Figaro" news french
+https://www.reddit.com/r/politics/.rss reddit news
+https://www.reddit.com/r/worldnews/.rss reddit news
+
+Business
+http://rss.cnn.com/rss/money_news_international.rss "~CNN - Money" business english
+https://arabi21.com/Rss/SectionNewsRSS?id=321 "~عربي21 - اقتصاد دولي" economics arabic
+https://www.economist.com/the-world-this-week/rss.xml "~The Economist - The World This Week" economics english
+https://www.economist.com/graphic-detail/rss.xml "~The Economist - Graphic Detail" economics english
+https://feeds.a.dj.com/rss/RSSMarketsMain.xml "~The Wall Street Journal - Markets" economics english
+http://feeds.hbr.org/harvardbusiness/ "~HBR" business english
+https://feeds.washingtonpost.com/rss/business "~Washington Post - Business" business english
+https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml "~The Wall Street Journal - United States Business" business english
+https://www.reutersagency.com/feed/?best-sectors=economy&post_type=best "~Reuters - Economy" business economics english
+https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best "~Reuters - Business & Finance" business economics english
+
+Culture
+https://www.vanityfair.com/feed/rss "~Vainty Fair" culture english
+https://www.newyorker.com/feed/culture "~The New Yorker - Culture" culture english
+https://rss.nytimes.com/services/xml/rss/nyt/Movies.xml "~The New York Times - Movies" culture movies english
+https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml "~The New York Times - Art" culture art english
+https://rss.nytimes.com/services/xml/rss/nyt/Health.xml "~The New York Times - Health" culture health english
+https://feeds.washingtonpost.com/rss/lifestyle "~Washington Post - Lifestyle" culture health english
+https://feeds.washingtonpost.com/rss/entertainment "~Washington Post - Entertainment" culture english
+https://feeds.a.dj.com/rss/RSSLifestyle.xml "~The Wall Street Journal - Lifestype" culture health english
+https://www.reutersagency.com/feed/?best-topics=human-interest&post_type=best "~Reuters - Human Interests" culture english
+https://www.reutersagency.com/feed/?best-topics=lifestyle-entertainment&post_type=best "~Reuters - Lifestyle & Entertainment" culture english
+https://www.reutersagency.com/feed/?best-topics=sports&post_type=best "~Reuters - Sports" culture sports english
+https://www.reutersagency.com/feed/?best-topics=health&post_type=best "~Reuters - Health" culture health english
+https://www.reutersagency.com/feed/?best-topics=environment&post_type=best "~Reuters - Environment" culture environment english
+
+Comics
+https://xkcd.com/rss.xml ~kxcd comics english
+https://feeds.washingtonpost.com/rss/rss_comic-riffs "~Washington Post - Comics" comics english
+
+Podcasts
+http://feeds.feedburner.com/nomeatathlete "~No Meat Athlete" podcast health vegan english
+http://www.artofmanliness.com/category/podcast/feed/ "~Art of Manliness" podcast english
+
+{{- end -}}

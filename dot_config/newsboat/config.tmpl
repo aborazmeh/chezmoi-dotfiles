@@ -1,0 +1,330 @@
+# ----------------------------------------------------------------------
+# file:    ~/.config/newsboat/config
+# author:  {{ .chezmoi.username}}
+# date:    07/09/2025 - 21:08 UTC
+# vim: set ai et fenc=utf-8 ft=conf nu si sts=0 sw=4 ts=8 tw=0 :
+# ----------------------------------------------------------------------
+
+## General
+cache-file "~/.newsbeuter/cache.db"
+cleanup-on-quit yes
+cookie-cache ""
+error-log "~/.newsbeuter/error.log"
+#include
+opml-url ""
+show-keymap-hint yes
+urls-source local
+swap-title-and-hints false
+
+## Viewing
+wrap-scroll yes
+always-display-description false
+confirm-mark-feed-read yes
+confirm-exit no
+display-article-progress yes
+# external-url-viewer "urlscan"
+external-url-viewer "/usr/bin/urlview"
+feed-sort-order none
+article-sort-order date-asc
+goto-first-unread yes
+goto-next-feed yes
+history-limit 100
+html-renderer internal
+#html-renderer "/usr/bin/elinks -dump"
+# html-renderer "w3m"
+pager internal
+# pager "w3m -T text/html"
+show-read-feeds yes
+show-read-articles yes
+#text-width 72
+text-width 0
+# hide articles matching
+ignore-article "*" "title =~ \"Sponsor\""
+ignore-article "*" "title =~ \"Advertisement\""
+ignore-mode "display"
+# kill files ignore articles marked #shorts to filter out youtube shorts
+ignore-article "*" "title =~ \"#shorts$\""
+
+## Browser
+browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"  # xdg-open midori epiphany qutebrowser falkon luakit eolie nyxt vimb
+# macro y set browser "mpv %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+# macro o set browser "vimprobable2 %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+# macro w set browser "w3m %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+# macro m set browser "mpv %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+# macro . set browser "{{ .chezmoi.homeDir }}/scripts/sauron %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+macro r set browser "python3 -m readability.readability -u %u 2>/dev/null | w3m -T text/html"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &" # ; set browser "epiphany %u >/dev/null 2>&1 &"
+# macro l set browser "xdg-open %u"; open-in-browser ; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+# macro p set browser "{{ .chezmoi.homeDir }}/scripts/punch -i %u 2> /dev/null"; one; set browser "swaymsg workspace 3; qutebrowser >/dev/null 2>&1 %u &"
+
+## Updating
+auto-reload yes
+download-retries 4
+download-full-page yes
+download-timeout 30
+http-auth-method any
+mark-as-read-on-hover no
+max-download-speed 0
+notify-program notify-send
+notify-xterm yes
+notify-screen no
+notify-beep no
+notify-always no
+refresh-on-startup no
+reload-only-visible-feeds no
+reload-time 30
+reload-threads 100
+#reset-unread-on-update
+suppress-first-reload yes
+
+## GoogleReader
+#googlereader-flag-share ""
+#googlereader-flag-star ""
+#googlereader-login ""
+#googlereader-password ""
+#googlereader-passwordfile ""
+#googlereader-min-items 20
+#googlereader-show-special-feeds yes
+
+## Filters
+#define-filter
+
+## Archivement
+always-download ""
+keep-articles-days 30
+max-items 0
+podcast-auto-enqueue no
+prepopulate-query-feeds yes
+use-proxy no
+proxy 127.0.0.1:8118
+#proxy-auth
+proxy-auth-method any
+proxy-type http
+save-path "~/.newsbeuter/saved"
+user-agent ""
+#user-agent "Chrome/31.0.0.0"
+## podbeuter
+download-path "~/Music/podcasts/%h/%n"
+max-downloads 3
+player $PLAYER
+
+## Marking
+bookmark-cmd ""
+bookmark-interactive yes
+ttrss-flag-publish ""
+ttrss-flag-star ""
+ttrss-login ""
+#ttrss-passowrd ""
+ttrss-mode single
+ttrss-url ""
+
+## Key bindings
+unbind-key UP all
+unbind-key DOWN all
+# unbind-key PPAGE all
+# unbind-key NPAGE all
+unbind-key g feedlist
+unbind-key g articlelist
+unbind-key G feedlist
+unbind-key G articlelist
+
+bind-key j down all
+bind-key DOWN down all
+bind-key k up all
+bind-key UP up all
+bind-key j next
+bind-key DOWN next
+bind-key k prev
+bind-key UP prev
+bind-key ^B pageup all
+bind-key ^D pagedown all
+bind-key J next-feed
+bind-key K prev-feed
+bind-key J next article
+bind-key K prev article
+bind-key G end
+bind-key g home
+bind-key l open feedlist
+bind-key l open articlelist
+bind-key l open article
+bind-key l open tagselection
+bind-key l open dialogs
+bind-key l open urlview
+bind-key RIGHT open feedlist
+bind-key RIGHT open articlelist
+bind-key RIGHT open article
+bind-key RIGHT open tagselection
+bind-key RIGHT open dialogs
+bind-key RIGHT open urlview
+bind-key h quit feedlist
+bind-key h quit articlelist
+bind-key h quit article
+bind-key h quit tagselection
+bind-key h quit urlview
+bind-key h quit dialogs
+bind-key h quit help
+bind-key LEFT quit feedlist
+bind-key LEFT quit articlelist
+bind-key LEFT quit article
+bind-key LEFT quit tagselection
+bind-key LEFT quit urlview
+bind-key LEFT quit dialogs
+bind-key LEFT quit help
+# bind-key h quit podbeuter
+bind-key s sort feedlist
+bind-key s sort articlelist
+bind-key S rev-sort feedlist
+bind-key S rev-sort articlelist
+#unbind-key ENTER feedlist
+#unbind-key ENTER articlelist
+#unbind-key ENTER article
+#unbind-key ENTER tagselection
+#unbind-key ENTER dialogs
+#unbind-key ENTER urlview
+#unbind-key q all
+#bind-key ESC quit all
+#unbind-key ESC feedlist
+#unbind-key ESC articlelist
+#unbind-key ESC article
+#unbind-key ESC tagselection
+#unbind-key ESC urlview
+#unbind-key ESC dialogs
+#unbind-key ESC help
+#unbind-key ESC podbeuter
+#unbind-key N articlelist
+#bind-key m toggle-article-read articlelist
+#unbind-key J article
+#unbind-key K article
+#unbind-key n articlelist
+#unbind-key n feedlist
+#unbind-key n article
+#unbind-key p articlelist
+#unbind-key p feedlist
+#unbind-key p article
+#bind-key n next articlelist
+#bind-key n next feedlist
+#bind-key n next article
+#bind-key p prev articlelist
+#bind-key p prev feedlist
+#bind-key p prev article
+#bind-key N next-unread articlelist
+#bind-key N next-unread feedlist
+#bind-key N next-unread article
+#bind-key P prev-unread articlelist
+#bind-key P prev-unread feedlist
+#bind-key P prev-unread article
+#unbind-key A feedlist
+#unbind-key A articlelist
+#bind-key m mark-feed-read feedlist
+##bind-key m mark-feed-read articlelist
+#unbind-key C all
+#unbind-key C all
+#bind-key M mark-all-feeds-read feedlist
+#bind-key M mark-all-feeds-read articlelist
+#unbind-key E all
+#bind-key c edit-urls feedlist
+#unbind-key ^R all
+#bind-key C reload-urls feedlist
+#unbind-key ^L all
+#bind-key ^R redraw all
+#unbind-key e article
+#bind-key E enqueue article
+#unbind-key ^E article
+#unbind-key ^E articlelist
+#bind-key e edit-flags article
+#bind-key e edit-flags articlelist
+#unbind-key ^B article
+#unbind-key ^B articlelist
+#unbind-key ^B urlview
+#bind-key b bookmark article
+#bind-key b bookmark articlelist
+#bind-key b bookmark urlview
+#unbind-key D article
+#unbind-key D articlelist
+#bind-key d delete-article article
+#bind-key d delete-article articlelist
+#unbind-key $ articlelist
+#bind-key D purge-deleted articlelist
+#unbind-key ^X all
+#bind-key ^D close-dialog all
+#unbind-key ^G all
+#bind-key ^P prev-dialog all
+#unbind-key ^V all
+#bind-key ^N next-dialog all
+#unbind-key v all
+#bind-key ^V view-dialogs all
+#unbind-key l feedlist
+#unbind-key l articlelist
+#bind-key ^L toggle-show-read-feeds feedlist
+#bind-key ^L toggle-show-read-feeds articlelist
+#unbind-key g feedlist
+#unbind-key g articlelist
+#unbind-key G feedlist
+#unbind-key G articlelist
+#unbind-key \# all
+#bind-key g goto-url all
+
+## Format
+datetime-format "%F"
+feedlist-format "%?T?║%4i %n (%-4U) (%T) %t &╠ %-15t═════════════════════════════════════════════════════?"
+notify-format "newsbeuter: %n unread articles within %f unread feeds"
+articlelist-format "%4i %f %D %6L  %?T?|%-17T|  ?%t"
+articlelist-title-format " %N-v%V - %u/%t - %T"
+feedlist-title-format " %N-v%V - %t Feeds with %u unread articles%?T? - %T?"
+searchresult-title-format " %N-v%V - Search result %u/%t"
+help-title-format " %N-v%V - Help"
+filebrowser-title-format " %N-v%V - %?O?Open file:&Save file? - %f"
+selecttag-title-format " %N-v%V - Select a tag"
+selectfilter-title-format " %N-v%V - Select a filter"
+itemview-title-format " %N-v%V - %T"
+urlview-title-format " %N-v%V - Urls found in this article"
+# dialogs-title-format " %N-v%V - Select a dialog")"
+
+## Colors
+color background            default   default  invis
+color info                  default   default  reverse
+color listnormal            default   default
+color listfocus             default   default  reverse
+color article               default   default
+color listnormal_unread     default   default  bold
+color listfocus_unread      default   default  reverse bold
+search-highlight-colors     color223  default  bold underline
+
+## Highlight
+highlight feedlist "[║│]"                             blue default bold
+highlight feedlist "╠═.*"                             blue default bold
+highlight feedlist ".*\\(query\\) .*"                 yellow
+highlight feedlist ".*\\(news\\) .*"                  white
+highlight feedlist ".*\\(books\\) .*"                 black yellow bold
+highlight feedlist ".*\\(culture\\) .*"               blue
+highlight feedlist ".*\\((business|economics)\\) .*"  red
+highlight feedlist ".*\\(comics\\) .*"                green
+highlight feedlist ".*\\(podcast\\) .*"               magenta
+highlight feedlist ".*\\(reddit\\) .*"                yellow
+# too many unread articles ( >= 50 )
+# highlight feedlist  "\\(([0-9]{3,}|[5-9][0-9])/" color154 default blink
+# good guy
+#highlight-article   "author =~ \"陈皓\" color154 default
+# my favorite subjects
+#highlight-article   "title =~ \"(都市|玄幻)\" color154 default
+
+
+highlight feedlist    "^  *[0-9]+  *N  "                    color156 default    underline
+highlight articlelist "^  *[0-9]+  *N  "                    color156 default
+
+highlight article     "^Title:.*"                           yellow   default bold
+highlight article     "^Feed:.*"                            magenta  default
+highlight article     "^Author:.*"                          green    default
+highlight article     "^Date:.*"                            color223 default
+highlight article     "^Link:.*"                            blue     default
+highlight article     "^Flags:.*"                           color9   default
+highlight article     "^Podcast Download URL:.*"            color71  default
+highlight article     "^Links:"                             white    color240 underline
+# highlight article     "\\[[0-9][0-9]*\\]"                   color72  default  bold
+# highlight article     "\\[image [0-9][0-9]*\\]"             color72  default  bold
+# highlight article     "\\[embedded flash: [0-9][0-9]*\\]"   color72  default  bold
+highlight article     "\\[[0-9][0-9]*\\]"                   color66  default bold
+highlight article     "\\[image [0-9][0-9]*\\]"             color109 default bold
+highlight article     "\\[embedded flash: [0-9][0-9]*\\]"   color66  default bold
+highlight article     ":.*\\(link\\)$"                      color74  default
+highlight article     ":.*\\(image\\)$"                     color74  default
+highlight article     ":.*\\(embedded flash\\)$"            color74  default
