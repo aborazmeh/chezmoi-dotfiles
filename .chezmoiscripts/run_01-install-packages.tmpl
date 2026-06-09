@@ -14,13 +14,15 @@ echo -e "\n\033[1m━━━  Package installation  ━━━\033[0m";
 
 echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
 
-{{ $packages := list "starship" "yazi" "sway" "swaylock" "swayidle"
-"waybar" "rofi" "lazygit" "gitui" "tmuxp" "tmux" "vim" "neovim" "micro"
-"btop" "nnn" "atuin" "wlsunset" "ripgrep" "git-delta"
+{{ $packages := list "zsh" "starship" "sway" "swaylock" "swayidle"
+"waybar" "rofi" "lazygit" "tmuxp" "tmux" "vim" "neovim" "micro"
+"btop" "nnn" "atuin" "wlsunset" "ripgrep" "git-delta" "bat"
+"zoxide" "eza"
 -}}
 {{ $distroPackages := dict
   "arch" (list "fd" "swaync" "bottom"
-    "ttf-firacode-nerd" "ttf-nerd-fonts-symbols")
+    "ttf-firacode-nerd" "ttf-nerd-fonts-symbols"
+    "yazi" "gitui")
   "debian" (list "sway-notification-center" "btm"
     "fd-find" "fonts-hosny-amiri" "fonts-firacode")
   "fedora" (list "fd-find" "swaync" "bottom"
