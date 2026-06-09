@@ -61,6 +61,7 @@ bind -n M-{ swap-pane -U
 bind -n M-\} swap-pane -D
 bind -n M-] select-pane -t :.+
 bind -n M-[ select-pane -t :.-
+bind -n M-` next-layout
 
 
 # -- session creation ----------------------------------------------------------
