@@ -35,6 +35,7 @@ GNUstep
 
 .config/mpd
 .config/mopidy
+.config/clerk
 
 .config/gallery-dl
 
