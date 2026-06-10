@@ -10,6 +10,12 @@ encryption = "gpg"
   recipient = "{{ promptStringOnce .chezmoi.config.gpg "recipient" "recipient" }}"
 {{ end -}}
 
+{{ $keepassDatabase := promptStringOnce . "keepassxc.database" "keepassxc database" -}}
+{{ if $keepassDatabase -}}
+[keepassxc]
+  database = "{{ $keepassDatabase }}"
+{{ end -}}
+
 [data]
   machine = "{{ $machine }}" # or "work", "server" ...
   chassis_type = "{{ or (promptStringOnce . "chassis_type" (printf "chassis type (%s)" $chassisType)) $chassisType }}"  # or "desktop"

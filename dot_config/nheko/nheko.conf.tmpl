@@ -2,9 +2,10 @@
 disable_certificate_validation=false
 
 [auth]
-access_token={{ if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.nheko_access_token }} {{- else }} {{ pass "matrix/work/nheko_access_token" }} {{- end }}
-home_server={{ if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.website }} {{- else }} {{ pass "matrix/work/website" }} {{- end }}
-user_id={{ if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.username }} {{- else }} {{ pass "matrix/work/username" }} {{- end }}
+access_token={{ if .chezmoi.config.keepassxc.database -}} {{ (keepassxcAttribute "matrix" (printf "%s nheko access token" .machine)) }} {{- else if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.nheko_access_token }} {{- else }} {{ pass "matrix/work/nheko_access_token" }} {{- end }}
+device_id={{ if .chezmoi.config.keepassxc.database -}} {{ (keepassxcAttribute "matrix" (printf "%s nheko device id" .machine)) }} {{- else if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.nheko_access_token }} {{- else }} {{ pass "matrix/work/nheko_access_token" }} {{- end }}
+home_server={{ if .chezmoi.config.keepassxc.database -}} {{ (keepassxc "matrix").URL }} {{- else if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.website }} {{- else }} {{ pass "matrix/work/website" }} {{- end }}
+user_id={{ if .chezmoi.config.keepassxc.database -}} {{ (keepassxc "matrix").UserName }} {{- else if ne .password_manager "pass" }} {{ (bitwarden "item" "matrix").fields.username }} {{- else }} {{ pass "matrix/work/username" }} {{- end }}
 
 [settings]
 scale_factor=1
