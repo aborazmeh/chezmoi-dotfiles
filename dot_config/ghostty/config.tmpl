@@ -43,5 +43,5 @@
 # resize-overlay-duration = 4s 200ms
 
 
-theme = Catppuccin Frappe
+theme = {{ or (index .themes.ghostty .chezmoi.osRelease.id) "Nord" }}
 font-family = FiraCode

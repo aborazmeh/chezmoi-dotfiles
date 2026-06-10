@@ -1,0 +1,18 @@
+[themes]
+[themes.ghostty]
+arch = "Nord"
+debian = "Xcode WWDC"
+ubutnu = "Ubuntu"
+kali = "Zenburn"
+slackware = "Twilight"
+opensuse = "The Hulk"
+fedora = "Tomorrow Night Blue"
+
+[themes.tmux_powerkit]
+arch = "nord dark"
+debian = "catppuccin frappe"
+ubutnu = "starlight dark"
+kali = "spacegray dark"
+slackware = "kanagawa dragon"
+opensuse = "miasma default"
+fedora = "material default"

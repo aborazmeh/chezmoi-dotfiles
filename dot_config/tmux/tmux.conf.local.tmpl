@@ -502,8 +502,17 @@ set -g @plugin 'alexwforsythe/tmux-which-key'
 
 set -g @plugin 'fabioluciano/tmux-powerkit'
 set -g @powerkit_plugins "datetime,battery,cpu,memory,git"
-set -g @powerkit_theme "nord"
-set -g @powerkit_theme_variant "dark"
+{{ $theme := "nord" -}}
+{{ $variant := "dark" -}}
+{{ $themeKey := index .themes.tmux_powerkit .chezmoi.osRelease.id -}}
+{{ if $themeKey -}}
+  {{ $themeList := splitList " " $themeKey -}}
+  {{ $theme = or ($themeList | first) $theme -}}
+  {{ $variant = or ($themeList | last) $variant -}}
+{{ end -}}
+
+set -g @powerkit_theme "{{ $theme }}"
+set -g @powerkit_theme_variant "{{ $variant }}"
 
 # set -g @fpp-mode 'paste'
 #set -g @plugin 'tmux-plugins/tmux-copycat'
