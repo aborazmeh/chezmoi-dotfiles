@@ -5,8 +5,6 @@ packages.json
 pnpnm-lock.yaml
 .vscode
 
-.config/Code/User/tasks.json
-
 {{- if eq .chezmoi.os "darwin" "linux" }}
   {{- if ne .emacs_framework "spacemacs" }}
     .spacemacs

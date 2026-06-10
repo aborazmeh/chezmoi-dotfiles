@@ -1,0 +1,30 @@
+{{ if .chezmoi.config.encryption -}}
+  {{ $encryptedFile := joinPath .chezmoi.sourceDir "dot_config" "private_Code" "User" "tasks.json.asc" -}}
+  {{ include $encryptedFile | decrypt | print -}}
+{{ else -}}
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Hugo server",
+      "type": "shell",
+      "command": "npm i ; npm run build ; hugo serve --buildDrafts --disableFastRender",
+      "problemMatcher": []
+    },
+    {
+      "label": "Hugo build",
+      "type": "shell",
+      "command": "./update-data ; npm i ; npm run build ; hugo --minify --cleanDestinationDir",
+      "problemMatcher": []
+    },
+    {
+      "label": "Hugo new post",
+      "type": "shell",
+      "command": "hugo new --kind=post ${input:hugoPostFilename}",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": []
+}
+{{ end -}}

@@ -1,4 +1,4 @@
-{{ if eq .machine "home" -}}
+{{ if .chezmoi.config.encryption -}}
   {{ $encryptedFile := joinPath .chezmoi.sourceDir "dot_newsbeuter" "urls.asc" -}}
   {{ include $encryptedFile | decrypt | print -}}
 {{ else -}}
