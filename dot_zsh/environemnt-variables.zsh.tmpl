@@ -53,10 +53,15 @@ export MOZ_USE_XINPUT2=1
 
 export EDITOR="nvim"
 export ALTERNATE_EDITOR="vim"
+{{- if eq .chezmoi.osRelease.id "debian" }}
+export PAGER='batcat --paging=always'
+export VIEWER='batcat --paging=always'
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+{{- else }}
 export PAGER='bat --paging=always'
-export PAGER=less
 export VIEWER='bat --paging=always'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+{{- end }}
 export PLAYER='mpv'
 # Default Applications' Options
 LS_OPTIONS="-F -b -T 0 --color=auto --time-style=long-iso"
