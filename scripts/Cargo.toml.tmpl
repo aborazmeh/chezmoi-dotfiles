@@ -8,8 +8,10 @@ members = [
   "args",
   "date",
   "kbd_layouts_i3ipc",
+  {{ if eq .machine "home" -}}
   "exchange",
   "music",
+  {{ end -}}
 ]
 
 [profile.release]
