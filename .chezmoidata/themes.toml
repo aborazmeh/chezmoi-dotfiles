@@ -16,3 +16,12 @@ kali = "spacegray dark"
 slackware = "kanagawa dragon"
 opensuse = "miasma default"
 fedora = "material default"
+
+[themes.nvim]
+arch = "nordfox"
+debian = "duskfox" # catppuccin-frappe
+ubutnu = "gruvbox" # rose-pine-moon
+kali = "habamax"   # terafox
+slackware = "kanagawa-dragon"
+opensuse = "miasma"
+fedora = "nightfox"

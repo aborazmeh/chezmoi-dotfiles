@@ -1,0 +1,158 @@
+-- https://lazyvim.org/plugins/colorscheme
+
+return {
+  {
+    "ellisonleao/gruvbox.nvim",
+    lazy = true,
+  },
+  {
+    "folke/tokyonight.nvim",
+    lazy = true,
+    opts = { style = "moon" },
+  },
+  {
+    "rose-pine/neovim",
+    lazy = true,
+  },
+  {
+    "xero/miasma.nvim",
+    lazy = true,
+  },
+  {
+    "EdenEast/nightfox.nvim",
+    lazy = true,
+    opts = {
+      -- Compiled file's destination location
+      compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+      compile_file_suffix = "_compiled", -- Compiled file suffix
+      transparent = false, -- Disable setting background
+      terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+      dim_inactive = true, -- Non focused panes set to alternative background
+      module_default = true, -- Default enable value for modules
+      colorblind = {
+        enable = false, -- Enable colorblind support
+        simulate_only = false, -- Only show simulated colorblind colors and not diff shifted
+        severity = {
+          protan = 0, -- Severity [0,1] for protan (red)
+          deutan = 0, -- Severity [0,1] for deutan (green)
+          tritan = 0, -- Severity [0,1] for tritan (blue)
+        },
+      },
+      styles = { -- Style to be applied to different syntax groups
+        comments = "NONE", -- Value is any valid attr-list value `:help attr-list`
+        conditionals = "NONE",
+        constants = "NONE",
+        functions = "NONE",
+        keywords = "NONE",
+        numbers = "NONE",
+        operators = "NONE",
+        strings = "NONE",
+        types = "NONE",
+        variables = "NONE",
+      },
+      inverse = { -- Inverse highlight for different types
+        match_paren = false,
+        visual = false,
+        search = false,
+      },
+      modules = { -- List of various plugins and additional options
+        -- ...
+      },
+    },
+    palettes = {},
+    specs = {},
+    groups = {},
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    opts = {
+      compile = false,
+      undercurl = true,
+      commentStyle = { italic = true },
+      functionStyle = {},
+      keywordStyle = { italic = true },
+      statementStyle = { bold = true },
+      typeStyle = {},
+      transparent = false, -- do not set background color
+      dimInactive = true, -- dim inactive window `:h hl-NormalNC`
+      terminalColors = true, -- define vim.g.terminal_color_{0,17}
+      colors = {
+        palette = {},
+        theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+      },
+      overrides = function(colors) -- add/modify highlights
+        return {}
+      end,
+      theme = "dragon",
+      background = {
+        dark = "dragon",
+        light = "lotus",
+      },
+    },
+  },
+  {
+    "catppuccin/nvim",
+    lazy = true,
+    name = "catppuccin",
+    opts = {
+      lsp_styles = {
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+        },
+      },
+
+      integrations = {
+        aerial = true,
+        alpha = true,
+        cmp = true,
+        dashboard = true,
+        flash = true,
+        fzf = true,
+        grug_far = true,
+        gitsigns = true,
+        headlines = true,
+        illuminate = true,
+        indent_blankline = { enabled = true },
+        leap = true,
+        lsp_trouble = true,
+        mason = true,
+        mini = true,
+        navic = { enabled = true, custom_bg = "lualine" },
+        neotest = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        snacks = true,
+        telescope = true,
+        treesitter_context = true,
+        which_key = true,
+      },
+    },
+  },
+
+  {
+    "akinsho/bufferline.nvim",
+    optional = true,
+    opts = function(_, opts)
+      if (vim.g.colors_name or ""):find("catppuccin") then
+        opts.highlights = require("catppuccin.special.bufferline").get_theme()
+      end
+    end,
+  },
+
+  {
+    "rktjmp/lush.nvim",
+    lazy = true,
+  },
+
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "{{ or (index .themes.ghostty .chezmoi.osRelease.id) "nordfox" }}",
+    },
+  },
+}
