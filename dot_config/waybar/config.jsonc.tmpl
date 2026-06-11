@@ -1,186 +1,345 @@
-{
-  "layer": "top",
-  "position": "bottom",
-  "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
-  "modules-center": [ "custom/clock" {{- if eq .machine "home" }}, "custom/praytimes" {{- end }} ],
-  "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
-  "clock": {
-    "interval": 60,
-    "format": " {:%H:%M}",
-    "timezone": "{{ .timezone }}",
-    "tooltip-format": "{:%Y-%m-%d}"
-  },
-  "custom/clock": {
-    "interval": 60,
-    "format": "  {}",
-    "return-type": "json",
-    "exec": "$HOME/scripts/bar/date -f waybar",
-    "on-click": "$HOME/scripts/bar/date -f waybar -c"
-  },
-  "keyboard-state": {
-    "numlock": true,
-    "capslock": true,
-    "format": {
-      "numlock": "[N]",
-      "capslock": "[C]"
+[
+  {
+    "layer": "top",
+    "position": "top",
+    "modules-left": [ "sway/workspaces", "sway/mode", "sway/scratchpad" ],
+    "modules-center": [ "sway/window" ],
+    "modules-right": [ {{ if eq .machine "home" -}} "custom/music", "mpd", "custom/torrents", "custom/rss", "custom/podcasts", "custom/torn", {{- end }} "custom/swaync" ],
+    "sway/workspaces": {
+      "disable-scroll-wraparound": false,
+      "smooth-scrolling-threshold": 1,
+      "enable-bar-scroll": true,
+      "format": "{icon}",
+      "format-icons": {
+        "1": "",
+        "2": "",
+        "3": "󰈹",
+        "4": "",
+        "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": "",
+        "10": "",
+        "urgent": "",
+        /* "focused": "", */
+        "default": ""
+      }
     },
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "custom/music": {
+      "exec": "~/scripts/bar/music -f sway",
+      "interval": 1,
+      "return-type": "json",
+      "on-click": "~/scripts/bar/music -f sway toggle",
+      "on-click-right": "~/scripts/bar/music -f sway stop",
+      "on-scroll-up": "~/scripts/bar/music -f sway seek+",
+      "on-scroll-down": "~/scripts/bar/music -f sway seek-",
+      "on-click-middle": "~/scripts/bar/music -f sway bookmark",
+    },
+    "mpd": {
+      "server": "localhost",
+      "port": "6680",
+      "interval": 1,
+      "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}({elapsedTime:%H:%M:%S}/{totalTime:%H:%M:%S}){title}",
+      "format-stopped": "",
+      "format-disconnected": "",
+      "tooltip-format": "{author}, {title} [{album}]",
+      "tooltip-format-disconnected": "",
+      "max-length": 60,
+      "on-click": "mpc toggle",
+      "on-click-right": "mpc seek -10",
+      "on-scrool-up": "mpc seek +10",
+      "on-scrool-down": "mpc seek -10",
+      "consume-icons": {
+        "on": " "
+      },
+      "random-icons": {
+        "off": "",
+        "on": " "
+      },
+      "repeat-icons": {
+        "on": " "
+      },
+      "single-icons": {
+        "on": "1 "
+      },
+      "state-icons": {
+        "paused": "",
+        "playing": ""
+      }
+    },
+    "custom/torrents": {
+      "interval" : 1,
+      "format": " {}",
+      "return-type": "json",
+      "tooltip": true,
+      "on-click": "xdg-open http://localhost:7012/",
+      "on-click-right": "$HOME/scripts/i3blocks/qbittorrent -c alt-speed-limits",
+      "exec": "$HOME/scripts/i3blocks/qbittorrent -jf waybar"
+    },
+    "custom/goodreads": {
+      "interval": 60,
+      "format": "🅶 {}",
+      "return-type": "json",
+      "tooltip": true,
+      "on-click": "xdg-open http://goodreads.com/notifications",
+      "exec": "$HOME/scripts/i3blocks/goodreads_notifications"
+    },
+    "custom/podcasts": {
+      "interval" : 60,
+      "format": " {}",
+      "return-type": "json",
+      "tooltip": true,
+      "exec": "$HOME/scripts/podcasts waybar",
+      "on-click": "konsole -e newsboat"
+    },
+    "custom/rss": {
+      "interval" : 60,
+      "format": " {}",
+      "return-type": "json",
+      "tooltip": true,
+      "exec": "$HOME/scripts/rss waybar",
+      "on-click": "konsole -e newsboat"
+    },
+    "custom/torn": {
+      "interval" : 1,
+      "format": "{}",
+      "return-type": "json",
+      "tooltip": true,
+      "on-click": "$HOME/scripts/torn --open",
+      "exec": "$HOME/scripts/torn --json --emoji --bar waybar"
+    },
+    "TODO": "right: [tasks]",
+    "custom/swaync": {
+      "tooltip": false,
+      "format": "{icon}",
+      "format-icons": {
+        "notification": "󰵙<span foreground='red'><sup></sup></span>",
+        "none": "󰂚",
+        "dnd-notification": "󰂛",
+        "dnd-none": "󰂛"
+        },
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
+    },
+
+  // [facebook]
+  // command=$HOME/scripts/i3blocks/facebook
+  // interval=600
+  // color=#3b5998
+
+  // [dropbox]
+  // command=$HOME/scripts/dropbox i3blocks
+  // interval=3
+  // color=#007ee5
+  //
+  // [tasks]
+  // command=$HOME/scripts/taskwarrior i3blocks
+  // interval=10
+  // markup=pango
+  //
+  // [email]
+  // command=$HOME/scripts/i3blocks/email
+  // interval=590
+  },
+
+  {
+    "layer": "top",
+    "position": "bottom",
+    "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
+    "modules-center": [ "custom/clock" {{- if eq .machine "home" }}, "custom/praytimes" {{- end }} ],
+    "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
+    "clock": {
+      "interval": 60,
+      "format": " {:%H:%M}",
+      "timezone": "{{ .timezone }}",
+      "tooltip-format": "{:%Y-%m-%d}"
+    },
+    "custom/clock": {
+      "interval": 60,
+      "format": "  {}",
+      "return-type": "json",
+      "exec": "$HOME/scripts/bar/date -f waybar",
+      "on-click": "$HOME/scripts/bar/date -f waybar -c"
+    },
+    "keyboard-state": {
+      "numlock": true,
+      "capslock": true,
+      "format": {
+        "numlock": "[N]",
+        "capslock": "[C]"
+      },
+      "format-icons": {
+        "locked": "",
+        "unlocked": ""
+      }
+    },
+    "sway/language": {
+      "format": "{flag} {long}",
+      "tooltip": false,
+      "return-type": "json",
+      "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
+      "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
+      "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
+      "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
+    },
+    "tray": {
+      "icon-size": 21,
+      "spacing": 10
+    },
+    "bluetooth": {
+      "format": "",
+      "format-on": " {status}",
+      "format-off": "",
+      "format-disabled": "", // an empty format will hide the module
+      "format-connected": " {device_alias}",
+      "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+      // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+      "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+      "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+      "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+      "on-click": "ghostty --command=bluetoothctl"
+    },
+    "backlight": {
+      {{ $driver := glob "/sys/class/backlight/*" | first -}}
+      {{ if $driver -}}
+      "device": "{{ base $driver }}",
+      {{ end -}}
+      "format": "{icon}",
+      "states": [ 0, 50 ],
+      "format-icons": ["", "", "", "", "", "", "", "", ""],
+      "tooltip": true,
+      "tooltip-format": "{percent}%",
+
+      "reverse-scrolling": true,
+      "on-scroll-up": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+      "on-scroll-down": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+
+      "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
+      "on-click-right": "killall wlsunset",
+      "on-click-middle": "darkman toggle",
+    },
+    "battery": {
+      "states": {
+        "good": 95,
+        "warning": 30,
+        "critical": 15
+      },
+      "format": "{capacity}% {icon}",
+      // "format-good": "", // An empty format will hide the module
+      // "format-full": "",
+      "format-icons": ["", "", "", "", ""]
+    },
+    "custom/keyboard": {
+      "format": "{}",
+      "tooltip": true,
+      "return-type": "json",
+      "exec": "$HOME/scripts/bar/kbd_layouts_i3ipc",
+      "on-click": "swaymsg input '*' xkb_switch_layout next",
+      "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
+      "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
+      "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
+    },
+    "pulseaudio": {
+      "scroll-step": 5,
+      "format": "{icon} {volume}%",
+      "format-bluetooth": " {icon} {volume}%",
+      "format-muted": "",
+      "format-icons": {
+        "headphones": "",
+        "handsfree": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", ""]
+      },
+      {{ $m := printf "%s/scripts/bar/music" .chezmoi.homeDir | lstat -}}
+      "on-click": "{{ or (and $m "$HOME/scripts/bar/music -f sway mute") "amixer -D pulse set Master toggle" }}",
+      "on-click-right": "pavucontrol",
+
+      "reverse-scrolling": true,
+      "on-scroll-up": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") "amixer -D pulse set Master unmute 5%+" }}",
+      "on-scroll-down": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") "amixer -D pulse set Master unmute 5%-" }}"
+    },
+    "cpu": {
+      "format": "  {usage}%",
+      "on-click": "cpupower-gui"
+    },
+    "memory": {
+      "format": "󰍛 {}%",
+      "on-click": "ghostty --command=btop",
+    },
+    "temperature": {
+      // "thermal-zone": 2,
+      // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+      "critical-threshold": 80,
+      // "format-critical": "{temperatureC}°C ",
+      "format": " {temperatureC}°C",
+      "on-click": "ghostty --command=btop",
+    },
+    "disk": {
+      "format": "   {percentage_used}% ",
+      "path": "/",
+      "tooltip-format": "{free} remaining of {total} on `/` [{percentage_used}%]",
+      "on-click": "ghostty --command=ncdu",
+      "on-click-middle": "ghostty --command=yazi",
+      "on-click-right": "ghostty --command=nnn",
+    },
+    "network": {
+      "format": "{ifname}",
+      "interface": "{{ .network_interface }}",
+      "format-wifi": "   {signalStrength}%    {bandwidthDownOctets}    {bandwidthUpOctets}",
+      "format-ethernet": "   {bandwidthDownOctets}  {bandwidthUpOctets}",
+      "format-disconnected": "",
+
+      "tooltip" : true,
+      "tooltip-format": "{ifname}",
+      "tooltip-format-wifi": "{ipaddr}\n{essid} ({signalStrength}%) ",
+      "tooltip-format-ethernet": "{ifname} ",
+      "tooltip-format-disconnected": "Disconnected",
+
+      "interval" : 3,
+      "on-click": "ghostty --command=nmtui"
+    },
+    "custom/exchange": {
+      "interval": 5,
+      "format": "{icon}   {}",
+      "format-icons": {
+        "default": ""
+      },
+      "tooltip": true,
+      "return-type": "json",
+      "exec": "$HOME/scripts/bar/exchange USDTRY EURTRY USDSYP TRYSYP --json 2> /dev/null"
+    },
+    "custom/weather": {
+      "format": "{}",
+      "tooltip": true,
+      "return-type": "json",
+      "exec": "$HOME/scripts/weather waybar 2> /dev/null",
+      "interval": 600
+    },
+    "custom/praytimes" : {
+      "format": "🕌 {}",
+      "return-type": "json",
+      "tooltip": "true",
+      "exec": "$HOME/scripts/prayertimes -jf waybar 2> /dev/null",
+      "interval": 10
     }
-  },
-  "sway/language": {
-    "format": "{flag} {long}",
-    "tooltip": false,
-    "return-type": "json",
-    "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
-    "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
-    "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
-    "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
-  },
-  "tray": {
-    "icon-size": 21,
-    "spacing": 10
-  },
-  "bluetooth": {
-    "format": "",
-    "format-on": " {status}",
-    "format-off": "",
-    "format-disabled": "", // an empty format will hide the module
-    "format-connected": " {device_alias}",
-    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
-    // "format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
-    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-    "on-click": "ghostty --command=bluetoothctl"
-  },
-  "backlight": {
-    {{ $driver := glob "/sys/class/backlight/*" | first -}}
-    {{ if $driver -}}
-    "device": "{{ base $driver }}",
-    {{ end -}}
-    "format": "{icon}",
-    "states": [ 0, 50 ],
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
-    "tooltip": true,
-    "tooltip-format": "{percent}%",
-
-    "reverse-scrolling": true,
-    "on-scroll-up": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
-    "on-scroll-down": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
-
-    "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
-    "on-click-right": "killall wlsunset",
-    "on-click-middle": "darkman toggle",
-  },
-  "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{capacity}% {icon}",
-    // "format-good": "", // An empty format will hide the module
-    // "format-full": "",
-    "format-icons": ["", "", "", "", ""]
-  },
-  "custom/keyboard": {
-    "format": "{}",
-    "tooltip": true,
-    "return-type": "json",
-    "exec": "$HOME/scripts/bar/kbd_layouts_i3ipc",
-    "on-click": "swaymsg input '*' xkb_switch_layout next",
-    "on-click-right": "swaymsg input '*' xkb_switch_layout prev",
-    "on-scroll-up": "swaymsg input '*' xkb_switch_layout next",
-    "on-scroll-down": "swaymsg input '*' xkb_switch_layout prev"
-  },
-  "pulseaudio": {
-    "scroll-step": 5,
-    "format": "{icon} {volume}%",
-    "format-bluetooth": " {icon} {volume}%",
-    "format-muted": "",
-    "format-icons": {
-      "headphones": "",
-      "handsfree": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": ["", ""]
-    },
-    {{ $m := printf "%s/scripts/bar/music" .chezmoi.homeDir | lstat -}}
-    "on-click": "{{ or (and $m "$HOME/scripts/bar/music -f sway mute") "amixer -D pulse set Master toggle" }}",
-    "on-click-right": "pavucontrol",
-
-    "reverse-scrolling": true,
-    "on-scroll-up": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") "amixer -D pulse set Master unmute 5%+" }}",
-    "on-scroll-down": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") "amixer -D pulse set Master unmute 5%-" }}"
-  },
-  "cpu": {
-    "format": "  {usage}%",
-    "on-click": "cpupower-gui"
-  },
-  "memory": {
-    "format": "󰍛 {}%",
-    "on-click": "ghostty --command=btop",
-  },
-  "temperature": {
-    // "thermal-zone": 2,
-    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-    "critical-threshold": 80,
-    // "format-critical": "{temperatureC}°C ",
-    "format": " {temperatureC}°C",
-    "on-click": "ghostty --command=btop",
-  },
-  "disk": {
-    "format": "   {percentage_used}% ",
-    "path": "/",
-    "tooltip-format": "{free} remaining of {total} on `/` [{percentage_used}%]",
-    "on-click": "ghostty --command=ncdu",
-    "on-click-middle": "ghostty --command=yazi",
-    "on-click-right": "ghostty --command=nnn",
-  },
-  "network": {
-    "format": "{ifname}",
-    "interface": "{{ .network_interface }}",
-    "format-wifi": "   {signalStrength}%    {bandwidthDownOctets}    {bandwidthUpOctets}",
-    "format-ethernet": "   {bandwidthDownOctets}  {bandwidthUpOctets}",
-    "format-disconnected": "",
-
-    "tooltip" : true,
-    "tooltip-format": "{ifname}",
-    "tooltip-format-wifi": "{ipaddr}\n{essid} ({signalStrength}%) ",
-    "tooltip-format-ethernet": "{ifname} ",
-    "tooltip-format-disconnected": "Disconnected",
-
-    "interval" : 3,
-    "on-click": "ghostty --command=nmtui"
-  },
-  "custom/exchange": {
-    "interval": 5,
-    "format": "{icon}   {}",
-    "format-icons": {
-      "default": ""
-    },
-    "tooltip": true,
-    "return-type": "json",
-    "exec": "$HOME/scripts/bar/exchange USDTRY EURTRY USDSYP TRYSYP --json 2> /dev/null"
-  },
-  "custom/weather": {
-    "format": "{}",
-    "tooltip": true,
-    "return-type": "json",
-    "exec": "$HOME/scripts/weather waybar 2> /dev/null",
-    "interval": 600
-  },
-  "custom/praytimes" : {
-    "format": "🕌 {}",
-    "return-type": "json",
-    "tooltip": "true",
-    "exec": "$HOME/scripts/prayertimes -jf waybar 2> /dev/null",
-    "interval": 10
   }
-
-}
+]
