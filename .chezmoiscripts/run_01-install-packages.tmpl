@@ -43,13 +43,20 @@ echo -e "\033[0;36m\033[1m[INFO]\033[0m  Using AUR helper: {{ $aurHelper }}";
 sudo {{ $aurHelper }} {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
 
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
-{{ else if eq $distro "debian" "ubuntu" "kali" -}}
+{{- else if eq $distro "debian" "ubuntu" "kali" }}
 sudo apt install {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
-{{ else if eq $distro "fedora" -}}
-{{ else -}}
+{{- else if eq $distro "fedora" }}
+# TODO
+{{- else }}
   echo -e "\033[1m[ERROR]\033[0m Unsupported distro. Please install packages manually: {{ $packages | join " " }}" >&2;
-{{ end -}}
+{{- end }}
+
+ZSH_LOC=$(which zsh)
+if [[ -f $ZSH_LOC && $SHELL != *zsh*  ]]; then
+echo -e "\033[0;36m\033[1m[INFO]\033[0m  Default shell is not zsh, changing shell";
+chsh -s $ZSH_LOC
+fi
 
 {{ else if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
