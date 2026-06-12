@@ -32,6 +32,13 @@
   lctl lmet lalt           spc            ralt rmet rctl                     kp0 kp.     kprt
 )
 
+(deflayer vim
+  @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc      @num kp/ kp* kp-
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \         kp7 kp8 kp9 kp+
+  esc  a    s    d    f   g    h     j    k    l    ;   '    ret            kp4 kp5 kp6
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft                kp1 kp2 kp3
+  lctl lmet lalt           spc            ralt rmet rctl                     kp0 kp.     kprt
+)
 
 ;; Aliases are referred to by `@<alias_name>`.
 (defalias
@@ -41,6 +48,7 @@
   ;; layer-switch changes the base layer.
   dvk (layer-switch dvorak)
   qwr (layer-switch qwerty)
+  vim (layer-switch vim)
 
   ;; tap for capslk, hold for lctl
   cap (tap-hold $tap-time $hold-time caps lctl)
@@ -64,9 +72,9 @@
 ;; lrld = "live reload"
 (deflayer layers
   _    @qwr @dvk lrld _    _    _    _    _    _    _    _    _    _         _    _   _   _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _         _   _   _   _
+  _    _    _    _    lrld _    _    _    _    _    _    _    _    _         _   _   _   _
   _    _    _    d    _    _    left down up   right _    _    _              _   _   _
-  _    _    _    _    _    _    _    _    _    _    _    _                   _   _   _
+  _    _    _    _    @vim _    _    _    _    _    _    _                   _   _   _
   _    _    _              _              _    _    _                        _   _       _
 )
 
