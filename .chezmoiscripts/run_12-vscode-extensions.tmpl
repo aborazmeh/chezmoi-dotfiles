@@ -8,6 +8,7 @@ echo -e "\n\033[1m━━━  Visual Studio Code extensions  ━━━\033[0m";
 {{ $extensionList = .vscode.extensions.extras | append $extensionList -}}
 {{ end -}}
 VSCODE_EXTENSIONS=({{ $extensionList | quoteList | join " " }})
+VSCODE_DISABLED=({{ .vscode.extensions.extras | quoteList | join " " }})
 
 installed=0
 skipped=0
@@ -23,6 +24,17 @@ for ext in "${VSCODE_EXTENSIONS[@]}"; do
       ((installed++))
     else
       echo -e "\033[1m[ERROR]\033[0m Failed to install: ${ext}" >&2;
+    fi
+  fi
+done
+
+for ext in "${VSCODE_DISABLED[@]}"; do
+  if code --list-extensions | grep -q "^${ext}$"; then
+    echo -e "\033[0;36m[INFO]\033[0m Disabling: ${ext}";
+    if code --install-extension "$ext"; then
+      echo -e "\033[0;32m[OK]\033[0m Successfully disabled: ${ext}";
+    else
+      echo -e "\033[1m[ERROR]\033[0m Failed to disable: ${ext}" >&2;
     fi
   fi
 done
