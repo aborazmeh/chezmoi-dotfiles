@@ -161,7 +161,7 @@
     "layer": "top",
     "position": "bottom",
     "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
-    "modules-center": [ "custom/clock" {{- if eq .machine "home" }}, "custom/praytimes" {{- end }} ],
+    "modules-center": [ "custom/clock", "custom/prayertimes" ],
     "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
     "clock": {
       "interval": 60,
@@ -334,7 +334,7 @@
       "exec": "$HOME/scripts/weather waybar 2> /dev/null",
       "interval": 600
     },
-    "custom/praytimes" : {
+    "custom/prayertimes" : {
       "format": "🕌 {}",
       "return-type": "json",
       "tooltip": "true",

@@ -1,0 +1,10 @@
+{{- /* Find index of an element in a slice */ -}}
+{{- /* returning its index or -1 */ -}}
+{{ $list := index . 0 -}}
+{{ $target := index . 1 -}}
+{{ range $idx,$val := $list -}}
+  {{ if eq $target . -}}
+    {{ $idx -}}
+    {{ break -}}
+  {{ end -}}
+{{ end -}}

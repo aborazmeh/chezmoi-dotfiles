@@ -60,3 +60,11 @@ encryption = "gpg"
 [data.ledger]
   dir = "{{ promptStringOnce . "ledger.dir" "ledger dir" }}"
 {{ end -}}
+
+{{ $mathhabs := list "Shaf'i" "Hanafi" -}}
+{{ $methods := list "Authority of Survey" "Karachi (Shaf'i)" "Karachi (Hanafi)"
+                    "North America" "MWL" "Umm Al-Qurra" "Fixed 90 min" "Egypt"
+}}
+[data.prayertimes]
+  mathhab = "{{ promptChoiceOnce . "prayertimes.mathhab" "prayertimes mathhab" $mathhabs }}"
+  method = "{{ promptChoiceOnce . "prayertimes.method" "prayertimes method" $methods }}"

@@ -1,0 +1,149 @@
+#!/bin/bash
+
+output=$(ipraytime)
+
+while getopts f:j option; do
+  case "${option}" in
+  f) FRONTEND=${OPTARG} ;;
+  j) JSON=${option} ;;
+  *) ;;
+  esac
+done
+
+zeropadding() {
+  [[ ${#1} -eq 4 ]] && echo -n "0${1}" && return
+  echo -n "$1"
+}
+
+function show_prayers() {
+  method=$(echo "$output" | sed -n '6p' | cut -d' ' -f9-)
+  fajr="$(echo "$output" | sed -n '12p' | awk 'NR=3{print $2}')"
+  zuhr="$(echo "$output" | sed -n '12p' | awk 'NR=3{print $4}')"
+  asr="$(echo "$output" | sed -n '12p' | awk 'NR=3{print $5}')"
+  maghrib="$(echo "$output" | sed -n '12p' | awk 'NR=3{print $6}')"
+  isha="$(echo "$output" | sed -n '12p' | awk 'NR=2{print $7}')"
+
+  monitor_width=$(xdpyinfo | \grep dimensions | awk '{print $2}' | sed 's/x.\+//')
+  if [[ $monitor_width -lt 1500 ]]; then
+    text="\
+Fajr\t\t$(zeropadding "$fajr")\n\
+Zuhr\t\t$(zeropadding "$zuhr")\n\
+Asr\t\t$(zeropadding "$asr")\n\
+Maghrib\t$(zeropadding "$maghrib")\n\
+Isha\t\t$(zeropadding "$isha")"
+  else
+    text="\
+Fajr\t\t\t$(zeropadding "$fajr")\n\
+Zuhr\t\t$(zeropadding "$zuhr")\n\
+Asr\t\t\t$(zeropadding "$asr")\n\
+Maghrib\t$(zeropadding "$maghrib")\n\
+Isha\t\t$(zeropadding "$isha")"
+  fi
+
+  if [[ -z $JSON ]]; then
+    if [[ $until_prayer -le 1800 ]]; then
+      notify-send "Prayer Times" -u critical "$text"
+    else
+      notify-send "Prayer Times" -u normal "$text"
+    fi
+  else
+    echo "${text}"
+  fi
+}
+
+declare -A prayer
+
+current_date=$(date +%Y-%m-%d\ %H:%M:%S)
+prayer["Fajr"]="$(date +%Y-%m-%d) $(echo "$output" | sed -n '12p' | awk 'NR=3{print $2}')"
+prayer["Zuhr"]="$(date +%Y-%m-%d) $(echo "$output" | sed -n '12p' | awk 'NR=3{print $4}')"
+prayer["Asr"]="$(date +%Y-%m-%d) $(echo "$output" | sed -n '12p' | awk 'NR=3{print $5}')"
+prayer["Maghrib"]="$(date +%Y-%m-%d) $(echo "$output" | sed -n '12p' | awk 'NR=3{print $6}')"
+prayer["Isha"]="$(date +%Y-%m-%d) $(echo "$output" | sed -n '12p' | awk 'NR=2{print $7}')"
+
+min=${prayer[Fajr]}
+until_prayer=$(expr "$(date -d "${prayer[Fajr]}" +%s)" - "$(date -d "$current_date" +%s)")
+next_prayer="Fajr"
+
+# Eliminate negative values
+for k in "${!prayer[@]}"; do
+  uprayer=$(expr $(date -d "${prayer[$k]}" +%s) - $(date -d "$current_date" +%s))
+
+  if [[ $uprayer -lt 0 ]]; then
+    continue
+  fi
+
+  min=${prayer[$k]}
+  until_prayer=$(expr "$(date -d "${prayer[$k]}" +%s)" - "$(date -d "$current_date" +%s)")
+  next_prayer="$k"
+done
+
+for k in "${!prayer[@]}"; do
+  uprayer=$(expr $(date -d "${prayer[$k]}" +%s) - $(date -d "$current_date" +%s))
+
+  if [[ $uprayer -lt $until_prayer && $uprayer -gt 0 ]]; then
+    until_prayer="$uprayer"
+    min=${prayer[$k]}
+    next_prayer="$k"
+  fi
+done
+
+if [[ $until_prayer -lt 0 ]]; then
+  p=$(date -d "${prayer[Fajr]}" +%s)
+  until_prayer=$(expr "$((p + 86400))" - "$(date -d "$current_date" +%s)")
+fi
+
+show_time() {
+  ((h = ${1} / 3600))
+  ((m = (${1} % 3600) / 60))
+  ((s = ${1} % 60))
+  if [[ $h -eq 0 ]]; then
+    if [[ $m -eq 0 ]]; then
+      printf "%02d\n" $s
+      return
+    fi
+    printf "%02d:%02d\n" $m $s
+  else
+    printf "%02d:%02d\n" $h $m
+  fi
+}
+
+# Colorize if less than 30 minutes remaining
+if [[ $until_prayer -le 900 ]]; then
+  color="DD0000"
+  class="close"
+else
+  color="FFFFFF"
+fi
+printed_until_prayer="($(show_time "${until_prayer}"))"
+if [[ $FRONTEND == "dzen" ]]; then
+  printed_until_prayer="^fg(red)${printed_until_prayer}^fg()"
+elif [[ $FRONTEND == "i3blocks" ]]; then
+  printed_until_prayer="<span foreground=\"#$color\">${printed_until_prayer}</span>"
+elif [[ $FRONTEND == "polybar" ]]; then
+  printed_until_prayer="${F#"${color}"}${printed_until_prayer}${F-}"
+elif [[ $FRONTEND == "notify" ]]; then
+  show_prayers
+fi
+
+if [[ -z $JSON ]]; then
+  echo "${next_prayer}" "${printed_until_prayer}"
+else
+  echo -n '{"text" : ' \
+    \""${next_prayer}" "${printed_until_prayer//\"/\'}"\", \
+    '"tooltip" : ' \
+    \""$(show_prayers)"\", \
+    '"class": ' \
+    \""${class}"\" \
+    '}' | jq --unbuffered --compact-output
+fi
+
+if [[ $FRONTEND == "i3blocks" ]]; then
+  # Short text for i3blocks
+  # Only show the first character of prayer name
+  next_prayer=${next_prayer:0:1}
+  echo "${next_prayer}" "${printed_until_prayer}"
+fi
+
+case $BLOCK_BUTTON in
+1) show_prayers ;;
+esac

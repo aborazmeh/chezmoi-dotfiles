@@ -1,0 +1,11 @@
+City: {{ .city }}
+Latitude: {{ .latitude }}
+Longitude: {{ .longitude }}
+UTC: {{ output "date" "+%z" | replaceAllRegex "0+" "" | trim }}
+{{ $mathhabs := list "Shaf'i" "Hanafi" -}}
+Mathhab: {{ includeTemplate "indexof.tmpl" (list $mathhabs (or .prayertimes.mathhab 0)) | add 1 }}
+{{ $methods := list "Authority of Survey" "Karachi (Shaf'i)" "Karachi (Hanafi)"
+                    "North America" "MWL" "Umm Al-Qurra" "Fixed 90 min" "Egypt"
+-}}
+AngleMethod: {{ includeTemplate "indexof.tmpl" (list $methods (or .prayertimes.method 0)) | add 1 }}
+HourFormat: 24
