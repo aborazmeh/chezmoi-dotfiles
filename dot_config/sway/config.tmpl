@@ -20,6 +20,15 @@ set $calculator "$HOME/.rofi/calc.sh"
 set $monitor_primary "eDP-1"
 set $monitor_hdmi "HDMI-A-1"
 
+output $monitor_primary pos 0 0 res 1920x1080 scale 1
+output $monitor_hdmi {
+  # pos 1920 0
+  # res 1920x1080
+  # mode 1920x1080@60Hz
+  # scale 1
+  # transform 270
+}
+
 # Workspaces
 set $ws_terminal "1"
 set $ws_dev "2"
@@ -35,7 +44,7 @@ set $ws_media "10"
 # Workspace Monitors
 workspace $ws_terminal output $monitor_primary
 workspace $ws_dev output $monitor_primary
-workspace $ws_web output $monitor_primary
+workspace $ws_web output $monitor_hdmi
 workspace $ws_office output $monitor_primary
 workspace $ws_doc output $monitor_primary
 workspace $ws_files output $monitor_primary
