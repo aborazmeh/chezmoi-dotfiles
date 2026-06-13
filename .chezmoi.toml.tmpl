@@ -6,15 +6,17 @@
 
 {{ if eq $machine "home" -}}
 encryption = "gpg"
+
 [gpg]
   recipient = "{{ promptStringOnce .chezmoi.config.gpg "recipient" "recipient" }}"
+
 {{ end -}}
 
-{{ $keepassDatabase := promptStringOnce . "keepassxc.database" "keepassxc database" -}}
+{{ $keepassDatabase := promptStringOnce . "chezmoi.config.keepassxc.database" "keepassxc database" -}}
 {{ if $keepassDatabase -}}
 [keepassxc]
   database = "{{ $keepassDatabase }}"
-{{ end -}}
+{{- end }}
 
 [data]
   machine = "{{ $machine }}" # or "work", "server" ...
