@@ -31,6 +31,7 @@ zi snippet OMZP::dnf
 zi snippet OMZP::ubuntu
 {{- end }}
 zi snippet OMZP::git
+zi snippet OMZP::gh
 zi snippet OMZP::systemd
 zi snippet OMZP::npm
 # zi snippet OMZP::history-substring-search
@@ -52,11 +53,14 @@ zinit wait lucid for \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions
 
+zi load 'wfxr/forgit'
+
 zi light jeffreytse/zsh-vi-mode
 zi light mafredri/zsh-async
 zi light MichaelAquilina/zsh-you-should-use
 zi ice from"gh-r" as"program"
 zi light junegunn/fzf
+# zi light Aloxaf/fzf-tab
 zi light lincheney/fzf-tab-completion
 zi light atuinsh/atuin
 # zi light marlonrichert/zsh-autocomplete
