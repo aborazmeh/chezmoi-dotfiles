@@ -80,10 +80,11 @@
       }
     },
     "custom/torrents": {
-      "interval" : 1,
+      "interval" : 10,
       "format": " {}",
       "return-type": "json",
       "tooltip": true,
+      "hide-empty-text": true,
       "on-click": "xdg-open http://localhost:7012/",
       "on-click-right": "$HOME/scripts/i3blocks/qbittorrent -c alt-speed-limits",
       "exec": "$HOME/scripts/i3blocks/qbittorrent -jf waybar"
@@ -101,6 +102,7 @@
       "format": " {}",
       "return-type": "json",
       "tooltip": true,
+      "hide-empty-text": true,
       "exec": "$HOME/scripts/podcasts waybar",
       "on-click": "konsole -e newsboat"
     },
@@ -109,6 +111,7 @@
       "format": " {}",
       "return-type": "json",
       "tooltip": true,
+      "hide-empty-text": true,
       "exec": "$HOME/scripts/rss waybar",
       "on-click": "konsole -e newsboat"
     },
