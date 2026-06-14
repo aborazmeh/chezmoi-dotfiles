@@ -22,6 +22,7 @@ pnpnm-lock.yaml
 
 {{- if ne .machine "home" }}
 .ledgerrc
+.local/share/systemd/user/ledger*
 
 .ncmpcpp
 

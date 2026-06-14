@@ -1,0 +1,8 @@
+[Unit]
+Description=Update ledger prices.db
+
+[Service]
+ExecStart=bash -c '$HOME/repos/budget/scripts/update_prices.py'
+
+[Install]
+WantedBy=default.target

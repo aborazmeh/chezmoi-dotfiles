@@ -1,0 +1,7 @@
+[Unit]
+Description=Git commit and push changes
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ .chezmoi.homeDir }}/repos/budget
+ExecStart=/bin/bash -c 'git add prices.db && if ! git diff --cached --quiet; then git commit -m "prices.db auto commit $(date)"; fi ; git push'
