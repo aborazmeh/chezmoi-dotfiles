@@ -68,3 +68,6 @@ encryption = "gpg"
 [data.prayertimes]
   mathhab = "{{ promptChoiceOnce . "prayertimes.mathhab" "prayertimes mathhab" $mathhabs }}"
   method = "{{ promptChoiceOnce . "prayertimes.method" "prayertimes method" $methods }}"
+
+[data.openexchangerates]
+  api_key = "{{ promptStringOnce . "openexchangerates.api_key" "Open Exchange Rates API Key" }}"

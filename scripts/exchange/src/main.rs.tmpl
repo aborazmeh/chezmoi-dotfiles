@@ -1,0 +1,126 @@
+use dirs::home_dir;
+use serde_json;
+use std::collections::HashMap;
+use std::env;
+use std::fs;
+use std::time::SystemTime;
+
+fn main() -> std::io::Result<()> {
+  if env::args().len() < 3 {
+    return Ok(());
+  }
+
+  let home = home_dir().expect("Couldn't get home directory");
+  let filepath = home.join("scripts").join(".exchange_rates");
+
+  match fs::metadata(&filepath) {
+    Ok(x) => {
+      if let Ok(mtime) = x.modified() {
+        if SystemTime::now().duration_since(mtime).unwrap().as_secs() > 18_000 {
+          update(&filepath).unwrap();
+        } else {
+          let data = fs::read_to_string(&filepath).expect("Unable to read exchange.json");
+          let obj: serde_json::Value = serde_json::from_str(&data).unwrap();
+          output(&obj);
+        }
+      } else {
+        println!("Not supported on this platform");
+      }
+    }
+
+    Err(_) => {
+      update(&filepath).unwrap(); // updates only when file doesn't exist
+    }
+  };
+
+  Ok(())
+}
+
+fn update(filepath: &std::path::PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+  let resp = reqwest::blocking::get(
+    "https://openexchangerates.org/api/latest.json?app_id={{ .openexchangerates.api_key }}",
+  )?
+  .json::<serde_json::Value>()?;
+
+  serde_json::to_writer(&fs::File::create(filepath)?, &resp["rates"])?;
+
+  output(&resp["rates"]);
+  Ok(())
+}
+
+fn symbolize(x: &str) -> String {
+  let mut symbols = HashMap::new();
+  symbols.insert("USD", "");
+  symbols.insert("TRY", "");
+  symbols.insert("EUR", "");
+  symbols.insert("SYP", "ل.س");
+
+  match symbols.get(x) {
+    Some(symbol) => symbol.to_string(),
+    None => x.to_string(),
+  }
+}
+
+fn output(obj: &serde_json::Value) {
+  let mut rates: HashMap<String, f64> = HashMap::new();
+  let mut args: Vec<String> = env::args().collect();
+
+  // FIXME use clap (or args)
+  let json_output = args.contains(&"--json".to_string());
+  if json_output {
+    let pos = args.iter().position(|x| *x == "--json").unwrap();
+    args.remove(pos);
+  }
+
+  for arg in args[1..].iter() {
+    if arg.len() != 6 {
+      eprintln!(
+        "Warning: '{}' is not a valid currency pair (should be 6 characters, e.g., USDTRY)",
+        arg
+      );
+      continue;
+    }
+
+    let from = &arg[0..3];
+    let to = &arg[3..6];
+
+    let rate = if from == "USD" {
+      obj[to].as_f64().unwrap_or(0.0)
+    } else {
+      let from_rate = obj[from].as_f64().unwrap_or(1.0);
+      let to_rate = obj[to].as_f64().unwrap_or(1.0);
+      to_rate / from_rate
+    };
+
+    rates.insert(arg.clone(), rate);
+  }
+
+  let mut tooltip = String::new();
+  for (k, v) in rates.iter() {
+    let from = &k[0..3];
+    let to = &k[3..6];
+
+    tooltip.push_str(&format!(
+      "{}  {} {:.2}\n",
+      symbolize(from),
+      symbolize(to),
+      v
+    ));
+  }
+
+  if json_output {
+    println!(
+      "{}",
+      serde_json::json!({
+          "text": format!("{:.2}", rates.values().next().unwrap_or(&0.0)),
+          "tooltip": tooltip.trim_end(),
+      })
+    );
+  } else {
+    if let Some(try_rate) = rates.get("USDTRY") {
+      println!("{:.2}", try_rate);
+    } else if let Some(first_rate) = rates.values().next() {
+      println!("{:.2}", first_rate);
+    }
+  }
+}
