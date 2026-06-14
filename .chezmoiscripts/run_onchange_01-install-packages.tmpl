@@ -3,31 +3,11 @@
 
 echo -e "\n\033[1m━━━  Package installation  ━━━\033[0m";
 
-{{ $distro := "" -}}
-{{ if eq .chezmoi.osRelease.id "arch" "manjaro" "endeavouros" "garuda" -}}
-  {{ $distro = "arch" -}}
-{{ else if eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint" "pop" -}}
-  {{ $distro = "debian" -}}
-{{ else if eq .chezmoi.osRelease.id "fedora" "rhel" "centos" "almalinux" -}}
-  {{ $distro = "fedora" -}}
-{{ end -}}
+{{ $distro := includeTemplate "distro.tmpl" . -}}
 
 echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
 
-{{ $packages := list "zsh" "starship" "sway" "swaylock" "swayidle" "waybar"
-"rofi" "lazygit" "tmuxp" "tmux" "vim" "neovim" "micro" "btop" "nnn" "atuin"
-"wlsunset" "ripgrep" "git-delta" "bat" "zoxide" "eza" "wdisplays" "wob"
-"wl-clipboard" "grim" "slurp" "autotiling"
--}}
-{{ $distroPackages := dict
-  "arch" (list "fd" "swaync" "bottom"
-    "ttf-firacode-nerd" "ttf-nerd-fonts-symbols"
-    "yazi" "gitui" "itools" "darkman")
-  "debian" (list "sway-notification-center" "btm"
-    "fd-find" "fonts-hosny-amiri" "fonts-firacode" "itools")
-  "fedora" (list "fd-find" "swaync" "bottom"
-    "amiri-fonts" "fira-code-fonts" "nerd-fonts-symbols")
--}}
+{{ $distroPackages := index .packages $distro -}}
 
 {{ if eq $distro "arch" -}}
 
@@ -40,16 +20,16 @@ echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
 
 echo -e "\033[0;36m\033[1m[INFO]\033[0m  Using AUR helper: {{ $aurHelper }}";
 
-sudo {{ $aurHelper }} {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
+sudo {{ $aurHelper }} {{ .packages.linux | join " " }} {{ $distroPackages | join " " -}};
 
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
 {{- else if eq $distro "debian" "ubuntu" "kali" }}
-sudo apt install {{ $packages | join " " }} {{ get $distroPackages $distro | join " " -}};
+sudo apt install {{ .packages.linux | join " " }} {{ $distroPackages | join " " -}};
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
 {{- else if eq $distro "fedora" }}
 # TODO
 {{- else }}
-  echo -e "\033[1m[ERROR]\033[0m Unsupported distro. Please install packages manually: {{ $packages | join " " }}" >&2;
+  echo -e "\033[1m[ERROR]\033[0m Unsupported distro. Please install packages manually: {{ .packages.linux | join " " }}" >&2;
 {{- end }}
 
 ZSH_LOC=$(which zsh)

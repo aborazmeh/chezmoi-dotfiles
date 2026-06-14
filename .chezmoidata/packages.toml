@@ -1,0 +1,61 @@
+[packages]
+linux = [
+  "zsh",
+  "starship",
+  "sway",
+  "swaylock",
+  "swayidle",
+  "waybar",
+  "rofi",
+  "lazygit",
+  "tmuxp",
+  "tmux",
+  "vim",
+  "neovim",
+  "micro",
+  "btop",
+  "nnn",
+  "atuin",
+  "wlsunset",
+  "ripgrep",
+  "git-delta",
+  "bat",
+  "zoxide",
+  "eza",
+  "wdisplays",
+  "wob",
+  "wl-clipboard",
+  "grim",
+  "slurp",
+  "autotiling",
+]
+
+arch = [
+  "fd",
+  "swaync",
+  "bottom",
+  "ttf-firacode-nerd",
+  "ttf-nerd-fonts-symbols",
+  "yazi",
+  "gitui",
+  "itools",
+  "darkman",
+]
+
+debian = [
+  "sway-notification-center",
+  "btm",
+  "fd-find",
+  "fonts-hosny-amiri",
+  "fonts-firacode",
+  "itools",
+]
+
+fedora = [
+  "fd-find",
+  "swaync",
+  "bottom",
+  "amiri-fonts",
+  "fira-code-fonts",
+  "nerd-fonts-symbols",
+]

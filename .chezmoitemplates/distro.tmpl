@@ -1,0 +1,9 @@
+{{ $distro := "" -}}
+{{ if eq .chezmoi.osRelease.id "arch" "manjaro" "endeavouros" "garuda" -}}
+  {{ $distro = "arch" -}}
+{{ else if eq .chezmoi.osRelease.id "ubuntu" "debian" "linuxmint" "pop" -}}
+  {{ $distro = "debian" -}}
+{{ else if eq .chezmoi.osRelease.id "fedora" "rhel" "centos" "almalinux" -}}
+  {{ $distro = "fedora" -}}
+{{ end -}}
+{{ $distro -}}
