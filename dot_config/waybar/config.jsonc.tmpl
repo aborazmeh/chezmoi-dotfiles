@@ -161,7 +161,7 @@
   {
     "layer": "top",
     "position": "bottom",
-    "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
+    "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery" {{- else }} "custom/ddcutil" {{- end }}, "pulseaudio", "cpu", "temperature", "memory", "disk", "network" {{- if eq .machine "home" -}}, "custom/exchange", "custom/weather" {{- end }} ],
     "modules-center": [ "custom/clock", "custom/prayertimes" ],
     "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
     "clock": {
@@ -230,6 +230,24 @@
       "reverse-scrolling": true,
       "on-scroll-up": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
       "on-scroll-down": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+
+      "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
+      "on-click-right": "killall wlsunset",
+      "on-click-middle": "darkman toggle",
+    },
+    "custom/ddcutil": {
+      "interval": "once",
+      "signal": 9,
+      "format": "{icon}",
+      "format-icons": ["", "", "", "", "", "", "", "", ""],
+      "tooltip": true,
+      "tooltip-format": "{percent}%",
+
+      "exec": "~/scripts/i3blocks/ddcutil get",
+
+      "reverse-scrolling": true,
+      "on-scroll-up": "~/scripts/i3blocks/ddcutil up",
+      "on-scroll-down": "~/scripts/i3blocks/ddcutil down",
 
       "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
       "on-click-right": "killall wlsunset",

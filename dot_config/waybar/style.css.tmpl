@@ -83,7 +83,8 @@ window#waybar.hidden {
 
 #clock, #custom-clock, #battery, #cpu, #memory, #temperature,
 #backlight, #network, #pulseaudio, #custom-exchange, #custom-weather,
-#tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync {
+#tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync,
+#custom-ddcutil {
   padding: 0 10px;
   margin: 0 5px;
 }
@@ -172,13 +173,13 @@ window#waybar.hidden {
   background: @memory;
 }
 
-#backlight {
+#backlight, #custom-ddcutil {
   transition: background .3s;
   background: alpha(@backlight, 0.65);
   color: #ccc;
 }
 
-#backlight:hover {
+#backlight:hover, #custom-ddcutil:hover {
   background: alpha(@backlight, 0.80);
 }
 
