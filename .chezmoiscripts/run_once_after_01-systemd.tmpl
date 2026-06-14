@@ -1,0 +1,10 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  systemd services  ━━━\033[0m"
+
+{{ range glob ".local/share/systemd/user/*" -}}
+  systemctl --user enable --now {{ base . }}
+{{ end }}
+echo -e "\033[0;32m\033[1m[OK]\033[0m    systemd services enabled"
+{{ end -}}

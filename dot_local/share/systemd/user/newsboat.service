@@ -1,0 +1,10 @@
+[Unit]
+Description=Update newsboat
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/newsboat -x reload
+ExecStart=/usr/bin/newsboat --vacuum --cleanup
+
+[Install]
+WantedBy=default.target
