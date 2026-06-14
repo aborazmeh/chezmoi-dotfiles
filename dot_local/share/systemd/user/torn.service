@@ -1,0 +1,8 @@
+[Unit]
+Description=Update torn.json
+
+[Service]
+ExecStart=%h/scripts/torn --update
+
+[Install]
+WantedBy=default.target

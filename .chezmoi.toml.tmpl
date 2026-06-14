@@ -71,3 +71,6 @@ encryption = "gpg"
 
 [data.openexchangerates]
   api_key = "{{ promptStringOnce . "openexchangerates.api_key" "Open Exchange Rates API Key" }}"
+
+[data.torn]
+  api_key = "{{ promptStringOnce . "torn.api_key" "Torn API Key" }}"

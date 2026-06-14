@@ -1,0 +1,9 @@
+[Unit]
+Description=update torn.json
+
+[Timer]
+OnBootSec=1sec
+OnUnitActiveSec=10sec
+
+[Install]
+WantedBy=timers.target

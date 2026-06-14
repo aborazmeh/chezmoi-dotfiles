@@ -1,0 +1,277 @@
+#!/bin/env python3
+
+import argparse
+import json
+import locale
+import os
+import re
+import subprocess
+import time
+
+import requests
+
+locale.setlocale(locale.LC_ALL, locale="en_US.UTF-8")
+
+APIKEY = "{{ .torn.api_key }}"
+
+if os.path.isfile(os.path.expanduser("~/.silent_mode")):
+    exit()
+
+
+def format(text, color):
+    if args.bar == "i3blocks":
+        return f'<span foreground="#{color}">{text}</span>'
+    elif args.bar == "polybar":
+        return f"%{{ `{{F#{color}}}{text}%{{F-}}` }}"
+    else:
+        return text
+
+
+def emojize(text):
+    if not text:
+        return ""
+
+    emojis = {
+        "Mexico": "🇲🇽",
+        "Cayman Islands": "🇰🇾",
+        "Canada": "🇨🇦",
+        "Hawaii": "🌺",
+        "United Kingdom": "🇬🇧",
+        "British": "🇬🇧",
+        "Argentina": "🇦🇷",
+        "Switzerland": "🇨🇭",
+        "Japan": "🇯🇵",
+        "China": "🇨🇳",
+        "United Arab Emirates": "🇦🇪",
+        "South Africa": "🇿🇦",
+        "": "🏥",
+        "": "🔐",
+        "": "🏠",
+        "": "⚠️",
+        "": "🏆",
+        "": "📨",
+        "": "ℹ️",
+    }
+    for e in emojis:
+        text = text.replace(e, emojis[e])
+    return text
+
+
+def output(text, tooltip, Class=""):
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "text": emojize(text).strip() if args.emoji else text.strip(),
+                    "tooltip": tooltip.strip(),
+                    "class": Class,
+                }
+            )
+        )
+    else:
+        print(text)
+
+
+def writeJson(data, filename):
+    with open(filename, "w") as fp:
+        json.dump(data, fp, ensure_ascii=False)
+
+
+def updateJson():
+    res = requests.get(
+        f"https://api.torn.com/user/?selections=travel,profile,money,events,messages,notifications,bars,cooldowns,icons&key={APIKEY}"
+    )
+    resJson = json.loads(res.text)
+    resJson["latest_update"] = time.time()
+    return resJson
+
+
+def showIcon(data, notify=False):
+    #   // TODO
+    #   // new_events=json'.events | map(select(.seen == 0 | length')
+
+    if data.get("error"):
+        return output("", data["error"]["error"])
+
+    now = int(time.time())
+    energy = data["energy"]["current"]
+    max_energy = data["energy"]["maximum"]
+    nerve = data["nerve"]["current"]
+    max_nerve = data["nerve"]["maximum"]
+    happiness = data["happy"]["current"]
+    max_happiness = data["happy"]["maximum"]
+    life = data["life"]["current"]
+    max_life = data["life"]["maximum"]
+    chain = data["chain"]["current"]
+    max_chain = data["chain"]["maximum"]
+    chain_timeout = data["chain"]["timeout"]
+    chain_cooldown = data["chain"]["cooldown"]
+    drugs_cooldown = data["cooldowns"]["drug"]
+    boosters_cooldown = data["cooldowns"]["booster"]
+    medical_cooldown = data["cooldowns"]["medical"]
+    award_notifications = data["notifications"]["awards"]
+    event_notifications = data["notifications"]["events"]
+    message_notifications = data["notifications"]["messages"]
+    # competition_notifications = data['notifications']['competition'] # TODO?
+    # travel = data['travel']['destination']
+
+    status = data["status"]["description"]
+
+    hospital_timestamp = data["states"]["hospital_timestamp"]
+    jail_timestamp = data["states"]["jail_timestamp"]
+    travel_timestamp = data["travel"]["timestamp"]
+
+    racing_regex = re.compile(r"Racing - Currently racing - ([\d:]+)")
+
+    racing_time_left = None
+    racing = list(filter(racing_regex.match, data["icons"].values()))
+    if racing:
+        racing_time_left = racing_regex.sub(r"\1", racing[0])
+
+    hms = lambda seconds: (
+        time.strftime("%M:%S", time.gmtime(seconds))
+        if seconds < 3600
+        else time.strftime("%H:%M", time.gmtime(seconds))
+    )
+    if m := re.match(r"Returning to Torn from (.+)", status):
+        icon = format(
+            f"{m.group(1)} {'🛬' if args.emoji else ''} ({hms(travel_timestamp - now)})",
+            "0f0",
+        )
+        Class = "returning"
+    elif m := re.match(r"Traveling to (.+)", status):
+        icon = format(
+            f"{'🛫' if args.emoji else ''} {m.group(1)} ({hms(travel_timestamp - now)})",
+            "ff0",
+        )
+        Class = "traveling"
+    elif m := re.match(r"In hospital", status):
+        icon = format(f" ({hms(hospital_timestamp - now)})", "c00")
+        Class = "hospital"
+    elif m := re.match(r"a (.+?) hospital", status):
+        icon = format(f"{m.group(1)}  ({hms(hospital_timestamp - now)})", "c00")
+        Class = "hospital"
+    elif m := re.match(r"In Jail", status):
+        icon = format(f" ({hms(jail_timestamp - now)})", "c00")
+        Class = "jail"
+    elif chain > 10 and chain_cooldown < 0:
+        if chain_timeout < 90:
+            icon = format(
+                f"{'⛓️' if args.emoji else ''} ({chain}/{max_chain} - {hms(chain_timeout)})",
+                "f00",
+            )
+            Class = "chain-critical"
+        else:
+            icon = format(
+                f"{'⛓️' if args.emoji else ''} ({chain}/{max_chain} - {hms(chain_timeout)})",
+                "0ff",
+            )
+            Class = "chain"
+    elif m := re.match(r"In (.+)", status):
+        icon = format(f" {m.group(1)}", "fff")
+        Class = "abroad"
+    elif m := re.match(r"Okay", status):
+        icon = format("", "fff")
+        Class = "okay"
+    else:
+        icon = format("", "f00")
+        Class = "error"
+
+    if award_notifications > 0:
+        icon = format(f"{award_notifications}", "ff0") + f" | {icon}"
+    if message_notifications > 0:
+        icon = format(f"{message_notifications}", "f0f") + f" | {icon}"
+    if event_notifications > 0:
+        icon = format(f"{event_notifications}", "0f0") + f" | {icon}"
+    if racing_time_left != None:
+        icon = format(f"[{racing_time_left}] 🏎️", "bbb") + f" | {icon}"
+        Class = "racing"
+
+    fmt = lambda t: locale.localize(str(t), grouping=True)
+
+    happinessFaces = [
+        "😵",
+        "😭",
+        "😢",
+        "😥",
+        "😧",
+        "☹️",
+        "😟",
+        "😔",
+        "🙁",
+        "😑",
+        "🙂",
+        "😊",
+        "😊",
+        "😁",
+        "😄",
+        "😇",
+        "🤩",
+    ]
+    if args.emoji:
+        # FIXME use emojize!
+        tooltip = f"""
+{data["name"]} [{data["player_id"]}]
+🍻 {hms(boosters_cooldown)} / 💊 {hms(drugs_cooldown)} / 💉 {hms(medical_cooldown)}
+🅿️ {data["points"]} 💵 ${fmt(data["money_onhand"])} / 🏝️ ${fmt(data["vault_amount"])}
+🏋️ {fmt(energy)}/{fmt(max_energy)} 💢 {fmt(nerve)}/{fmt(max_nerve)}
+{happinessFaces[round((happiness / max_happiness) * (len(happinessFaces) - 1))]} {fmt(happiness)}/{fmt(max_happiness)} 🧬 {fmt(life)}/{fmt(max_life)}
+{"⛓️" + fmt(chain) + "/" + fmt(max_chain) if chain > 10 else ""}
+"""
+    else:
+        tooltip = f"""
+{data["name"]} [{data["player_id"]}]
+Boosters: {hms(boosters_cooldown)} / Drugs: {hms(drugs_cooldown)} / Medical: {hms(medical_cooldown)}
+Points: {data["points"]} Cash: ${fmt(data["money_onhand"])} / Vault: ${fmt(data["vault_amount"])}
+Energy: {fmt(energy)}/{fmt(max_energy)} Nerve: {fmt(nerve)}/{fmt(max_nerve)}
+Happiness: {fmt(happiness)}/{fmt(max_happiness)} Life: {fmt(life)}/{fmt(max_life)}
+{"Chain:" + fmt(chain) + "/" + fmt(max_chain) if chain > 10 else ""}
+"""
+
+    output(icon, tooltip, Class=Class)
+
+
+def openTorn(data):
+    if data["notifications"]["messages"] > 0:
+        subprocess.Popen(["xdg-open", "https://www.torn.com/messages.php"])
+    elif data["notifications"]["events"] > 0:
+        subprocess.Popen(["xdg-open", "https://www.torn.com/events.php"])
+    elif data["notifications"]["awards"] > 0:
+        subprocess.Popen(["xdg-open", "https://www.torn.com/awards.php"])
+    elif data["chain"]["current"] > 25:
+        subprocess.Popen(["xdg-open", "https://yata.yt/targets"])
+    elif data["energy"]["current"] >= data["energy"]["maximum"]:
+        subprocess.Popen(["xdg-open", "https://www.torn.com/gym.php"])
+    elif data["nerve"]["current"] >= data["nerve"]["maximum"]:
+        subprocess.Popen(["xdg-open", "https://www.torn.com/crimes.php"])
+    else:
+        subprocess.Popen(["xdg-open", "https://www.torn.com"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--json", action="store_true", help="Json output")
+    parser.add_argument("--open", action="store_true")
+    parser.add_argument("--emoji", action="store_true", help="Emoji output")
+    parser.add_argument("--bar", metavar="bar", help="[i3blocks, waybar, polybar]")
+    parser.add_argument(
+        "--update", action="store_true", help="[i3blocks, waybar, polybar]"
+    )
+    args = parser.parse_args()
+
+    jsonFilename = os.path.expanduser("~/scripts/.torn.json")
+
+    if args.update:
+        data = updateJson()
+        showIcon(data, notify=True)
+        writeJson(data, jsonFilename)
+        exit()
+
+    try:
+        with open(jsonFilename, "r") as fp:
+            data = json.load(fp)
+            showIcon(data, notify=False)
+            if args.open:
+                openTorn(data)
+    except:
+        pass
