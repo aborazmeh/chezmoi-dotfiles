@@ -17,12 +17,12 @@ echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
 {{ $packages := list "zsh" "starship" "sway" "swaylock" "swayidle"
 "waybar" "rofi" "lazygit" "tmuxp" "tmux" "vim" "neovim" "micro"
 "btop" "nnn" "atuin" "wlsunset" "ripgrep" "git-delta" "bat"
-"zoxide" "eza" "wdisplays"
+"zoxide" "eza" "wdisplays" "wob"
 -}}
 {{ $distroPackages := dict
   "arch" (list "fd" "swaync" "bottom"
     "ttf-firacode-nerd" "ttf-nerd-fonts-symbols"
-    "yazi" "gitui" "itools")
+    "yazi" "gitui" "itools" "darkman")
   "debian" (list "sway-notification-center" "btm"
     "fd-find" "fonts-hosny-amiri" "fonts-firacode" "itools")
   "fedora" (list "fd-find" "swaync" "bottom"
