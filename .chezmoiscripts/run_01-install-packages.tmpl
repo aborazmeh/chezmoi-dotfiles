@@ -14,10 +14,10 @@ echo -e "\n\033[1m━━━  Package installation  ━━━\033[0m";
 
 echo -e "\033[0;36m\033[1m[INFO]\033[0m  Detected distro family: {{ $distro }}";
 
-{{ $packages := list "zsh" "starship" "sway" "swaylock" "swayidle"
-"waybar" "rofi" "lazygit" "tmuxp" "tmux" "vim" "neovim" "micro"
-"btop" "nnn" "atuin" "wlsunset" "ripgrep" "git-delta" "bat"
-"zoxide" "eza" "wdisplays" "wob"
+{{ $packages := list "zsh" "starship" "sway" "swaylock" "swayidle" "waybar"
+"rofi" "lazygit" "tmuxp" "tmux" "vim" "neovim" "micro" "btop" "nnn" "atuin"
+"wlsunset" "ripgrep" "git-delta" "bat" "zoxide" "eza" "wdisplays" "wob"
+"wl-clipboard" "grim" "slurp" "autotiling"
 -}}
 {{ $distroPackages := dict
   "arch" (list "fd" "swaync" "bottom"
