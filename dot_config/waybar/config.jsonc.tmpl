@@ -296,8 +296,8 @@
       "on-click-right": "pavucontrol",
 
       "reverse-scrolling": true,
-      "on-scroll-up": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") "amixer -D pulse set Master unmute 5%+" }}",
-      "on-scroll-down": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") "amixer -D pulse set Master unmute 5%-" }}"
+      "on-scroll-up": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") `amixer -D pulse set Master unmute 5%+ | awk -F'[][]' '/\\[[0-9]+%\\]/ {print $2;exit}' | tr -d '%' > $SWAYSOCK.wob` }}",
+      "on-scroll-down": "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") `amixer -D pulse set Master unmute 5%- | awk -F'[][]' '/\\[[0-9]+%\\]/ {print $2; exit}' | tr -d '%' > $SWAYSOCK.wob` }}"
     },
     "cpu": {
       "format": "  {usage}%",
