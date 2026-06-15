@@ -79,7 +79,7 @@
 )
 
 (defalias
-  ❤️ (macro (unicode U+2764) (unicode U+FE0F))
+  ❤️ {{- if eq .chezmoi.osRelease.id "debian" }} (unicode ♥) {{- else }} (macro (unicode U+2764) (unicode U+FE0F)) {{- end }}
   😊 (unicode 😊) 😀 (unicode 😀) 😂 (unicode 😂) 😎 (unicode 😎)
   🤔 (unicode 🤔) 😍 (unicode 😍) 🙄 (unicode 🙄) 😭 (unicode 😭)
   🫪 (unicode 🫪) 🫩 (unicode 🫩) ✅ (unicode ✅) 👍 (unicode 👍)
