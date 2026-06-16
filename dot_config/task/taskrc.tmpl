@@ -1,13 +1,19 @@
 # [Created by task 2.4.4 7/5/2015 12:10:30]
 # Use the command 'task show' to see all defaults and overrides
+news.version=2.4.4
 
 # Files
+{{ if eq .machine "home" -}}
 data.location={{ .chezmoi.homeDir }}/MEGA/Tasks
+{{ else -}}
+data.location=~/.local/share/task
+hooks.location=~/.config/task/hooks
+{{ end -}}
 locking=on
 gc=on
 
 # Terminal
-editor=vim
+editor=nvim
 
 # Holidays
 calendar.holidays=full
