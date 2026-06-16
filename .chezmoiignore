@@ -3,7 +3,7 @@ Pictures/backgrounds/{arch,debian,kali,slackware,ubuntu}*
 node_modules
 .prettierrc
 package.json
-pnpnm-lock.yaml
+pnpm-lock.yaml
 .vscode
 
 {{- if eq .chezmoi.os "darwin" "linux" }}
