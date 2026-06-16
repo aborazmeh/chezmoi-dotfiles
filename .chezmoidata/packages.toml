@@ -28,6 +28,7 @@ linux = [
   "grim",
   "slurp",
   "autotiling",
+  "newsboat",
 ]
 
 arch = [
