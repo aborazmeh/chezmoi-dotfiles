@@ -32,14 +32,14 @@ current=$(cat "$STATE_FILE")
 
 # Validate current is a number, fallback to 50 if corrupted
 
-if ! [["$current" =~ ^[0-9]+$]]; then
+if ! [[ "$current" =~ ^[0-9]+$ ]]; then
   current=50
   echo "$current" >"$STATE_FILE"
 fi
 
 case "$1" in
 "get")
-  echo "$current"
+  echo "{\"text\": \"$current%\", \"alt\": \"$current\", \"percentage\": $current, \"tooltip\": \"$current%\"}"
   echo "$current" >$SWAYSOCK.wob
   ;;
 "up")
