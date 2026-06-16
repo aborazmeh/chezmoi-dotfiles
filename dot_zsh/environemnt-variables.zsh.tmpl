@@ -14,7 +14,7 @@ export PATH=$PATH:$HOME/.config/composer/vendor/bin     #composer
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
 {{ range .env.path -}}
-export PATH="$PATH:{{ . }}"
+export PATH=$PATH:{{ . }}
 {{ end -}}
 export PATH=$PATH:.
 
