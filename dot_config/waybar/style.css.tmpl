@@ -2,33 +2,32 @@
 @import '{{ .chezmoi.homeDir }}/.cache/wal/colors-waybar.css';
 {{- end }}
 
-@define-color red #ad1818;
+@define-color red #e65959;
 @define-color gray #64727d;
-@define-color blue #2980b9;
-@define-color green #1a9b1a;
-@define-color fern #2ecc71; /* #26a65b */
+@define-color blue #81a2be;
+@define-color green #67cd67;
+@define-color fern #87b46e;
 
-@define-color urgent #eb4d4b;  /* #f53c3c */
-@define-color memory #9b59b6;
+@define-color urgent #cc6666;
+@define-color memory #b294bb;
 @define-color backlight #90b1b1;
-@define-color pulseaudio #f1c40f;
+@define-color pulseaudio #f0c674;
 @define-color pulseaudio-muted #2a5c45;
-@define-color exchange #85bb65;
+@define-color exchange #b5bd68;
 @define-color temperature #f0932b;
 @define-color bluetooth #0060a9;
 /* @define-color bluetooth-blink #218cdd; */
-@define-color disk #92fcfc;
-@define-color podcasts #a26eea;
-@define-color rss #f26522;
+@define-color disk #8abeb7;
+@define-color podcasts #af8ae3;
+@define-color rss #e87c4a;
 
 @define-color alt-state #c1a100;
-@define-color torn-chain #35b9b9;
-
+@define-color torn-chain #70b9b9;
 
 * {
   border: none;
   border-radius: 0;
-  font-family: Roboto,'Font Awesome 5', 'SFNS Display',  Helvetica, Arial, "Symbols Nerd Font", sans-serif;
+  font-family: Roboto,'Font Awesome 5', 'SFNS Display', Helvetica, Arial, "Symbols Nerd Font", sans-serif;
   font-size: 13px;
   min-height: 0;
 }
@@ -81,7 +80,7 @@ window#waybar.hidden {
   margin-left: 5px;
 }
 
-#clock, #custom-clock, #battery, #cpu, #memory, #temperature,
+#clock, #custom-clock, #battery, #cpu, #memory, #temperature, #disk,
 #backlight, #network, #pulseaudio, #custom-exchange, #custom-weather,
 #tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync,
 #custom-ddcutil {
@@ -90,6 +89,7 @@ window#waybar.hidden {
 }
 
 #custom-swaync,
+#custom-tasks,
 #custom-torn,
 #mpd,
 #custom-music,
@@ -99,6 +99,7 @@ window#waybar.hidden {
 }
 
 #custom-swaync:hover,
+#custom-tasks:hover,
 #custom-torn:hover,
 #custom-music:hover,
 #custom-torrents:hover,
@@ -165,7 +166,7 @@ window#waybar.hidden {
 
 #memory {
   transition: background .3s;
-  background: alpha(@memory, 0.65);
+  background: shade(@memory, 0.6);
   color: #ccc;
 }
 
@@ -221,7 +222,7 @@ window#waybar.hidden {
 }
 
 #custom-exchange {
-  background: alpha(@exchange, 0.65);
+  background: shade(@exchange, 0.7);
   color: #ccc;
 }
 
@@ -298,9 +299,8 @@ window#waybar.hidden {
 
 #disk {
   transition: background .3s;
-  background-color: alpha(@disk, 0.65);
-  color: #000;
-  font-weight: 500;
+  background-color: shade(@disk, 0.6);
+  color: #ccc;
 }
 
 #disk:hover {
@@ -419,4 +419,14 @@ window#waybar.hidden {
   font-size: 1.1rem;
   color: @rss;
   border-bottom: 3px solid shade(@rss, .7);
+}
+
+#custom-tasks {
+  font-size: 14px;
+  background: alpha(@background, 0.75);
+  border-bottom: 3px solid alpha(@color1, 0.5);
+}
+
+#custom-tasks.urgent {
+  background-color: red;
 }
