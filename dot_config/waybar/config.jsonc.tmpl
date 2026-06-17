@@ -130,7 +130,7 @@
       "return-type": "json",
       "hide-empty-text": true,
 
-      "exec-if": "which task",
+      "exec-if": "command -v task",
       "exec": "$HOME/scripts/taskwarrior -j",
       "on-click": "ghostty --command=taskwarrior-tui",
     },
@@ -144,7 +144,7 @@
         "dnd-none": "󰂛"
         },
       "return-type": "json",
-      "exec-if": "which swaync-client",
+      "exec-if": "command -v swaync-client",
       "exec": "swaync-client -swb",
       "on-click": "swaync-client -t -sw",
       "on-click-right": "swaync-client -d -sw",
