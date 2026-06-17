@@ -1,0 +1,39 @@
+#!/bin/bash
+while getopts f:j option; do
+  case "${option}" in
+  f) FRONTEND=${OPTARG} ;;
+  j) JSON=${option} ;;
+  *) ;;
+  esac
+done
+
+pending_count=$(task count status:pending)
+overdue_count=$(task +TODAY or +OVERDUE count)
+top_ten="$(task rc-verbose:nothin notify limit:10)"
+
+if [[ $overdue_count -gt 0 ]]; then
+  if [[ $FRONTEND == "i3blocks" ]]; then
+    text="<b><span foreground=\"red\">$overdue_count</span></b>/$pending_count"
+    case $BLOCK_BUTTON in
+    1) notify ;;
+    esac
+  elif [[ $FRONTEND == "polybar" ]]; then
+    text="%{F#f00}$overdue_count%{F-}/$pending_count"
+  elif [[ $FRONTEND == "notify" ]]; then
+    notify
+  fi
+  notify_urgancy="critical"
+else
+  text="$pending_count"
+  notify_urgancy="normal"
+fi
+
+if [[ -n $JSON ]]; then
+  echo "{\"text\": \"$pending_count\", \"alt\": \"$pending_count\", \"tooltip\": $(echo "${top_ten}" | jq -Rs .), \"class\": \"$waybar_class\"}"
+elif [[ $pending_count -gt 0 ]]; then
+  echo " $text"
+fi
+
+notify() {
+  notify-send -u $notify_urgancy "$(task notify | sed -e '1,3d' | sed -e '$d' | sed -e '$d')"
+}

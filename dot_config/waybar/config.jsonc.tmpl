@@ -4,7 +4,7 @@
     "position": "top",
     "modules-left": [ "sway/workspaces", "sway/mode", "sway/scratchpad" ],
     "modules-center": [ "sway/window" ],
-    "modules-right": [ {{ if eq .machine "home" -}} "custom/music", "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/swaync" ],
+    "modules-right": [ {{ if eq .machine "home" -}} "custom/music", "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/tasks", "custom/swaync" ],
     "sway/workspaces": {
       "disable-scroll-wraparound": false,
       "smooth-scrolling-threshold": 1,
@@ -123,7 +123,17 @@
       "on-click": "$HOME/scripts/torn --open",
       "exec": "$HOME/scripts/torn --json --emoji --bar waybar"
     },
-    "TODO": "right: [tasks]",
+    "custom/tasks": {
+      "interval": 60,
+      "tooltip": true,
+      "format": " {text}",
+      "return-type": "json",
+      "hide-empty-text": true,
+
+      "exec-if": "which task",
+      "exec": "$HOME/scripts/taskwarrior -j",
+      "on-click": "ghostty --command=taskwarrior-tui",
+    },
     "custom/swaync": {
       "tooltip": false,
       "format": "{icon}",
@@ -150,11 +160,6 @@
   // command=$HOME/scripts/dropbox i3blocks
   // interval=3
   // color=#007ee5
-  //
-  // [tasks]
-  // command=$HOME/scripts/taskwarrior i3blocks
-  // interval=10
-  // markup=pango
   //
   // [email]
   // command=$HOME/scripts/i3blocks/email

@@ -83,7 +83,7 @@ window#waybar.hidden {
 #clock, #custom-clock, #battery, #cpu, #memory, #temperature, #disk,
 #backlight, #network, #pulseaudio, #custom-exchange, #custom-weather,
 #tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync,
-#custom-ddcutil {
+#custom-ddcutil, #custom-tasks {
   padding: 0 10px;
   margin: 0 5px;
 }
@@ -423,10 +423,17 @@ window#waybar.hidden {
 
 #custom-tasks {
   font-size: 14px;
-  background: alpha(@background, 0.75);
-  border-bottom: 3px solid alpha(@color1, 0.5);
+  border-bottom: 3px solid transparent;
+}
+
+#custom-tasks:hover {
+  border-bottom: 3px solid @fern;
 }
 
 #custom-tasks.urgent {
-  background-color: red;
+  border-bottom: 3px solid @urgent;
+}
+
+#custom-tasks.urgent {
+  border-bottom: 3px solid shade(@urgent, .8)
 }
