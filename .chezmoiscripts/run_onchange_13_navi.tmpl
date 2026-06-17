@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Navi Cheatsheets  ━━━\033[0m"
+if command -v navi >/dev/null; then
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Navi already installed, skipping."
+else
+  bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
+  echo -e "\033[0;32m\033[1m[OK]\033[0m    Navi installed."
+fi
+{{ end -}}
