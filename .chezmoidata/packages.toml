@@ -29,6 +29,8 @@ linux = [
   "slurp",
   "autotiling",
   "newsboat",
+  "task",
+  "taskwarrior-tui"
 ]
 
 arch = [
