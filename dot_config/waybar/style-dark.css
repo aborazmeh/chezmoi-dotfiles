@@ -6,9 +6,9 @@
 @define-color green shade(#67cd67, .7);
 @define-color fern shade(#87b46e, .7);
 @define-color memory #85678f;
-@define-color backlight shade(#90b1b1, .7);
+@define-color backlight #707880;
 @define-color pulseaudio #de935f;
-@define-color pulseaudio-muted shade(#2a5c45, .7);
+@define-color pulseaudio-muted #282a2e;
 @define-color exchange #8c9440;
 @define-color temperature shade(#f0932b, .7);
 @define-color bluetooth shade(#0060a9, .7);

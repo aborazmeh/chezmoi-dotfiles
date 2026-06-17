@@ -10,9 +10,9 @@
 
 @define-color urgent #cc6666;
 @define-color memory #b294bb;
-@define-color backlight #90b1b1;
+@define-color backlight #c5c8c6;
 @define-color pulseaudio #f0c674;
-@define-color pulseaudio-muted #2a5c45;
+@define-color pulseaudio-muted #373b41;
 @define-color exchange #b5bd68;
 @define-color temperature #f0932b;
 @define-color bluetooth #0060a9;
@@ -85,7 +85,6 @@ window#waybar.hidden {
 #tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync,
 #custom-ddcutil, #custom-tasks {
   padding: 0 10px;
-  margin: 0 5px;
 }
 
 #custom-swaync,
@@ -177,7 +176,7 @@ window#waybar.hidden {
 
 #backlight, #custom-ddcutil {
   transition: background .3s;
-  background: alpha(@backlight, 0.65);
+  background: alpha(@backlight, 0.55);
   color: #ccc;
 }
 
@@ -214,7 +213,7 @@ window#waybar.hidden {
 }
 
 #pulseaudio.muted {
-  background: alpha(@backlight, 0.65);
+  background: alpha(@backlight, 0.75);
   color: @pulseaudio-muted;
 }
 
