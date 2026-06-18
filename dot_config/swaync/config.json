@@ -92,24 +92,24 @@
     //       }
     //     ]
     //   },
-    //   "menu#cpu": {
-    //     "label": "",
-    //     "position": "right",
-    //     "actions": [
-    //       {
-    //         "label": "Performance",
-    //         "command": "powerprofilesctl set performance"
-    //       },
-    //       {
-    //         "label": "Balanced",
-    //         "command": "powerprofilesctl set balanced"
-    //       },
-    //       {
-    //         "label": " Power-saver",
-    //         "command": "powerprofilesctl set power-saver"
-    //       }
-    //     ]
-    //   }
+      "menu#cpu": {
+        "label": "",
+        "position": "right",
+        "actions": [
+          {
+            "label": "  Performance",
+            "command": "powerprofilesctl set performance"
+          },
+          {
+            "label": "    Balanced",
+            "command": "powerprofilesctl set balanced"
+          },
+          {
+            "label": "  Power-saver",
+            "command": "powerprofilesctl set power-saver"
+          }
+        ]
+      }
     // },
     // "buttons-grid": {
     //   "actions": [

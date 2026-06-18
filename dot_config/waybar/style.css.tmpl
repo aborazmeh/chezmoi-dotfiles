@@ -11,6 +11,7 @@
 @define-color urgent #cc6666;
 @define-color memory #b294bb;
 @define-color backlight #c5c8c6;
+@define-color power-profiles-daemon #707880;
 @define-color pulseaudio #f0c674;
 @define-color pulseaudio-muted #373b41;
 @define-color exchange #b5bd68;
@@ -83,7 +84,7 @@ window#waybar.hidden {
 #clock, #custom-clock, #battery, #cpu, #memory, #temperature, #disk,
 #backlight, #network, #pulseaudio, #custom-exchange, #custom-weather,
 #tray, #mode, #idle_inhibitor, #custom-rss, #custom-podcasts, #custom-swaync,
-#custom-ddcutil, #custom-tasks {
+#custom-ddcutil, #custom-tasks, #power-profiles-daemon {
   padding: 0 10px;
 }
 
@@ -182,6 +183,15 @@ window#waybar.hidden {
 
 #backlight:hover, #custom-ddcutil:hover {
   background: alpha(@backlight, 0.80);
+}
+
+#power-profiles-daemon {
+  transition: background .3s;
+  background: shade(@power-profiles-daemon, .8);
+}
+
+#power-profiles-daemon:hover {
+  background: @power-profiles-daemon;
 }
 
 #network {

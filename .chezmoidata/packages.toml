@@ -30,7 +30,8 @@ linux = [
   "autotiling",
   "newsboat",
   "task",
-  "taskwarrior-tui"
+  "taskwarrior-tui",
+  "power-profiles-daemon",
 ]
 
 arch = [

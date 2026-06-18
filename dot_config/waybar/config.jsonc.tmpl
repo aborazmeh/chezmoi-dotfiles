@@ -169,7 +169,7 @@
   {
     "layer": "top",
     "position": "bottom",
-    "modules-left": [ {{ if eq .chassis_type "laptop" -}} "backlight", "battery" {{- else }} "custom/ddcutil" {{- end }}, "pulseaudio", "cpu", "temperature", "memory", "disk", "network", "custom/exchange", "custom/weather" ],
+    "modules-left": [ "{{ or (and (eq .chassis_type "laptop") "backlight") "custom/ddcutil" -}}", "power-profiles-daemon", {{ if eq .chassis_type "laptop" -}} "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network", "custom/exchange", "custom/weather" ],
     "modules-center": [ "custom/clock", "custom/prayertimes" ],
     "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
     "clock": {
@@ -242,6 +242,17 @@
       "on-click": "killall wlsunset ; swaymsg exec 'wlsunset -l {{ .latitude }} -L {{ .longitude }}'",
       "on-click-right": "killall wlsunset",
       "on-click-middle": "darkman toggle",
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
     },
     "custom/ddcutil": {
       "interval": "once",
