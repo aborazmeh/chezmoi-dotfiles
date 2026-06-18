@@ -121,12 +121,20 @@ def showIcon(data, notify=False):
     jail_timestamp = data["states"]["jail_timestamp"]
     travel_timestamp = data["travel"]["timestamp"]
 
-    racing_regex = re.compile(r"Racing - Currently racing - ([\d:]+)")
+    racing_regex = re.compile(r"Racing - Currently racing - (.+)")
 
     racing_time_left = None
     racing = list(filter(racing_regex.match, data["icons"].values()))
     if racing:
-        racing_time_left = racing_regex.sub(r"\1", racing[0])
+        time_str = racing_regex.sub(r"\1", racing[0])
+        hours = minutes = seconds = 0
+        if 'hour' in time_str:
+            hours = int(re.search(r'(\d+)\s+hour', time_str).group(1))
+        if 'minute' in time_str:
+            minutes = int(re.search(r'(\d+)\s+minute', time_str).group(1))
+        if 'second' in time_str:
+            seconds = int(re.search(r'(\d+)\s+second', time_str).group(1))
+        racing_time_left = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
     hms = lambda seconds: (
         time.strftime("%M:%S", time.gmtime(seconds))
