@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use std::env;
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, BufRead, BufReader, Write};
-use std::{path::Path, path::PathBuf, process, time::Duration};
+use std::{path::Path, path::PathBuf, process, time::Duration, time::UNIX_EPOCH};
 
 struct TotalPlaytime {
   file_path: PathBuf,
@@ -74,7 +74,7 @@ impl TotalPlaytime {
     Ok(())
   }
 
-  fn save_to_file(&self) -> io::Result<()> {
+fn save_to_file(&self) -> io::Result<()> {
     let sorted_entries: BTreeMap<_, _> = self.entries.iter().collect();
     let mut file = OpenOptions::new()
       .write(true)
@@ -84,24 +84,6 @@ impl TotalPlaytime {
       writeln!(file, "{}\t{}", filename, seconds)?;
     }
     Ok(())
-  }
-
-  fn are_in_same_directory(&self, path1: &str, path2: &str) -> bool {
-    let path1 = Path::new(path1);
-    let path2 = Path::new(path2);
-
-    // TODO: can also check for last modification date and update the duration
-    if !path1.exists() || !path2.exists() {
-      return false;
-    }
-
-    let parent1 = path1.parent();
-    let parent2 = path2.parent();
-
-    match (parent1, parent2) {
-        (Some(dir1), Some(dir2)) => dir1 == dir2,
-        _ => false,
-    }
   }
 
   fn get_duration(&self, input: &str) -> Option<f32> {
@@ -114,7 +96,7 @@ impl TotalPlaytime {
       if filename == input {
         found = true;
       }
-      if found && self.are_in_same_directory(input, filename) {
+      if found && are_in_same_directory(input, filename) {
         result += seconds;
       }
     }
@@ -127,10 +109,72 @@ impl TotalPlaytime {
   }
 }
 
+fn are_in_same_directory(path1: &str, path2: &str) -> bool {
+  let path1 = Path::new(path1);
+  let path2 = Path::new(path2);
+
+  let parent1 = path1.parent();
+  let parent2 = path2.parent();
+
+  match (parent1, parent2) {
+      (Some(dir1), Some(dir2)) => dir1 == dir2,
+      _ => false,
+  }
+}
+
 fn is_media(path: &PathBuf) -> bool {
   let mime_type = from_path(path).first_or_octet_stream();
   let mime_type = mime_type.to_string();
   mime_type.contains("audio") || mime_type.contains("video")
+}
+
+fn get_directory_fingerprint(dir: &Path) -> Option<Vec<(String, u64)>> {
+  let mut entries = Vec::new();
+  for entry in fs::read_dir(dir).ok()? {
+    let entry = entry.ok()?;
+    let path = entry.path();
+    if path.is_file() && is_media(&path) {
+      let mtime = entry.metadata().ok()?.modified().ok()?.duration_since(UNIX_EPOCH).ok()?.as_secs();
+      entries.push((path.file_name()?.to_string_lossy().to_string(), mtime));
+    }
+  }
+  entries.sort_by(|a, b| a.0.cmp(&b.0));
+  Some(entries)
+}
+
+fn read_cached_total_duration(dir: &Path) -> Option<i64> {
+  let cache_path = dir.join(".total_duration.cache");
+  let file = File::open(&cache_path).ok()?;
+  let reader = BufReader::new(file);
+  let mut lines = reader.lines();
+  let stored_fingerprint: Vec<String> = serde_json::from_str(&lines.next()?.ok()?).ok()?;
+  let stored_duration: i64 = lines.next()?.ok()?.parse().ok()?;
+
+  let current_fingerprint = get_directory_fingerprint(dir)?;
+  let mut current_fingerprint_str: Vec<String> = current_fingerprint.iter()
+    .map(|(name, mtime)| format!("{}:{}", name, mtime))
+    .collect();
+  let mut stored_fp: Vec<String> = stored_fingerprint.iter()
+      .cloned()
+      .collect();
+  current_fingerprint_str.sort();
+  stored_fp.sort();
+  
+  if stored_fp == current_fingerprint_str {
+    Some(stored_duration)
+  } else {
+    None
+  }
+}
+
+fn write_cached_total_duration(dir: &Path, duration_micros: i64) {
+  if let Some(fingerprint) = get_directory_fingerprint(dir) {
+    let fingerprint_str: Vec<String> = fingerprint.iter()
+      .map(|(name, mtime)| format!("{}:{}", name, mtime))
+      .collect();
+    let contents = format!("{}\n{}", serde_json::to_string(&fingerprint_str).unwrap(), duration_micros);
+    let _ = fs::write(dir.join(".total_duration.cache"), contents);
+  }
 }
 
 fn get_file_duration(path: &PathBuf) -> Result<Duration, ()> {
@@ -174,16 +218,19 @@ fn get_file_duration(path: &PathBuf) -> Result<Duration, ()> {
 }
 
 pub fn get_audiobook_duration(url: &str) -> i64 {
-  let mut total_playtime = TotalPlaytime::new().expect("Failed to initialize TotalPlaytime");
-
   let (filename, dirname) = match get_filename_dirname(url) {
-    Ok(x) => (x.0, x.1),
+    Ok(x) => x,
     Err(_) => return -1,
   };
 
-  let full_path = Path::new(&dirname).join(filename);
+  if let Some(cached) = read_cached_total_duration(&dirname) {
+    return cached;
+  }
 
-  for entry in fs::read_dir(dirname).unwrap() {
+  let mut total_playtime = TotalPlaytime::new().expect("Failed to initialize TotalPlaytime");
+  let full_path = Path::new(&dirname).join(&filename);
+
+  for entry in fs::read_dir(&dirname).unwrap() {
     let path = entry.unwrap().path();
     if path.is_file() && is_media(&path) {
       if total_playtime
@@ -204,10 +251,12 @@ pub fn get_audiobook_duration(url: &str) -> i64 {
     }
   }
 
-  match total_playtime.get_duration(full_path.to_str().unwrap())  {
+  let total = match total_playtime.get_duration(full_path.to_str().unwrap())  {
     Some(x) => {
       x as i64 * 1_000_000
     },
     None => 0
-  }
+  };
+  write_cached_total_duration(&dirname, total);
+  total
 }
