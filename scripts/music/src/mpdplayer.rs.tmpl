@@ -51,10 +51,7 @@ impl MpdPlayer {
     let player_status = player.status().unwrap();
 
     match player_status.time {
-      Some(x) => match x.0.num_microseconds() {
-        Some(x) => x,
-        None => -1,
-      },
+      Some(x) => x.0.as_micros() as i64,
       _ => -1,
     }
   }
@@ -89,28 +86,25 @@ impl MpdPlayer {
       },
     };
 
-    let length = match song.duration {
-      Some(x) => match x.num_microseconds() {
-        Some(x) => x,
-        None => -1,
-      },
+let length = match song.duration {
+      Some(x) => x.as_micros() as i64,
       None => -1,
     };
 
-    let authors = match song.tags.get("artist") {
-      Some(x) => x,
-      _ => "Unknown",
-    };
+    let authors = song.tags.iter()
+      .find(|(k, _)| k == "artist")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
 
-    let album = match song.tags.get("album") {
-      Some(x) => x,
-      _ => "Unknown",
-    };
+    let album = song.tags.iter()
+      .find(|(k, _)| k == "album")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
 
-    let year = match song.tags.get("year") {
-      Some(x) => x,
-      _ => "Unknown",
-    };
+    let year = song.tags.iter()
+      .find(|(k, _)| k == "date")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
 
     let position = self.get_position();
 
