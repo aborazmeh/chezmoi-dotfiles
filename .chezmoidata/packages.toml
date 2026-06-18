@@ -32,6 +32,7 @@ linux = [
   "task",
   "taskwarrior-tui",
   "power-profiles-daemon",
+  "nsxiv",
 ]
 
 arch = [
@@ -44,6 +45,7 @@ arch = [
   "gitui",
   "itools",
   "darkman",
+  "python-qrcode",
 ]
 
 debian = [
@@ -53,6 +55,7 @@ debian = [
   "fonts-hosny-amiri",
   "fonts-firacode",
   "itools",
+  "python3-qrcode",
 ]
 
 fedora = [
