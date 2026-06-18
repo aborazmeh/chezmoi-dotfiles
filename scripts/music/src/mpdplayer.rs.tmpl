@@ -1,0 +1,168 @@
+use mpd::Client;
+
+use crate::utils::{output, MetadataType};
+use std::collections::HashMap;
+
+pub struct MpdPlayer {
+  player: Option<Client>,
+}
+
+impl MpdPlayer {
+  pub fn new() -> Self {
+    match Client::connect("127.0.0.1:6600") {
+      Ok(mut player) => match player.login("{{ .mpd.password }}") {
+        Ok(_) => {
+          return Self {
+            player: Some(player),
+          }
+        }
+        Err(_) => return Self { player: None },
+      },
+      Err(_) => return Self { player: None },
+    };
+  }
+
+  pub fn is_active(&mut self) -> bool {
+    match &mut self.player {
+      Some(x) => match x.currentsong() {
+        Ok(x) => match x {
+          Some(_) => true,
+          None => false,
+        },
+        Err(_) => false,
+      },
+      None => false,
+    }
+  }
+
+  pub fn is_playing(&mut self) -> bool {
+    match self.get_status() {
+      "playing" => true,
+      _ => false,
+    }
+  }
+
+  fn get_position(&mut self) -> i64 {
+    let player = match &mut self.player {
+      Some(x) => x,
+      _ => return -1,
+    };
+
+    let player_status = player.status().unwrap();
+
+    match player_status.time {
+      Some(x) => match x.0.num_microseconds() {
+        Some(x) => x,
+        None => -1,
+      },
+      _ => -1,
+    }
+  }
+
+  fn get_status(&mut self) -> &str {
+    let player = match &mut self.player {
+      Some(x) => x,
+      _ => return "stopped",
+    };
+
+    match player.status() {
+      Ok(x) => match x.state {
+        mpd::State::Play => "playing",
+        mpd::State::Pause => "paused",
+        mpd::State::Stop => "stopped",
+      },
+      Err(_) => "",
+    }
+  }
+
+  fn print(&mut self, frontend: &str) {
+    let song = match &mut self.player {
+      Some(x) => x.currentsong().unwrap().unwrap(),
+      _ => return,
+    };
+
+    let title = match song.title {
+      Some(x) => x,
+      None => match song.name {
+        Some(x) => x,
+        None => song.file,
+      },
+    };
+
+    let length = match song.duration {
+      Some(x) => match x.num_microseconds() {
+        Some(x) => x,
+        None => -1,
+      },
+      None => -1,
+    };
+
+    let authors = match song.tags.get("artist") {
+      Some(x) => x,
+      _ => "Unknown",
+    };
+
+    let album = match song.tags.get("album") {
+      Some(x) => x,
+      _ => "Unknown",
+    };
+
+    let year = match song.tags.get("year") {
+      Some(x) => x,
+      _ => "Unknown",
+    };
+
+    let position = self.get_position();
+
+    let metadata: HashMap<&str, MetadataType> = HashMap::from([
+      ("status", MetadataType::String(self.get_status())),
+      ("title", MetadataType::String(title.as_str())),
+      ("authors", MetadataType::String(authors)),
+      ("album", MetadataType::String(album)),
+      ("year", MetadataType::String(year)),
+      ("type", MetadataType::String("unknown")),
+      ("position", MetadataType::Microseconds(position)),
+      ("length", MetadataType::Microseconds(length)),
+    ]);
+
+    output(frontend, metadata);
+  }
+
+  fn exec(&mut self, cmd: &str) {
+    let mut err_msg = String::from("Unable to execute command");
+    err_msg.push_str(cmd);
+
+    let position = self.get_position() / 1_000_000;
+
+    let status = &mut self.get_status().to_string();
+
+    match &mut self.player {
+      Some(x) => match cmd {
+        "toggle" => match status.as_str() {
+          "stopped" => x.play().expect(&err_msg),
+          _ => x.toggle_pause().expect(&err_msg),
+        }
+        "stop" => x.stop().expect(&err_msg),
+        "next" => x.next().expect(&err_msg),
+        "prev" => x.prev().expect(&err_msg),
+        "seek+" => x.rewind(position + 10).expect(&err_msg),
+        "seek-" => x.rewind(position - 10).expect(&err_msg),
+        _ => unreachable!(),
+      },
+      _ => panic!("{err_msg}"),
+    }
+  }
+
+  pub fn execute_command(&mut self, cmd: &str, payload: HashMap<&str, &str>) {
+    match cmd {
+      "toggle" => self.exec("toggle"),
+      "status" => self.print(payload.get("frontend").unwrap()),
+      "stop" => self.exec("stop"),
+      "next" => self.exec("next"),
+      "prev" => self.exec("prev"),
+      "seek+" => self.exec("seek+"),
+      "seek-" => self.exec("seek-"),
+      _ => unreachable!(),
+    }
+  }
+}

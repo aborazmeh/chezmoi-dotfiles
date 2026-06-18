@@ -1,4 +1,4 @@
-MODULES= date kbd_layouts_i3ipc exchange {{- if eq .machine "home" }} music {{- end }}
+MODULES= date kbd_layouts_i3ipc exchange music
 
 all:
 	@rustup default stable
