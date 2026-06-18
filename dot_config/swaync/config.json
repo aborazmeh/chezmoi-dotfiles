@@ -36,11 +36,11 @@
     }
   },
   "widgets": [
-    // "menubar",
-    // "buttons-grid",
-    // "backlight",
-    // "volume",
-    // "mpris",
+    "menubar",
+    "buttons-grid",
+    "backlight",
+    "volume",
+    "mpris",
     "title",
     "dnd",
     "notifications"
@@ -69,29 +69,29 @@
     "volume": {
       "label": ""
     },
-    // "menubar": {
-    //   "menu#power": {
-    //     "label": "",
-    //     "position": "right",
-    //     "actions": [
-    //       {
-    //         "label": " Reboot",
-    //         "command": "echo 1"
-    //       },
-    //       {
-    //         "label": " Lock",
-    //         "command": "swaylock"
-    //       },
-    //       {
-    //         "label": " Logout",
-    //         "command": "echo 1"
-    //       },
-    //       {
-    //         "label": " Shut down",
-    //         "command": "echo 1"
-    //       }
-    //     ]
-    //   },
+    "menubar": {
+      "menu#power": {
+        "label": "",
+        "position": "right",
+        "actions": [
+          {
+            "label": "  Reboot",
+            "command": "echo 1"
+          },
+          {
+            "label": "  Lock",
+            "command": "swaylock"
+          },
+          {
+            "label": "  Logout",
+            "command": "echo 1"
+          },
+          {
+            "label": "  Shutdown",
+            "command": "echo 1"
+          }
+        ]
+      },
       "menu#cpu": {
         "label": "",
         "position": "right",
@@ -110,22 +110,22 @@
           }
         ]
       }
-    // },
-    // "buttons-grid": {
-    //   "actions": [
-    //     {
-    //       "label": "",
-    //       "command": "$HOME/scripts/screenshot -f sway -c fullscreen"
-    //     },
-    //     {
-    //       "label": "",
-    //       "command": "if [[ $(bluetoothctl show | \\grep Powered: | awk '{print $2}') == yes ]]; then bluetoothctl power off; else bluetoothctl power on; fi   # TODO rofi bluetooth"
-    //     },
-    //     {
-    //       "label": "直",
-    //       "command": "# ~/.config/rofi/rofi-wifi-menu.sh"
-    //     }
-    //   ]
-    // }
+    },
+    "buttons-grid": {
+      "actions": [
+        {
+          "label": "",
+          "command": "$HOME/scripts/screenshot -f sway -c fullscreen"
+        },
+        {
+          "label": "",
+          "command": "if [[ $(bluetoothctl show | \\grep Powered: | awk '{print $2}') == yes ]]; then bluetoothctl power off; else bluetoothctl power on; fi   # TODO rofi bluetooth"
+        },
+        {
+          "label": "直",
+          "command": "# ~/.config/rofi/rofi-wifi-menu.sh"
+        }
+      ]
+    }
   }
 }
