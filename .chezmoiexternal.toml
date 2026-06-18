@@ -1,0 +1,11 @@
+{{ $year :=  now | date "2006" -}}
+
+[".config/task/holidays.en-US_{{ $year }}.json"]
+type = "file"
+url = "http://holidatanet/en-us/{{ $year }}.json"
+refreshPeriod = "168h"
+
+[".config/task/holidays.tr-TR_{{ $year }}.json"]
+type = "file"
+url = "http://holidatanet/tr-tr/{{ $year }}.json"
+refreshPeriod = "168h"

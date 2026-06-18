@@ -1,0 +1,8 @@
+{{ $year :=  now | date "2006" -}}
+{{ $filename := printf "%s/.config/task/holidays.%s_%s.json" .cxt.chezmoi.homeDir .locale $year -}}
+{{ range $idx, $h := (include $filename | trim | splitList "\n") -}}
+{{ with fromJson . -}}
+holiday.{{ .locale }}{{ $idx }}.name={{ .description }}
+holiday.{{ .locale }}{{ $idx }}.date={{ .date | replaceAllRegex "-" "" }}
+{{ end -}}
+{{ end -}}
