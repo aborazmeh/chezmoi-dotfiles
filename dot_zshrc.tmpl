@@ -28,19 +28,20 @@ eval "$(zoxide init zsh)"
 # Init atuin
 eval "$(atuin init zsh)"
 
-{{- if stat "/usr/share/fzf/key-bindings.zsh" }}
+{{ if stat "/usr/share/fzf/key-bindings.zsh" -}}
 source /usr/share/fzf/key-bindings.zsh
 {{- end }}
 {{- if stat "/usr/share/fzf/completion.zsh" }}
 source /usr/share/fzf/completion.zsh
 {{- end }}
+
 # . "$HOME/.acme.sh/acme.sh.env"
 
-{{ if stat (joinPath .chezmoi.homeDir ".local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh") }}
+{{ if stat (joinPath .chezmoi.homeDir ".local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh") -}}
 source ~/.local/share/zinit/plugins/lincheney---fzf-tab-completion/zsh/fzf-zsh-completion.sh
 bindkey '^I' fzf_completion
 {{- end }}
 
-{{ if stat (joinPath .chezmoi.homeDir ".config/broot/launcher/bash/br") }}
+{{ if stat (joinPath .chezmoi.homeDir ".config/broot/launcher/bash/br") -}}
 source $HOME/.config/broot/launcher/bash/br
 {{- end }}
