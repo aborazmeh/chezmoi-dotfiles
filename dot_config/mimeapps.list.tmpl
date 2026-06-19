@@ -1,0 +1,587 @@
+[Default Applications]
+inode/directory={{ .default_apps.fileManager | join ";" }}
+
+{{- /* Text */ -}}
+application/ecmascript=emacs.desktop;emacsclient.desktop
+application/json-patch+json={{ .default_apps.textEditor | join ";" }}
+application/json={{ .default_apps.codeEditor | join ";" }}
+application/json5={{ .default_apps.codeEditor | join ";" }}
+application/ld+json={{ .default_apps.codeEditor | join ";" }}
+application/schema+json={{ .default_apps.codeEditor | join ";" }}
+application/smil+xml={{ .default_apps.codeEditor | join ";" }}
+application/sql={{ .default_apps.codeEditor | join ";" }}
+application/toml={{ .default_apps.codeEditor | join ";" }}
+application/vnd.dart={{ .default_apps.codeEditor | join ";" }}
+application/x-awk={{ .default_apps.codeEditor | join ";" }}
+application/x-bat={{ .default_apps.codeEditor | join ";" }}
+application/x-fishscript={{ .default_apps.codeEditor | join ";" }}
+application/x-nuscript={{ .default_apps.codeEditor | join ";" }}
+application/x-perl={{ .default_apps.codeEditor | join ";" }}
+application/x-php={{ .default_apps.codeEditor | join ";" }}
+application/x-powershell={{ .default_apps.codeEditor | join ";" }}
+application/x-ruby={{ .default_apps.codeEditor | join ";" }}
+application/x-sami={{ .default_apps.codeEditor | join ";" }}
+application/x-shellscript={{ .default_apps.codeEditor | join ";" }}
+application/x-unknown-content-type={{ .default_apps.textEditor | join ";" }}
+application/x-zerosize={{ .default_apps.textEditor | join ";" }}
+application/xml={{ .default_apps.codeEditor | join ";" }}
+application/xslt+xml={{ .default_apps.codeEditor | join ";" }}
+application/xspf+xml={{ .default_apps.codeEditor | join ";" }}
+efile={{ .default_apps.codeEditor | join ";" }}
+text/css={{ .default_apps.codeEditor | join ";" }}
+text/javascript={{ .default_apps.codeEditor | join ";" }}
+text/julia={{ .default_apps.codeEditor | join ";" }}
+text/markdown={{ .default_apps.markdownEditor | join ";" }}
+text/org={{ .default_apps.codeEditor | join ";" }}
+text/plain={{ .default_apps.textEditor | join ";" }}
+text/rust={{ .default_apps.codeEditor | join ";" }}
+text/sgml={{ .default_apps.codeEditor | join ";" }}
+text/tcl={{ .default_apps.codeEditor | join ";" }}
+text/vnd.wap.wmlscript={{ .default_apps.codeEditor | join ";" }}
+text/x-authors={{ .default_apps.textEditor | join ";" }}
+text/x-basic={{ .default_apps.codeEditor | join ";" }}
+text/x-bibtex={{ .default_apps.codeEditor | join ";" }}
+text/x-c++hdr={{ .default_apps.codeEditor | join ";" }}
+text/x-c++src={{ .default_apps.codeEditor | join ";" }}
+text/x-changelog={{ .default_apps.codeEditor | join ";" }}
+text/x-chdr={{ .default_apps.codeEditor | join ";" }}
+text/x-cmake={{ .default_apps.codeEditor | join ";" }}
+text/x-cobol={{ .default_apps.codeEditor | join ";" }}
+text/x-common-lisp={{ .default_apps.codeEditor | join ";" }}
+text/x-crystal={{ .default_apps.codeEditor | join ";" }}
+text/x-csharp={{ .default_apps.codeEditor | join ";" }}
+text/x-csrc={{ .default_apps.codeEditor | join ";" }}
+text/x-dsrc={{ .default_apps.codeEditor | join ";" }}
+text/x-eiffel={{ .default_apps.codeEditor | join ";" }}
+text/x-elixir={{ .default_apps.codeEditor | join ";" }}
+text/x-emacs-lisp={{ .default_apps.codeEditor | join ";" }}
+text/x-erlang={{ .default_apps.codeEditor | join ";" }}
+text/x-fortran={{ .default_apps.codeEditor | join ";" }}
+text/x-gcode-gx={{ .default_apps.codeEditor | join ";" }}
+text/x-genie={{ .default_apps.codeEditor | join ";" }}
+text/x-gettext-translation={{ .default_apps.textEditor | join ";" }}
+text/x-go={{ .default_apps.codeEditor | join ";" }}
+text/x-gradle={{ .default_apps.codeEditor | join ";" }}
+text/x-groovy={{ .default_apps.codeEditor | join ";" }}
+text/x-haskell={{ .default_apps.codeEditor | join ";" }}
+text/x-install={{ .default_apps.codeEditor | join ";" }}
+text/x-iptables={{ .default_apps.codeEditor | join ";" }}
+text/x-java={{ .default_apps.codeEditor | join ";" }}
+text/x-kotlin={{ .default_apps.codeEditor | join ";" }}
+text/x-literate-haskell={{ .default_apps.codeEditor | join ";" }}
+text/x-log={{ .default_apps.textEditor | join ";" }}
+text/x-lua={{ .default_apps.codeEditor | join ";" }}
+text/x-makefile={{ .default_apps.codeEditor | join ";" }}
+text/x-matlab={{ .default_apps.codeEditor | join ";" }}
+text/x-maven+xml={{ .default_apps.codeEditor | join ";" }}
+text/x-meson={{ .default_apps.codeEditor | join ";" }}
+text/x-moc={{ .default_apps.codeEditor | join ";" }}
+text/x-ms-regedit={{ .default_apps.codeEditor | join ";" }}
+text/x-nim={{ .default_apps.codeEditor | join ";" }}
+text/x-nimscript={{ .default_apps.codeEditor | join ";" }}
+text/x-objc++src={{ .default_apps.codeEditor | join ";" }}
+text/x-objcsrc={{ .default_apps.codeEditor | join ";" }}
+text/x-ocaml={{ .default_apps.codeEditor | join ";" }}
+text/x-ocl={{ .default_apps.codeEditor | join ";" }}
+text/x-ooc={{ .default_apps.codeEditor | join ";" }}
+text/x-opencl-src={{ .default_apps.codeEditor | join ";" }}
+text/x-pascal={{ .default_apps.codeEditor | join ";" }}
+text/x-patch={{ .default_apps.codeEditor | join ";" }}
+text/x-python={{ .default_apps.codeEditor | join ";" }}
+text/x-python3={{ .default_apps.codeEditor | join ";" }}
+text/x-qml={{ .default_apps.codeEditor | join ";" }}
+text/x-readme={{ .default_apps.textEditor | join ";" }}
+text/x-rst={{ .default_apps.codeEditor | join ";" }}
+text/x-sagemath={{ .default_apps.codeEditor | join ";" }}
+text/x-sass={{ .default_apps.codeEditor | join ";" }}
+text/x-scala={{ .default_apps.codeEditor | join ";" }}
+text/x-scheme={{ .default_apps.codeEditor | join ";" }}
+text/x-scss={{ .default_apps.codeEditor | join ";" }}
+text/x-setext={{ .default_apps.textEditor | join ";" }}
+text/x.gcode={{ .default_apps.codeEditor | join ";" }}
+
+{{- /* Documents */ -}}
+application/epub+zip={{ .default_apps.ebookReader | join ";" }}
+application/octet-stream={{ .default_apps.pdfViewer | join ";" }}
+application/oxps={{ .default_apps.pdfViewer | join ";" }}
+application/pdf={{ .default_apps.pdfViewer | join ";" }}
+application/pdf={{ .default_apps.pdfViewer | join ";"}}
+application/postscript={{ .default_apps.pdfViewer | join ";" }}
+application/postscript={{ .default_apps.pdfViewer | join ";"}}
+application/vnd.amazon.mobi8-ebook={{ .default_apps.ebookReader | join ";" }}
+application/vnd.comicbook-rar={{ .default_apps.pdfViewer | join ";" }}
+application/vnd.comicbook+zip={{ .default_apps.comicsReader | join ";" }}
+application/vnd.ms-xpsdocument={{ .default_apps.pdfViewer | join ";" }}
+application/x-bzdvi={{ .default_apps.pdfViewer | join ";"}};xdvi
+application/x-bzpdf={{ .default_apps.pdfViewer | join ";"}}
+application/x-bzpostscript={{ .default_apps.pdfViewer | join ";"}}
+application/x-cb7={{ .default_apps.comicsReader | join ";" }}
+application/x-cbp={{ .default_apps.comicsReader | join ";" }}
+application/x-cbr={{ .default_apps.comicsReader | join ";" }}
+application/x-cbt={{ .default_apps.comicsReader | join ";" }}
+application/x-cbz={{ .default_apps.comicsReader | join ";" }}
+application/x-dvi={{ .default_apps.pdfViewer | join ";"}};xdvi
+application/x-fictionbook+xml={{ .default_apps.comicsReader | join ";" }}
+application/x-gzdvi={{ .default_apps.pdfViewer | join ";"}};xdvi
+application/x-gzpdf={{ .default_apps.pdfViewer | join ";"}}
+application/x-gzpostscript={{ .default_apps.pdfViewer | join ";"}}
+application/x-mobi8-ebook={{ .default_apps.ebookReader | join ";" }}
+application/x-mobipocket-ebook={{ .default_apps.ebookReader | join ";" }}
+application/x-mobipocket-subscription={{ .default_apps.ebookReader | join ";" }}
+application/x-sony-bbeb={{ .default_apps.ebookReader | join ";" }}
+application/x-xzpdf={{ .default_apps.pdfViewer | join ";"}}
+application/x-zip-compressed-fb2={{ .default_apps.ebookReader | join ";" }}
+image/vnd.djvu+multipage=org.pwmt.zathura-djvu.desktop
+image/vnd.djvu=org.pwmt.zathura-djvu.desktop
+image/x-bzeps={{ .default_apps.pdfViewer | join ";"}}
+image/x-eps={{ .default_apps.pdfViewer | join ";"}}
+image/x-gzeps={{ .default_apps.pdfViewer | join ";"}}
+
+{{- /* Archive */ -}}
+application/gzip=org.gnome.Nautilus.desktop
+application/vnd.ms-cab-compressed=org.gnome.Nautilus.desktop
+application/vnd.rar=org.gnome.Nautilus.desktop
+application/x-7z-compressed=org.gnome.Nautilus.desktop
+application/x-ace=org.gnome.Nautilus.desktop
+application/x-alz=org.gnome.Nautilus.desktop
+application/x-arc=org.gnome.Nautilus.desktop
+application/x-archive=org.gnome.Nautilus.desktop
+application/x-bzip1-compressed-tar=org.gnome.Nautilus.desktop
+application/x-bzip1=org.gnome.Nautilus.desktop
+application/x-bzip2-compressed-tar=org.gnome.Nautilus.desktop
+application/x-bzip2=org.gnome.Nautilus.desktop
+application/x-bzip3-compressed-tar=org.gnome.Nautilus.desktop
+application/x-bzip3=org.gnome.Nautilus.desktop
+application/x-compress=org.gnome.Nautilus.desktop
+application/x-compressed-iso=org.gnome.Nautilus.desktop
+application/x-compressed-tar=org.gnome.Nautilus.desktop
+application/x-cpio-compressed=org.gnome.Nautilus.desktop
+application/x-cpio=org.gnome.Nautilus.desktop
+application/x-java=org.gnome.Nautilus.desktop
+application/x-lha=org.gnome.Nautilus.desktop
+application/x-lhz=org.gnome.Nautilus.desktop
+application/x-lrzip-compressed-tar=org.gnome.Nautilus.desktop
+application/x-lrzip=org.gnome.Nautilus.desktop
+application/x-lz4-compressed-tar=org.gnome.Nautilus.desktop
+application/x-lz4=org.gnome.Nautilus.desktop
+application/x-lzip-compressed-tar=org.gnome.Nautilus.desktop
+application/x-lzip=org.gnome.Nautilus.desktop
+application/x-lzma-compressed-tar=org.gnome.Nautilus.desktop
+application/x-lzma=org.gnome.Nautilus.desktop
+application/x-lzop=org.gnome.Nautilus.desktop
+application/x-tar=org.gnome.Nautilus.desktop
+application/x-tarz=org.gnome.Nautilus.desktop
+application/x-xar=org.gnome.Nautilus.desktop
+application/x-xz-compressed-tar=org.gnome.Nautilus.desktop
+application/x-xz=org.gnome.Nautilus.desktop
+application/x-zstd-compressed-tar=org.gnome.Nautilus.desktop
+application/zip=org.gnome.Nautilus.desktop
+application/zlib=org.gnome.Nautilus.desktop
+application/zstd=org.gnome.Nautilus.desktop
+
+{{- /* Office */ -}}
+application/mathml+xml={{ .default_apps.officeMath | join ";" }}
+application/msword-template={{ .default_apps.officeWriter | join ";" }}
+/* application/msword={{ .default_apps.officeWriter | join ";" }} */
+application/prs.plucker={{ .default_apps.officeWriter | join ";" }}
+application/rtf={{ .default_apps.officeWriter | join ";" }}
+application/vnd.apple.keynote={{ .default_apps.officeImpress | join ";" }}
+application/vnd.apple.numbers={{ .default_apps.officeCalc | join ";" }}
+application/vnd.apple.pages={{ .default_apps.officeWriter | join ";" }}
+application/vnd.corel-draw={{ .default_apps.officeDraw | join ";" }}
+application/vnd.lotus-1-2-3={{ .default_apps.officeCalc | join ";" }}
+application/vnd.lotus-wordpro={{ .default_apps.officeWriter | join ";" }}
+application/vnd.mozilla.xul+xml={{ .default_apps.officeBase | join ";" }}
+application/vnd.ms-access={{ .default_apps.officeBase | join ";" }}
+application/vnd.ms-excel.addin.macroEnabled.12={{ .default_apps.officeCalc | join ";" }}
+application/vnd.ms-excel.sheet.binary.macroEnabled.12={{ .default_apps.officeCalc | join ";" }}
+application/vnd.ms-excel.sheet.macroEnabled.12={{ .default_apps.officeCalc | join ";" }}
+application/vnd.ms-excel.template.macroEnabled.12={{ .default_apps.officeCalc | join ";" }}
+application/vnd.ms-excel={{ .default_apps.officeCalc | join ";" }}
+application/vnd.ms-powerpoint.addin.macroEnabled.12={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-powerpoint.presentation.macroEnabled.12={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-powerpoint.slide.macroEnabled.12={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-powerpoint.slideshow.macroEnabled.12={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-powerpoint.template.macroEnabled.12={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-powerpoint={{ .default_apps.officeImpress | join ";" }}
+application/vnd.ms-publisher={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.drawing.macroEnabled.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.drawing.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.stencil.macroEnabled.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.stencil.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.template.macroEnabled.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-visio.template.main+xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.ms-word.document.macroEnabled.12={{ .default_apps.officeWriter | join ";" }}
+application/vnd.ms-word.template.macroEnabled.12={{ .default_apps.officeWriter | join ";" }}
+application/vnd.ms-word={{ .default_apps.officeWriter | join ";" }}
+application/vnd.ms-works={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.chart-template={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.chart={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.database={{ .default_apps.officeBase | join ";" }}
+application/vnd.oasis.opendocument.formula-template={{ .default_apps.officeMath | join ";" }}
+application/vnd.oasis.opendocument.formula={{ .default_apps.officeMath | join ";" }}
+application/vnd.oasis.opendocument.graphics-flat-xml={{ .default_apps.officeDraw | join ";" }}
+application/vnd.oasis.opendocument.graphics-template={{ .default_apps.officeDraw | join ";" }}
+application/vnd.oasis.opendocument.graphics={{ .default_apps.officeDraw | join ";" }}
+application/vnd.oasis.opendocument.image={{ .default_apps.officeDraw | join ";" }}
+application/vnd.oasis.opendocument.presentation-flat-xml={{ .default_apps.officeImpress | join ";" }}
+application/vnd.oasis.opendocument.presentation-template={{ .default_apps.officeImpress | join ";" }}
+application/vnd.oasis.opendocument.presentation={{ .default_apps.officeImpress | join ";" }}
+application/vnd.oasis.opendocument.spreadsheet-flat-xml={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.spreadsheet-template={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.spreadsheet={{ .default_apps.officeCalc | join ";" }}
+application/vnd.oasis.opendocument.text-flat-xml={{ .default_apps.officeWriter | join ";" }}
+application/vnd.oasis.opendocument.text-master-template={{ .default_apps.officeWriter | join ";" }}
+application/vnd.oasis.opendocument.text-master={{ .default_apps.officeWriter | join ";" }}
+application/vnd.oasis.opendocument.text-template={{ .default_apps.officeWriter | join ";" }}
+application/vnd.oasis.opendocument.text-web={{ .default_apps.officeWriter | join ";" }}
+application/vnd.oasis.opendocument.text={{ .default_apps.officeWriter | join ";" }}
+application/vnd.openofficeorg.extension=libreoffice-startcenter.desktop
+application/vnd.openxmlformats-officedocument.presentationml.presentation={{ .default_apps.officeImpress | join ";" }}
+application/vnd.openxmlformats-officedocument.presentationml.slide={{ .default_apps.officeImpress | join ";" }}
+application/vnd.openxmlformats-officedocument.presentationml.slideshow={{ .default_apps.officeImpress | join ";" }}
+application/vnd.openxmlformats-officedocument.presentationml.template={{ .default_apps.officeImpress | join ";" }}
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet={{ .default_apps.officeCalc | join ";" }}
+application/vnd.openxmlformats-officedocument.spreadsheetml.template={{ .default_apps.officeCalc | join ";" }}
+application/vnd.openxmlformats-officedocument.wordprocessingml.document={{ .default_apps.officeWriter | join ";" }}
+application/vnd.openxmlformats-officedocument.wordprocessingml.template={{ .default_apps.officeWriter | join ";" }}
+application/vnd.palm={{ .default_apps.officeWriter | join ";" }}
+application/vnd.stardivision.calc={{ .default_apps.officeCalc | join ";" }}
+application/vnd.stardivision.chart={{ .default_apps.officeCalc | join ";" }}
+application/vnd.stardivision.draw={{ .default_apps.officeDraw | join ";" }}
+application/vnd.stardivision.impress={{ .default_apps.officeImpress | join ";" }}
+application/vnd.stardivision.math={{ .default_apps.officeMath | join ";" }}
+application/vnd.stardivision.writer={{ .default_apps.officeWriter | join ";" }}
+application/vnd.sun.xml.base={{ .default_apps.officeBase | join ";" }}
+application/vnd.sun.xml.calc.template={{ .default_apps.officeCalc | join ";" }}
+application/vnd.sun.xml.calc={{ .default_apps.officeCalc | join ";" }}
+application/vnd.sun.xml.draw.template={{ .default_apps.officeDraw | join ";" }}
+application/vnd.sun.xml.draw={{ .default_apps.officeDraw | join ";" }}
+application/vnd.sun.xml.impress.template={{ .default_apps.officeImpress | join ";" }}
+application/vnd.sun.xml.impress={{ .default_apps.officeImpress | join ";" }}
+application/vnd.sun.xml.math={{ .default_apps.officeMath | join ";" }}
+application/vnd.sun.xml.writer.global={{ .default_apps.officeWriter | join ";" }}
+application/vnd.sun.xml.writer.template={{ .default_apps.officeWriter | join ";" }}
+application/vnd.sun.xml.writer={{ .default_apps.officeWriter | join ";" }}
+application/vnd.visio={{ .default_apps.officeDraw | join ";" }}
+application/vnd.wordperfect={{ .default_apps.officeWriter | join ";" }}
+application/x-abiword={{ .default_apps.officeWriter | join ";" }}
+application/x-aportisdoc={{ .default_apps.officeWriter | join ";" }}
+application/x-gnumeric={{ .default_apps.officeCalc | join ";" }}
+application/x-hwp={{ .default_apps.officeWriter | join ";" }}
+application/x-mswrite={{ .default_apps.officeWriter | join ";" }}
+application/x-pagemaker={{ .default_apps.officeDraw | join ";" }}
+application/x-pocket-word={{ .default_apps.officeWriter | join ";" }}
+application/x-quattropro={{ .default_apps.officeCalc | join ";" }}
+application/x-t602={{ .default_apps.officeWriter | join ";" }}
+application/x-wpg={{ .default_apps.officeDraw | join ";" }}
+text/csv={{ .default_apps.officeCalc | join ";" }}
+text/richtext={{ .default_apps.officeWriter | join ";" }}
+text/spreadsheet={{ .default_apps.officeCalc | join ";" }}
+text/tab-separated-values={{ .default_apps.officeCalc | join ";" }}
+
+{{- /* Web */ -}}
+application/atom+xml={{ .default_apps.rssReader | join ";" }}
+application/rdf+xml={{ .default_apps.rssReader | join ";" }}
+application/rss+xml={{ .default_apps.rssReader | join ";" }}
+application/x-bittorrent={{ .default_apps.torrentClient | join ";"}}
+application/x-extension-htm={{ .default_apps.webBrowser | join ";" }}
+application/x-extension-html={{ .default_apps.webBrowser | join ";" }}
+application/x-extension-shtml={{ .default_apps.webBrowser | join ";" }}
+application/x-extension-xht={{ .default_apps.webBrowser | join ";" }}
+application/x-extension-xhtml={{ .default_apps.webBrowser | join ";" }}
+application/xhtml+xml={{ .default_apps.webBrowser | join ";" }}
+message/news={{ .default_apps.emailClient | join ";" }}
+message/rfc822={{ .default_apps.emailClient | join ";" }}
+text/calendar={{ .default_apps.emailClient | join ";" }}
+text/html={{ .default_apps.webBrowser | join ";" }}
+text/vcard={{ .default_apps.emailClient | join ";" }}
+text/x-opml+xml={{ .default_apps.rssReader | join ";" }}
+text/x-ssa={{ .default_apps.webBrowser | join ";" }}
+x-scheme-handler/about={{ .default_apps.webBrowser | join ";" }}
+x-scheme-handler/chrome={{ .default_apps.webBrowser | join ";" }}
+x-scheme-handler/ftp={{ .default_apps.ftpClient | join ";" }}
+x-scheme-handler/http={{ .default_apps.webBrowser | join ";" }}
+x-scheme-handler/https={{ .default_apps.webBrowser | join ";" }}
+x-scheme-handler/magnet={{ .default_apps.torrentClient | join ";"}}
+x-scheme-handler/mailto={{ .default_apps.emailClient | join ";" }}
+x-scheme-handler/mid={{ .default_apps.emailClient | join ";" }}
+
+{{- /* Images */ -}}
+image/apng={{ .default_apps.imageViewer | join ";" }}
+image/astc={{ .default_apps.imageViewer | join ";" }}
+image/avif={{ .default_apps.imageViewer | join ";" }}
+image/bmp={{ .default_apps.imageViewer | join ";" }}
+image/cgm={{ .default_apps.imageViewer | join ";" }}
+image/dpx={{ .default_apps.imageViewer | join ";" }}
+image/emf={{ .default_apps.imageViewer | join ";" }}
+image/g3fax={{ .default_apps.imageViewer | join ";" }}
+image/gif={{ .default_apps.imageViewer | join ";" }}
+image/heif={{ .default_apps.imageViewer | join ";" }}
+image/ief={{ .default_apps.imageViewer | join ";" }}
+image/jp2={{ .default_apps.imageViewer | join ";" }}
+image/jpeg={{ .default_apps.imageViewer | join ";" }}
+image/jpm={{ .default_apps.imageViewer | join ";" }}
+image/jpx={{ .default_apps.imageViewer | join ";" }}
+image/jxl={{ .default_apps.imageViewer | join ";" }}
+image/jxr={{ .default_apps.imageViewer | join ";" }}
+image/ktx={{ .default_apps.imageViewer | join ";" }}
+image/ktx2={{ .default_apps.imageViewer | join ";" }}
+image/openraster={{ .default_apps.imageViewer | join ";" }}
+image/png={{ .default_apps.imageViewer | join ";" }}
+image/qoi={{ .default_apps.imageViewer | join ";" }}
+image/rle={{ .default_apps.imageViewer | join ";" }}
+image/svg+xml-compressed=org.inkscape.Inkscape.desktop;
+image/svg+xml=org.inkscape.Inkscape.desktop;
+image/tiff={{ .default_apps.imageViewer | join ";" }}
+image/vnd.adobe.photoshop={{ .default_apps.imageViewer | join ";" }}
+image/vnd.dwg={{ .default_apps.imageViewer | join ";" }}
+image/vnd.dxf={{ .default_apps.imageViewer | join ";" }}
+image/vnd.microsoft.icon={{ .default_apps.imageViewer | join ";" }}
+image/vnd.ms-modi={{ .default_apps.imageViewer | join ";" }}
+image/vnd.rn-realpix={{ .default_apps.imageViewer | join ";" }}
+image/vnd.wap.wbmp={{ .default_apps.imageViewer | join ";" }}
+image/vnd.zbrush.pcx={{ .default_apps.imageViewer | join ";" }}
+image/webp={{ .default_apps.imageViewer | join ";" }}
+image/wmf={{ .default_apps.imageViewer | join ";" }}
+image/x-3ds={{ .default_apps.imageViewer | join ";" }}
+image/x-adobe-dng={{ .default_apps.imageViewer | join ";" }}
+image/x-applix-graphics={{ .default_apps.imageViewer | join ";" }}
+image/x-canon-cr2={{ .default_apps.imageViewer | join ";" }}
+image/x-canon-cr3={{ .default_apps.imageViewer | join ";" }}
+image/x-canon-crw={{ .default_apps.imageViewer | join ";" }}
+image/x-cmu-raster={{ .default_apps.imageViewer | join ";" }}
+image/x-compressed-xcf={{ .default_apps.imageViewer | join ";" }}
+image/x-dcraw={{ .default_apps.imageViewer | join ";" }}
+image/x-dds={{ .default_apps.imageViewer | join ";" }}
+image/x-dib={{ .default_apps.imageViewer | join ";" }}
+image/x-exr={{ .default_apps.imageViewer | join ";" }}
+image/x-fpx={{ .default_apps.imageViewer | join ";" }}
+image/x-fuji-raf={{ .default_apps.imageViewer | join ";" }}
+image/x-gimp-gbr={{ .default_apps.imageViewer | join ";" }}
+image/x-gimp-gih={{ .default_apps.imageViewer | join ";" }}
+image/x-gimp-pat={{ .default_apps.imageViewer | join ";" }}
+image/x-gtk-path-animation={{ .default_apps.imageViewer | join ";" }}
+image/x-hdr={{ .default_apps.imageViewer | join ";" }}
+image/x-icns={{ .default_apps.imageViewer | join ";" }}
+image/x-ilbm={{ .default_apps.imageViewer | join ";" }}
+image/x-jng={{ .default_apps.imageViewer | join ";" }}
+image/x-jp2-codestream={{ .default_apps.imageViewer | join ";" }}
+image/x-kde-raw={{ .default_apps.imageViewer | join ";" }}
+image/x-kodak-dcr{{ .default_apps.imageViewer | join ";" }}
+image/x-kodak-k25{{ .default_apps.imageViewer | join ";" }}
+image/x-kodak-kdc{{ .default_apps.imageViewer | join ";" }}
+image/x-lwo{{ .default_apps.imageViewer | join ";" }}
+image/x-lws{{ .default_apps.imageViewer | join ";" }}
+image/x-macpaint{{ .default_apps.imageViewer | join ";" }}
+image/x-minolta-mrw{{ .default_apps.imageViewer | join ";" }}
+image/x-msod{{ .default_apps.imageViewer | join ";" }}
+image/x-niff{{ .default_apps.imageViewer | join ";" }}
+image/x-nikon-nef{{ .default_apps.imageViewer | join ";" }}
+image/x-nikon-nrw{{ .default_apps.imageViewer | join ";" }}
+image/x-olympus-orf{{ .default_apps.imageViewer | join ";" }}
+image/x-panasonic-rw{{ .default_apps.imageViewer | join ";" }}
+image/x-panasonic-rw2{{ .default_apps.imageViewer | join ";" }}
+image/x-pentax-pef{{ .default_apps.imageViewer | join ";" }}
+image/x-photo-cd{{ .default_apps.imageViewer | join ";" }}
+image/x-pic={{ .default_apps.imageViewer | join ";" }}
+image/x-pict={{ .default_apps.imageViewer | join ";" }}
+image/x-portable-anymap={{ .default_apps.imageViewer | join ";" }}
+image/x-portable-bitmap={{ .default_apps.imageViewer | join ";" }}
+image/x-portable-graymap={{ .default_apps.imageViewer | join ";" }}
+image/x-portable-pixmap={{ .default_apps.imageViewer | join ";" }}
+image/x-quicktime={{ .default_apps.imageViewer | join ";" }}
+image/x-rgb={{ .default_apps.imageViewer | join ";" }}
+image/x-sgi={{ .default_apps.imageViewer | join ";" }}
+image/x-sigma-x3f={{ .default_apps.imageViewer | join ";" }}
+image/x-skencil={{ .default_apps.imageViewer | join ";" }}
+image/x-sony-arw={{ .default_apps.imageViewer | join ";" }}
+image/x-sony-sr2={{ .default_apps.imageViewer | join ";" }}
+image/x-sony-srf={{ .default_apps.imageViewer | join ";" }}
+image/x-sun-raster={{ .default_apps.imageViewer | join ";" }}
+image/x-tga={{ .default_apps.imageViewer | join ";" }}
+image/x-tiff-multipage={{ .default_apps.imageViewer | join ";" }}
+image/x-win-bitmap={{ .default_apps.imageViewer | join ";" }}
+image/x-xbitmap={{ .default_apps.imageViewer | join ";" }}
+image/x-xcf={{ .default_apps.imageViewer | join ";" }}
+image/x-xpixmap={{ .default_apps.imageViewer | join ";" }}
+
+{{- /* Multiedia  */ -}}
+application/mxf={{ .default_apps.mediaPlayer | join ";" }}
+application/ogg={{ .default_apps.mediaPlayer | join ";" }}
+application/sdp={{ .default_apps.mediaPlayer | join ";" }}
+application/vnd.apple.mpegurl={{ .default_apps.mediaPlayer | join ";" }}
+application/vnd.ms-asf={{ .default_apps.mediaPlayer | join ";" }}
+application/vnd.rn-realmedia={{ .default_apps.mediaPlayer | join ";" }}
+application/x-audacity-project+sqlite3=audacity.desktop
+application/x-audacity-project=audacity.desktop
+application/x-cue={{ .default_apps.mediaPlayer | join ";" }}
+application/x-matroska={{ .default_apps.mediaPlayer | join ";" }}
+application/x-shorten={{ .default_apps.mediaPlayer | join ";" }}
+application/x-subrip={{ .default_apps.subtitleEditor | join ";" }}
+application/yaml{{ .default_apps.mediaPlayer | join ";" }}
+audio/aac={{ .default_apps.mediaPlayer | join ";" }}
+audio/ac3={{ .default_apps.mediaPlayer | join ";" }}
+audio/AMR={{ .default_apps.mediaPlayer | join ";" }}
+audio/annodex{{ .default_apps.mediaPlayer | join ";" }}
+audio/basic={{ .default_apps.mediaPlayer | join ";" }}
+audio/cakewalk=net.sourceforge.drumstick-guiplayer.desktop
+audio/flac={{ .default_apps.mediaPlayer | join ";" }}
+audio/midi=net.sourceforge.drumstick-guiplayer.desktop
+audio/mobile-xmf{{ .default_apps.mediaPlayer | join ";" }}
+audio/mp2={{ .default_apps.mediaPlayer | join ";" }}
+audio/mp4={{ .default_apps.mediaPlayer | join ";" }}
+audio/mpeg={{ .default_apps.mediaPlayer | join ";" }}
+audio/ogg={{ .default_apps.mediaPlayer | join ";" }}
+audio/prs.sid{{ .default_apps.mediaPlayer | join ";" }}
+audio/rmid{{ .default_apps.mediaPlayer | join ";" }}
+audio/usac{{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.audible.aax{{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.audible.aaxc{{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.dts.hd={{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.dts={{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.rn-realaudio={{ .default_apps.mediaPlayer | join ";" }}
+audio/vnd.wave={{ .default_apps.mediaPlayer | join ";" }}
+audio/webm={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-adpcm={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-aifc{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-aiff={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-amzxml{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-ape={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-dff{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-dsf{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-flac+ogg={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-gsm{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-iriver-pla{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-it{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-m4b{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-m4r{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-matroska={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-minipsf{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-mo3{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-mod{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-mpegurl={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-ms-asx{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-ms-wma={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-musepack={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-opus+ogg={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-pn-audibleaudio{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-psf{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-psflib{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-riff{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-s3m{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-scpls={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-speex{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-speex+ogg{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-stm{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-tak{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-tta={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-voc{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-vorbis+ogg={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-wavpack-correction{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-wavpack={{ .default_apps.mediaPlayer | join ";" }}
+audio/x-xi{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-xm{{ .default_apps.mediaPlayer | join ";" }}
+audio/x-xmf{{ .default_apps.mediaPlayer | join ";" }}
+text/vtt={{ .default_apps.subtitleEditor | join ";" }}
+text/x-microdvd={{ .default_apps.subtitleEditor | join ";" }}
+video/3gpp={{ .default_apps.mediaPlayer | join ";" }}
+video/3gpp2={{ .default_apps.mediaPlayer | join ";" }}
+video/annodex{{ .default_apps.mediaPlayer | join ";" }}
+video/dv={{ .default_apps.mediaPlayer | join ";" }}
+video/isivideo{{ .default_apps.mediaPlayer | join ";" }}
+video/mj2{{ .default_apps.mediaPlayer | join ";" }}
+video/mp2t={{ .default_apps.mediaPlayer | join ";" }}
+video/mp4={{ .default_apps.mediaPlayer | join ";" }}
+video/mpeg={{ .default_apps.mediaPlayer | join ";" }}
+video/ogg={{ .default_apps.mediaPlayer | join ";" }}
+video/quicktime={{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.avi={{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.mpegurl={{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.radgamettools.bink{{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.radgamettools.smacker{{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.rn-realvideo={{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.vivo{{ .default_apps.mediaPlayer | join ";" }}
+video/vnd.youtube.yt{{ .default_apps.mediaPlayer | join ";" }}
+video/wavelet{{ .default_apps.mediaPlayer | join ";" }}
+video/webm={{ .default_apps.mediaPlayer | join ";" }}
+video/x-anim{{ .default_apps.mediaPlayer | join ";" }}
+video/x-flic={{ .default_apps.mediaPlayer | join ";" }}
+video/x-flv={{ .default_apps.mediaPlayer | join ";" }}
+video/x-javafx{{ .default_apps.mediaPlayer | join ";" }}
+video/x-matroska-3d{{ .default_apps.mediaPlayer | join ";" }}
+video/x-matroska={{ .default_apps.mediaPlayer | join ";" }}
+video/x-mjpeg{{ .default_apps.mediaPlayer | join ";" }}
+video/x-mng{{ .default_apps.mediaPlayer | join ";" }}
+video/x-ms-wmp{{ .default_apps.mediaPlayer | join ";" }}
+video/x-ms-wmv={{ .default_apps.mediaPlayer | join ";" }}
+video/x-msvideo={{ .default_apps.mediaPlayer | join ";" }}
+video/x-nsv{{ .default_apps.mediaPlayer | join ";" }}
+video/x-ogm+ogg={{ .default_apps.mediaPlayer | join ";" }}
+video/x-sgi-movie={{ .default_apps.mediaPlayer | join ";" }}
+video/x-theora+ogg={{ .default_apps.mediaPlayer | join ";" }}
+
+{{- /* Misc */ -}}
+application/illustrator=org.inkscape.Inkscape.desktop;org.gnome.Evince.desktop
+application/java-archive=java-java-openjdk.desktop
+application/pgp-keys=org.gnome.seahorse.Application.desktop
+application/pkcs10+pem=gcr-viewer.desktop
+application/pkcs10=gcr-viewer.desktop
+application/pkcs12+pem=gcr-viewer.desktop
+application/pkcs12=gcr-viewer.desktop
+application/pkcs7-mime+pem=gcr-viewer.desktop
+application/pkcs7-mime=gcr-viewer.desktop
+application/pkcs8+pem=gcr-viewer.desktop
+application/pkcs8=gcr-viewer.desktop
+application/pkix-cert+pem=gcr-viewer.desktop
+application/pkix-cert=gcr-viewer.desktop
+application/pkix-crl+pem=gcr-viewer.desktop
+application/pkix-crl=gcr-viewer.desktop
+application/vnd.iccprofile=gcm-import.desktop
+application/vnd.imhex.proj=imhex.desktop
+application/vnd.kde.kpatience.savedstate=org.kde.kpat.desktop
+application/vnd.sqlite3=sqlitebrowser.desktop
+application/vnd.tcpdump.pcap=wireshark.desktop
+application/x-blender=blender.desktop
+application/x-code-workspace=code.desktop
+application/x-designer=designer.desktop
+application/x-desktop=lxshortcut.desktop
+application/x-glade=org.gnome.Glade.desktop
+application/x-gnome-saved-search=nemo.desktop
+application/x-gnucash=gnucash.desktop
+application/x-gtk-builder=org.gnome.Glade.desktop
+application/x-ipynb+json=code.desktop
+application/x-keepass2=org.keepassxc.KeePassXC.desktop
+application/x-meld-comparison=org.gnome.Meld.desktop
+application/x-mimearchive=org.gnome.Epiphany.desktop
+application/x-nautilus-link=org.gnome.Nautilus.desktop
+application/x-navi-animation=gimp.desktop
+application/x-opera-download=opera.desktop
+application/x-pem-file=gcr-viewer.desktop
+application/x-pem-key=gcr-viewer.desktop
+application/x-pkcs12=gcr-viewer.desktop
+application/x-pkcs7-certificates=gcr-viewer.desktop
+application/x-raw-disk-image-xz-compressed=gnome-disk-image-writer.desktop
+application/x-spkac+base64=gcr-viewer.desktop
+application/x-spkac=gcr-viewer.desktop
+application/x-sqlite2=sqlitebrowser.desktop
+application/x-tellico=org.kde.tellico.desktop
+application/x-x509-ca-cert=gcr-viewer.desktop
+application/x-xpinstall=firefox.desktop
+font/collection=org.gnome.font-viewer.desktop
+font/otf=org.gnome.font-viewer.desktop
+font/ttf=org.gnome.font-viewer.desktop
+font/woff=org.gnome.font-viewer.desktop
+font/woff2=org.gnome.font-viewer.desktop
+text/vnd.trolltech.linguist=linguist.desktop
+text/x-lilypond=frescobaldi.desktop
+x-scheme-handler/discord-1038970224050962582=nuclear.desktop
+x-scheme-handler/eclipse+command=_usr_lib_dbeaver_.desktop
+x-scheme-handler/msteams=teams.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/readest=readest-handler.desktop
+x-scheme-handler/tg=org.telegram.desktop.desktop;io.github.tdesktop_x64.TDesktop.desktop;com.ayugram.desktop.desktop;
+x-scheme-handler/tonsite=org.telegram.desktop.desktop;io.github.tdesktop_x64.TDesktop.desktop;com.ayugram.desktop.desktop;
+x-scheme-handler/wox=wox-url-handler.desktop
+
+[Added Associations]

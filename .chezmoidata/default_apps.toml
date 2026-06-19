@@ -1,0 +1,110 @@
+[default_apps]
+
+webBrowser = [
+  "firefox.desktop",
+  "zen.desktop",
+  "chromium.desktop",
+  "brave.desktop",
+  "vivaldi.desktop",
+  "google-chrome.desktop",
+  "com.google.Chrome.desktop",
+  "org.gnome.Epiphany.desktop",
+  "opera.desktop",
+  "torbrowser.desktop",
+]
+
+textEditor = [
+  "org.gnome.gedit.desktop",
+  "micro.desktop",
+  "org.kde.kwrite.desktop",
+  "org.kde.kate.desktop",
+  "dev.zed.Zed.desktop",
+  "code.desktop",
+  "emacs.desktop",
+  "gvim.desktop",
+  "nvim.desktop",
+  "vim.desktop",
+  "helix.desktop",
+]
+
+codeEditor = [
+  "org.gnome.gedit.desktop",
+  "micro.desktop",
+  "org.kde.kwrite.desktop",
+  "org.kde.kate.desktop",
+  "dev.zed.Zed.desktop",
+  "code.desktop",
+  "emacs.desktop",
+  "gvim.desktop",
+  "nvim.desktop",
+  "vim.desktop",
+  "helix.desktop",
+]
+
+markdownEditor = [
+  "marktext.desktop",
+  "obsidian.desktop",
+  "org.kde.ghostwriter.desktop",
+]
+
+fileManager = [
+  "thunar.desktop",
+  "nemo.desktop",
+  "pcmanfm.desktop",
+  "dolphin.desktop",
+  "nautilus.desktop",
+  "org.gnome.Nautilus.desktop",
+  "yazi.desktop",
+  "nnn.desktop",
+  "xplr.desktop",
+  "ranger.desktop",
+  "lf.desktop",
+  "vifm.desktop",
+]
+
+mediaPlayer = ["mpv.desktop", "vlc.desktop", "totem.desktop"]
+
+imageViewer = [
+  "nsxiv.desktop",
+  "feh.desktop",
+  "imv.desktop",
+  "swayimg.desktop",
+  "org.nomacs.ImageLounge.desktop",
+  "qiv.desktop",
+  "org.gnome.eog.desktop",
+  "gimp.desktop",
+]
+
+pdfViewer = [
+  "org.pwmt.zathura.desktop",
+  "org.gnome.Evince.desktop",
+  "okular.desktop",
+  "FBReader.desktop",
+  "xreader.desktop",
+  "calibre-ebook-viewer.desktop",
+]
+
+ebookReader = [
+  "com.github.johnfactotum.Foliate.desktop",
+  "org.pwmt.zathura.desktop",
+  "org.gnome.Evince.desktop",
+  "okular.desktop",
+  "FBReader.desktop",
+  "xreader.desktop",
+  "calibre-ebook-viewer.desktop",
+  "sigil.desktop",
+]
+
+officeWriter = ["libreoffice-writer.desktop", "write.desktop"]
+officeCalc = ["libreoffice-calc.desktop", "calc.desktop", "gnumeric.desktop"]
+officeBase = ["libreoffice-base.desktop", "base.desktop"]
+officeDraw = ["libreoffice-draw.desktop", "draw.desktop"]
+officeImpress = ["libreoffice-impress.desktop", "impress.desktop"]
+officeMath = ["libreoffice-math.desktop", "math.desktop"]
+
+comicsReader = ["mcomix.desktop"]
+ftpClient = ["filezilla.desktop", "lftp.desktop"]
+emailClient = ["org.mozilla.Thunderbird.desktop"]
+torrentClient = ["org.qbittorrent.qBittorrent.desktop"]
+rssReader = ["io.github.martinrotter.rssguard.desktop"]
+subtitleEditor = ["org.aegisub.Aegisub.desktop"]
