@@ -32,6 +32,8 @@ linux = [
   "task",
   "taskwarrior-tui",
   "power-profiles-daemon",
+  "light",
+  "ddcutil",
   "nsxiv",
   "clang",
   "shfmt",
