@@ -1,0 +1,12 @@
+WORKINGDIR=/var/slapt-get
+EXCLUDE=^aaa_elflibs,^devs,^glibc-.*,^kernel-.*,^udev,.*-[0-9]+dl$,x86_64,^kde-l10n-*
+SOURCE=http://slackware.dreamhost.com/slackware/slackware-current/:OFFICIAL
+SOURCE=http://slack.isper.sk/pub/slackware-14.0/
+SOURCE=http://slackware.org.uk/salix/i486/14.0/
+SOURCE=http://ponce.cc/slackware/slackware-current/packages/
+SOURCE=http://www.slackware.com/~alien/slackbuilds/
+SOURCE=http://slackware.schoepfer.info/slackware/slackware-current/
+#DISABLED=http://ftp.osuosl.org/pub/gsb/gsb-3.2_slackware-13.37/:PREFERRED
+#DISABLED=http://www.slackers.it/repository/
+#DISABLED=http://slackware.sukkology.net/repository/
+#DISABLED=http://slackware.schoepfer.info/with-deps/slackware-14.0/
