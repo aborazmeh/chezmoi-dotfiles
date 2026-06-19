@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# TODO:
+# php-cs-fixer / pretty-php
+# markdownlint & mdformat
+# dockerfile_fmt
+# Kotlin: ktlint
+# swiftformat
+# yq (YAML)
+# latexindent (TeX / LaTeX)
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+command_exists() {
+  if ! command -v "$1" &>/dev/null; then
+    echo "Error: '$1' is not installed."
+    exit 1
+  fi
+}
+
+filename="$1"
+extension="${filename##*.}"
+
+[[ ! -f "$filename" ]] && exit 1
+
+run_formatter() {
+  case "$1" in
+  ruff) cat "$filename" | ruff check --select I --fix - | ruff format - ;;
+  prettier) prettier "$filename" ;;
+  jq) jq <"$filename" ;;
+  taplo) cat "$filename" | taplo format - ;;
+  xmllint) xmllint --format "$filename" ;;
+  clang-format) clang-format -style=Mozilla "$filename" ;;
+  shfmt) shfmt "$filename" ;;
+  gofmt) gofmt "$filename" ;;
+  sqlformat) sqlformat -k upper -r "$filename" ;;
+  perltidy) cat "$filename" | perltidy ;;
+  stylua) cat "$filename" | stylua - ;;
+  rubocop) cat "$filename" | rubocop --autocorrect --format files --stdin "$filename" | tail -n+3 ;;
+  rustfmt) cat "$filename" | rustfmt ;;
+  *) cat "$filename" ;;
+  esac
+}
+
+case "$extension" in
+py) formatter=ruff ;;
+js | ts | html | css | md | yaml | yml) formatter=prettier ;;
+json) formatter=jq ;;
+toml) formatter=taplo ;;
+xml) formatter=xmllint ;;
+c | cpp | h | hpp | java) formatter=clang-format ;;
+sh | bash | zsh) formatter=shfmt ;;
+go) formatter=gofmt ;;
+sql) formatter=sqlformat ;;
+pl | pm) formatter=perltidy ;;
+lua) formatter=stylua ;;
+rb) formatter=rubocop ;;
+rs) formatter=rustfmt ;;
+esac
+
+if [[ -n $formatter ]]; then
+  command_exists "$formatter"
+  run_formatter "$formatter" | bat --file-name="$filename" --paging=always
+else
+  bat "$filename"
+fi

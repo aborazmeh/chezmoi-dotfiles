@@ -33,6 +33,10 @@ linux = [
   "taskwarrior-tui",
   "power-profiles-daemon",
   "nsxiv",
+  "clang",
+  "shfmt",
+  "go",
+  "jq",
 ]
 
 arch = [
@@ -46,6 +50,11 @@ arch = [
   "itools",
   "darkman",
   "python-qrcode",
+  "ruff",
+  "prettier",
+  "python-sqlparse",
+  "taplo-cli",
+  "perl-tidy",
 ]
 
 debian = [
