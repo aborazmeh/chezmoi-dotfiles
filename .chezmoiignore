@@ -24,6 +24,8 @@ pnpm-lock.yaml
 .ledgerrc
 .local/share/systemd/user/ledger*
 
+.weechat
+
 .ncmpcpp
 
 .local/share/pandoc
