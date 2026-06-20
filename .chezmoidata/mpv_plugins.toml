@@ -1,0 +1,33 @@
+[mpv_plugins]
+
+urls = [
+  "uosc",
+  "autosubsync",
+  "sponsorblock",
+
+  # url directory
+  "https://raw.githubusercontent.com/mpv-player/mpv/master/TOOLS/lua/autoload.lua scripts",
+  "https://gist.githubusercontent.com/CyberShadow/2f71a97fb85ed42146f6d9f522bc34ef/raw/autosave.lua scripts",
+  # TODO: https://github.com/davidde/mpv-autosub/,
+  "https://raw.githubusercontent.com/ObserverOfTime/mpv-scripts/master/clipshot.lua scripts",
+  "https://raw.githubusercontent.com/elhirchek/copy-paste-url/master/copy-paste-url.lua scripts",
+  "https://raw.githubusercontent.com/linguisticmind/mpv-scripts/master/copy-subtitle/copy-subtitle.lua scripts",
+  "https://raw.githubusercontent.com/linguisticmind/mpv-scripts/master/copy-timestamp/copy-timestamp.lua scripts",
+  # "https://raw.githubusercontent.com/zenyd/mpv-scripts/master/delete_file.lua scripts",
+  "https://raw.githubusercontent.com/CogentRedTester/mpv-scripts/master/music-mode.lua scripts",
+  "https://raw.githubusercontent.com/CogentRedTester/mpv-scripts/master/script-opts/musicmode.conf script-opts",
+  "https://raw.githubusercontent.com/jonniek/mpv-playlistmanager/master/playlistmanager.lua scripts",
+  "https://raw.githubusercontent.com/jonniek/mpv-playlistmanager/master/playlistmanager.conf script-opts",
+  "https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/master/quality-menu.lua scripts",
+  "https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/master/quality-menu.conf script-opts",
+  "https://raw.githubusercontent.com/occivink/mpv-scripts/master/scripts/seek-to.lua scripts",
+  "https://raw.githubusercontent.com/zenyd/mpv-scripts/master/speed-transition.lua scripts",
+  "https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.lua scripts",
+  "https://raw.githubusercontent.com/po5/thumbfast/master/thumbfast.conf script-opts",
+  "https://raw.githubusercontent.com/oltodosel/mpv-scripts/master/total_playtime.lua scripts",
+  # TODO script-opts/ytdl_hook.conf,
+  "https://raw.githubusercontent.com/ayghub/rename-sub/main/rename-sub.lua scripts",
+  "https://raw.githubusercontent.com/CogentRedTester/mpv-user-input/master/user-input.lua scripts",
+  "https://raw.githubusercontent.com/CogentRedTester/mpv-user-input/master/user-input-module.lua script-modules",
+  "https://raw.githubusercontent.com/Kayizoku/mpv-rename/main/Rename.lua scripts",
+]

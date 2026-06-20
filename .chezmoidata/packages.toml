@@ -43,6 +43,7 @@ linux = [
   "go",
   "jq",
   "gping",
+  "mpv",
 ]
 
 arch = [
