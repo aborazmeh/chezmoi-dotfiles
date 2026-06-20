@@ -4,7 +4,7 @@
 
 DB=~/.newsbeuter/cache.db
 
-mapfile -t urls < <(grep -Ev ' podcast|^#|^$' ~/.newsbeuter/urls | sed -E 's/^(.+) .*/\1/')
+mapfile -t urls < <(grep -Ev ' podcast|^#|^$' ~/.newsbeuter/urls | grep -E '^http' | sed 's/ .*//')
 
 for u in "${urls[@]}"; do
   unread_feeds=$(sqlite3 "$DB" "SELECT COUNT(*) FROM rss_item WHERE unread = 1 AND feedurl LIKE '$u'" 2>/dev/null)
