@@ -92,6 +92,8 @@ window#waybar.hidden {
 #custom-tasks,
 #custom-torn,
 #mpd,
+#custom-rss,
+#custom-podcasts,
 #custom-music,
 #custom-torrents,
 #custom-goodreads {
@@ -105,7 +107,7 @@ window#waybar.hidden {
 #custom-music:hover,
 #custom-torrents:hover,
 #custom-goodreads:hover {
-  border-bottom: 4px solid @foreground;
+  border-bottom-color: @foreground;
 }
 
 #clock {
@@ -321,7 +323,7 @@ window#waybar.hidden {
 #custom-music {
   color: #eee;
   font-size: 14px;
-  border-bottom: 4px solid shade(@color3, .8);
+  border-bottom-color: shade(@color3, .8);
 }
 
 #mpd.paused,
@@ -339,11 +341,10 @@ window#waybar.hidden {
   color: @foreground;
   font-size: 1.1rem;
   font-weight: 500;
-  border-bottom: 3px solid @foreground;
 }
 
 #custom-torn:hover {
-  border-bottom: 4px solid @foreground;
+  border-bottom-color: @foreground;
 }
 
 #custom-torn.returning {
@@ -422,13 +423,19 @@ window#waybar.hidden {
 #custom-podcasts {
   font-size: 1.1rem;
   color: @podcasts;
-  border-bottom: 3px solid shade(@podcasts, .7);
+}
+
+#custom-podcasts:hover {
+  border-bottom-color: shade(@podcasts, .7);
 }
 
 #custom-rss {
   font-size: 1.1rem;
   color: @rss;
-  border-bottom: 3px solid shade(@rss, .7);
+}
+
+#custom-rss:hover {
+  border-bottom-color: shade(@rss, .7);
 }
 
 #custom-tasks {
