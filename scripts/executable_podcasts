@@ -4,47 +4,76 @@
 
 DB=~/.newsbeuter/cache.db
 
-mapfile -t urls < <(grep '^[^#].*\spodcast.*' <~/.newsbeuter/urls | perl -pe 's/(.*?)\s.*/$1/')
+sqlite3 "$DB" "PRAGMA query_only = 1; PRAGMA temp_store = MEMORY;"
+
+mapfile -t urls < <(grep -E '^http.* .*podcast' ~/.newsbeuter/urls | awk '{print $1}')
+
+[[ ${#urls[@]} -eq 0 ]] && exit 0
+
+url_list=""
 for u in "${urls[@]}"; do
-  unread_feeds=$(sqlite3 "$DB" "SELECT COUNT(*) FROM rss_item WHERE unread = 1 AND feedurl LIKE '$u'" 2>/dev/null)
-  [[ -z $unread_feeds ]] && unread_feeds=0
-  unread_count=$((unread_count + unread_feeds))
+  u_escaped="${u//\'/\'\'}"
+  [[ -n "$url_list" ]] && url_list+=","
+  url_list+="'$u_escaped'"
 done
 
+unread_count=$(sqlite3 "$DB" "
+  SELECT COUNT(*)
+  FROM rss_item
+  WHERE unread = 1
+  AND feedurl IN ($url_list)
+" 2>/dev/null)
+[[ -z $unread_count ]] && unread_count=0
+
 html_escape() {
-  echo "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
+  local str="$1"
+  str="${str//&/&amp;}"
+  str="${str//</&lt;}"
+  str="${str//>/&gt;}"
+  str="${str//\"/&quot;}"
+  str="${str//\'/&#39;}"
+  printf "%s" "$str"
 }
 
 list() {
-  query="SELECT title FROM rss_item WHERE unread = 1 AND (feedurl LIKE "
-  for u in "${urls[@]}"; do
-    query="$query'$u' OR feedurl LIKE "
-  done
-  query="$(echo "$query" | perl -pe 's/ OR feedurl LIKE\s*?$//; chomp')) ORDER BY pubDate DESC LIMIT 20"
-  n=$(sqlite3 "$DB" "$query")
-  html_escape "$n"
+  local query="SELECT title FROM rss_item
+    WHERE unread = 1
+    AND feedurl IN ($url_list)
+    ORDER BY pubDate DESC
+    LIMIT 20;"
+
+  local result
+  result=$(sqlite3 "$DB" "$query" 2>/dev/null)
+
+  if [[ -n "$result" ]]; then
+    local escaped=""
+    while IFS= read -r line; do
+      [[ -z "$escaped" ]] && escaped="$(html_escape "$line")" || escaped+=$'\n'"$(html_escape "$line")"
+    done <<<"$result"
+    printf "%s" "$escaped"
+  fi
 }
 
 notify() {
-  notify-send " Poscasts" "$(list)"
+  notify-send " Podcasts" "$(list)"
 }
 
 if [[ $unread_count -gt 0 ]]; then
-  if [[ $1 == "i3blocks" ]]; then
+  case "${1:-}" in
+  i3blocks)
     echo " ($unread_count)"
     echo "#a26eea"
-    case $BLOCK_BUTTON in
-    1) notify ;;
-    esac
-  elif [[ $1 == "polybar" ]]; then
+    [[ $BLOCK_BUTTON -eq 1 ]] && notify
+    ;;
+  polybar)
     echo "%{F#a26eea} ($unread_count)%{F-}"
-  elif [[ $1 == waybar ]]; then
-    echo '{' \
-      '"text":' \
-      \""$unread_count"\" , '"tooltip":' \
-      \""$(list | perl -pe 's/\n/\\n/g' | sed 's/\\n$//')"\" \
-      '}' | jq --unbuffered --compact-output
-  elif [[ $1 == "notify" ]]; then
+    ;;
+  waybar)
+    jq -n --arg count "$unread_count" --arg tooltip "$(list | sed 's/\\n$//')" \
+      '{text: $count, tooltip: $tooltip}' --compact-output
+    ;;
+  notify)
     notify
-  fi
+    ;;
+  esac
 fi
