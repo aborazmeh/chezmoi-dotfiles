@@ -1,0 +1,26 @@
+[ranger_plugins]
+
+# https://github.com/yuukilla/ranger-gitplug
+# https://github.com/einsiedlerspiel/ranger-rclone-copy
+# https://github.com/JohanChane/ranger-quit_cd_wd
+# https://gitlab.com/Ragnyll/ranger-gpg
+# https://raw.githubusercontent.com/alex8866/eranger/master/ranger/config/plugins/plugin_direcory_diff.py
+# https://raw.githubusercontent.com/fdw/ranger-autojump/main/autojump.py
+# https://raw.githubusercontent.com/fdw/ranger-autojump/main/ranger-autojump.plugin.zsh
+# https://github.com/ask1234560/ranger-zjumper
+# https://github.com/rc2dev/ranger-zshz
+# https://raw.githubusercontent.com/fdw/ranger-zoxide/main/ranger-zoxide.plugin.zsh
+
+urls = [
+  "tmux",
+  "mirage_linemod",
+  "https://raw.githubusercontent.com/zd4y/ranger-vidlength/main/vidlength.py",
+  "https://raw.githubusercontent.com/bwconrad/ranger-kdeconnect/main/kdeconnect_send.py",
+  "https://raw.githubusercontent.com/Stock84-dev/ranger-most-used-sort/master/plugin_most_used.py",
+  "https://github.com/alexanderjeurissen/ranger_devicons",
+  "git@github.com:jchook/ranger-zoxide.git",
+  "https://github.com/maximtrp/ranger-archives.git",
+  "https://github.com/SL-RU/ranger_udisk_menu",
+  "https://github.com/maximtrp/ranger-cmus.git",
+  "https://github.com/Magicrafter13/ranger-mocp.git",
+]

@@ -3,11 +3,46 @@
 
 echo -e "\n\033[1m━━━  Ranger plugins  ━━━\033[0m"
 
-# local ranger_plugins="$HOME/.config/ranger/plugins"
-# mkdir -p "$ranger_plugins"
+mkdir -p $HOME/.config/ranger/plugins
 
-# TODO: add plugin repos here, for example:
-# clone_or_update "https://github.com/example/ranger-plugin.git" \
-#                 "$ranger_plugins/plugin-name"
-echo -e "\033[1;33m\033[1m[TODO]\033[0m  Ranger plugin setup."
+install_git_repo() {
+  local plugn_name=$(basename "$1")
+  if [ ! -d "$HOME/.config/ranger/plugins/${plugin_name}" ]; then
+    git clone "$1" "$HOME/.config/ranger/plugins/${plugin_name}"
+    ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin installed: ${plugin_name}") || echo -e "\033[1m[ERROR]\033[0m Error while installing plugin ${plugin_name}" >&2
+  else
+    git -C "$HOME/.config/ranger/plugins/${plugin_name}" pull
+    ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin updated: ${plugin_name}") || echo -e "\033[1m[ERROR]\033[0m Error while updating plugin ${plugin_name}" >&2
+  fi
+}
+
+install_plugin() {
+  wget "$1" -O $HOME/.config/ranger/plugins/$(basename "$1")
+  ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin installed: $(basename "$1")") || echo -e "\033[1m[ERROR]\033[0m Error while updating plugin $(basename "$1")" >&2
+}
+
+install_mirage_linemod() {
+  pip install mirage_linemode
+  ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin updated: mirage_linemod") || echo -e "\033[1m[ERROR]\033[0m Error while updating plugin mirage_linemod" >&2
+  mirage_linemode_ctrl init
+  mirage_linemode_ctrl enable
+}
+
+install_tmux() {
+  pip install ranger-tmux
+  python -m ranger_tmux install
+  ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin updated: ranger_tmux") || echo -e "\033[1m[ERROR]\033[0m Error while updating plugin ranger_tmux" >&2
+}
+
+plugins=({{ .ranger_plugins.urls | quoteList | join " " }})
+
+for element in "${plugins[@]}"; do
+  func=false
+  for p in "tmux" "mirage_linemod"; do
+    if [[ "$element" == "$p" ]]; then install_$p; func=true; fi
+  done
+  [[ "$func" == true ]] && continue
+  ([[ "$element" == *"raw.githubusercontent.com"* ]] && install_plugin "${element}") || install_git_repo "${element}"
+done
+
 {{ end -}}
