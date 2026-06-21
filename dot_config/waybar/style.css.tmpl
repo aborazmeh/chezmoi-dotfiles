@@ -169,7 +169,7 @@ window#waybar.hidden {
 
 #memory {
   transition: background .3s;
-  background: shade(@memory, 0.6);
+  background: alpha(@memory, 0.65);
   color: #ccc;
 }
 
@@ -189,7 +189,7 @@ window#waybar.hidden {
 
 #power-profiles-daemon {
   transition: background .3s;
-  background: shade(@power-profiles-daemon, .8);
+  background: alpha(@power-profiles-daemon, .65);
 }
 
 #power-profiles-daemon:hover {
@@ -225,7 +225,7 @@ window#waybar.hidden {
 }
 
 #pulseaudio.muted {
-  background: alpha(@backlight, 0.75);
+  background: alpha(@backlight, 0.65);
   color: @pulseaudio-muted;
 }
 
@@ -234,7 +234,7 @@ window#waybar.hidden {
 }
 
 #custom-exchange {
-  background: shade(@exchange, 0.7);
+  background: alpha(@exchange, 0.65);
   color: #ccc;
 }
 
@@ -311,7 +311,7 @@ window#waybar.hidden {
 
 #disk {
   transition: background .3s;
-  background-color: shade(@disk, 0.6);
+  background-color: alpha(@disk, 0.65);
   color: #ccc;
 }
 
