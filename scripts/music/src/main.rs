@@ -1,4 +1,5 @@
 mod bookmarks;
+mod daemon;
 mod mpdplayer;
 mod audiobook;
 mod mprisplayer;
@@ -48,6 +49,11 @@ fn write_to_socket(frontend: &str, val: Vec<u8>) {
 }
 
 fn main() {
+  if std::env::args().any(|a| a == "--daemon") {
+    daemon::run_daemon_mode();
+    return;
+  }
+
   let mpris_player = mprisplayer::MprisPlayer::new();
   let mut mpd_player = mpdplayer::MpdPlayer::new();
   // FIXME use args self-written module in all programs

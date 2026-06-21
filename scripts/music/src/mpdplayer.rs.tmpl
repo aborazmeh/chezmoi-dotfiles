@@ -1,6 +1,6 @@
 use mpd::Client;
 
-use crate::utils::{output, MetadataType};
+use crate::utils::{format_sway_json_output, output, MetadataType};
 use std::collections::HashMap;
 
 pub struct MpdPlayer {
@@ -122,6 +122,65 @@ let length = match song.duration {
     output(frontend, metadata);
   }
 
+  pub fn status_json(&mut self) -> String {
+    let song = match &mut self.player {
+      Some(x) => match x.currentsong() {
+        Ok(Some(song)) => song,
+        _ => return String::new(),
+      },
+      _ => return String::new(),
+    };
+
+    let title = match song.title {
+      Some(x) => x,
+      None => match song.name {
+        Some(x) => x,
+        None => song.file,
+      },
+    };
+
+    let length = match song.duration {
+      Some(x) => x.as_micros() as i64,
+      None => -1,
+    };
+
+    let authors = song
+      .tags
+      .iter()
+      .find(|(k, _)| k == "artist")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
+
+    let album = song
+      .tags
+      .iter()
+      .find(|(k, _)| k == "album")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
+
+    let year = song
+      .tags
+      .iter()
+      .find(|(k, _)| k == "date")
+      .map(|(_, v)| v.as_str())
+      .unwrap_or("Unknown");
+
+    let position = self.get_position();
+
+    let metadata: HashMap<&str, MetadataType> = HashMap::from([
+      ("status", MetadataType::String(self.get_status())),
+      ("title", MetadataType::String(title.as_str())),
+      ("authors", MetadataType::String(authors)),
+      ("album", MetadataType::String(album)),
+      ("year", MetadataType::String(year)),
+      ("type", MetadataType::String("unknown")),
+      ("position", MetadataType::Microseconds(position)),
+      ("length", MetadataType::Microseconds(length)),
+    ]);
+
+    format_sway_json_output(metadata, "sway")
+  }
+
   fn exec(&mut self, cmd: &str) {
     let mut err_msg = String::from("Unable to execute command");
     err_msg.push_str(cmd);
@@ -135,7 +194,7 @@ let length = match song.duration {
         "toggle" => match status.as_str() {
           "stopped" => x.play().expect(&err_msg),
           _ => x.toggle_pause().expect(&err_msg),
-        }
+        },
         "stop" => x.stop().expect(&err_msg),
         "next" => x.next().expect(&err_msg),
         "prev" => x.prev().expect(&err_msg),

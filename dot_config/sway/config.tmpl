@@ -644,6 +644,7 @@ exec swayidle -w \
 
 # Fire up apps
 exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
+exec $HOME/scripts/bar/music --frontend sway --daemon
 exec kanata
 exec wlsunset -l $latitude -L $longitude
 {{- if eq .machine "home" }}

@@ -1,6 +1,6 @@
 use crate::{
   audiobook::get_audiobook_duration,
-  utils::{output, MetadataType},
+  utils::{format_sway_json_output, output, MetadataType},
 };
 use mpris::{Metadata, Player, PlayerFinder};
 use std::collections::HashMap;
@@ -236,6 +236,40 @@ impl MprisPlayer {
     ]);
 
     output(frontend, metadata);
+  }
+
+  pub fn status_json(&self) -> String {
+    let length = match self.get_metadata() {
+      Some(meta) => match meta.get("mpris:length") {
+        Some(x) => x.as_i64().unwrap(),
+        None => -1,
+      },
+      None => -1,
+    };
+
+    let authors = self.get_authors();
+    let url = self.get_str_metadata("xesam:url");
+    let title = self.get_str_metadata("xesam:title");
+    let album = self.get_str_metadata("xesam:album");
+    let year = self.get_str_metadata("xesam:contentCreated");
+
+    let metadata: HashMap<&str, MetadataType> = HashMap::from([
+      ("status", MetadataType::String(self.get_status())),
+      ("url", MetadataType::String(url.as_str())),
+      ("title", MetadataType::String(title.as_str())),
+      ("authors", MetadataType::String(authors.as_str())),
+      ("album", MetadataType::String(album.as_str())),
+      ("year", MetadataType::String(year.as_str())),
+      ("type", MetadataType::String(self.get_type())),
+      ("position", MetadataType::Microseconds(self.get_position())),
+      ("length", MetadataType::Microseconds(length)),
+      (
+        "remaining",
+        MetadataType::Microseconds(self.get_remaining()),
+      ),
+    ]);
+
+    format_sway_json_output(metadata, "sway")
   }
 
   pub fn execute_command(&self, cmd: &str, payload: HashMap<&str, &str>) {

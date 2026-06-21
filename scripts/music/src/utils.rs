@@ -157,8 +157,11 @@ fn get_status_icon(status: String, track_type: String, url: String) -> &'static 
   }
 }
 
-pub fn output(frontend: &str, metadata: HashMap<&str, MetadataType>) {
-  let metadata = Metadata::new(metadata);
+pub fn output(frontend: &str, metadata_map: HashMap<&str, MetadataType>) {
+  match frontend {
+    "sway" => println!("{}", format_sway_json_output(metadata_map, frontend)),
+    _ => {
+  let metadata = Metadata::new(metadata_map);
 
   match frontend {
     "i3blocks" => {
@@ -189,18 +192,23 @@ pub fn output(frontend: &str, metadata: HashMap<&str, MetadataType>) {
       // #   echo "%{A1:~/scripts/bar/music prev:}%{A} %{A1:~/scripts/bar/music seek-:}%{A} %{A1:~/scripts/bar/music toggle:}$status%{A} %{A1:~/scripts/bar/music seek+:}%{A} %{A1:~/scripts/bar/music next:}%{A} ($position) $text"
       // # fi
     }
-    "sway" => {
-      println!(
-        "{}",
-        serde_json::json!({
-          "text": format!("{} {} ({})", metadata.icon, truncate(&metadata.title, 30), metadata.position),
-          "tooltip": format_tooltip(frontend, &metadata),
-          "class": metadata.status
-        })
-      )
+        _ => unreachable!(),
+      }
     }
-    _ => unreachable!(),
   }
+}
+
+pub fn format_sway_json_output(
+  metadata_map: HashMap<&str, MetadataType>,
+  frontend: &str,
+) -> String {
+  let meta = Metadata::new(metadata_map);
+  serde_json::json!({
+    "text": format!("{} {} ({})", meta.icon, truncate(&meta.title, 30), meta.position),
+    "tooltip": format_tooltip(frontend, &meta),
+    "class": meta.status
+  })
+  .to_string()
 }
 
 fn format_tooltip(frontend: &str, metadata: &Metadata) -> String {
