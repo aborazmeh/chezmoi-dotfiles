@@ -15,9 +15,19 @@ fn main() -> Fallible<()> {
       break;
     }
   }
+
+  let mut last_layout = String::new();
+
   for event in Connection::new()?.subscribe([EventType::Input])? {
     match event? {
-      Event::Input(event) => print_output(event.input.xkb_active_layout_name.unwrap(), &json),
+      Event::Input(event) => {
+        if let Some(layout_name) = event.input.xkb_active_layout_name {
+          if layout_name != last_layout {
+            print_output(layout_name.clone(), &json);
+            last_layout = layout_name;
+          }
+        }
+      }
       _ => unreachable!(),
     }
   }
