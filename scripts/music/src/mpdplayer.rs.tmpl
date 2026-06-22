@@ -1,6 +1,6 @@
 use mpd::Client;
 
-use crate::utils::{format_sway_json_output, output, MetadataType};
+use crate::utils::{MetadataType, format_sway_json_output, output};
 use std::collections::HashMap;
 
 pub struct MpdPlayer {
@@ -14,7 +14,7 @@ impl MpdPlayer {
         Ok(_) => {
           return Self {
             player: Some(player),
-          }
+          };
         }
         Err(_) => return Self { player: None },
       },
@@ -86,22 +86,28 @@ impl MpdPlayer {
       },
     };
 
-let length = match song.duration {
+    let length = match song.duration {
       Some(x) => x.as_micros() as i64,
       None => -1,
     };
 
-    let authors = song.tags.iter()
+    let authors = song
+      .tags
+      .iter()
       .find(|(k, _)| k == "artist")
       .map(|(_, v)| v.as_str())
       .unwrap_or("Unknown");
 
-    let album = song.tags.iter()
+    let album = song
+      .tags
+      .iter()
       .find(|(k, _)| k == "album")
       .map(|(_, v)| v.as_str())
       .unwrap_or("Unknown");
 
-    let year = song.tags.iter()
+    let year = song
+      .tags
+      .iter()
       .find(|(k, _)| k == "date")
       .map(|(_, v)| v.as_str())
       .unwrap_or("Unknown");

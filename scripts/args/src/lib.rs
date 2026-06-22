@@ -1,4 +1,4 @@
-use clap::{arg, Parser, ValueEnum};
+use clap::{Parser, ValueEnum, arg};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -19,7 +19,6 @@ pub enum Frontend {
   ///
   Waybar,
 }
-
 
 #[derive(Debug)]
 pub struct Args {

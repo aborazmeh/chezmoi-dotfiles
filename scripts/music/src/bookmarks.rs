@@ -37,8 +37,11 @@ pub fn get_bookmarks(url: &str) -> Vec<Bookmark> {
       if let Ok(cached_mtime) = cached_mtime.parse::<u128>() {
         if let Ok(xml_meta) = fs::metadata(&xml_path) {
           if let Ok(xml_mtime) = xml_meta.modified() {
-            let current_mtime = xml_mtime.duration_since(std::time::UNIX_EPOCH).ok()
-              .map(|d| d.as_micros()).unwrap_or(0);
+            let current_mtime = xml_mtime
+              .duration_since(std::time::UNIX_EPOCH)
+              .ok()
+              .map(|d| d.as_micros())
+              .unwrap_or(0);
             if cached_mtime == current_mtime {
               let json: String = lines.collect();
               if let Ok(bookmarks) = serde_json::from_str(&json) {
@@ -63,7 +66,10 @@ pub fn get_bookmarks(url: &str) -> Vec<Bookmark> {
 
   if let Ok(xml_meta) = fs::metadata(&xml_path) {
     if let Ok(mtime) = xml_meta.modified() {
-      let cached_mtime = mtime.duration_since(std::time::UNIX_EPOCH).unwrap().as_micros();
+      let cached_mtime = mtime
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_micros();
       let cached_json = serde_json::to_string(&root.bookmark).unwrap();
       let _ = fs::write(&cache_path, format!("{}\n{}", cached_mtime, cached_json));
     }

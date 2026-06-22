@@ -1,6 +1,6 @@
-use args::{argparse, Frontend};
-use serde_json;
+use args::{Frontend, argparse};
 use date::Date;
+use serde_json;
 
 fn main() {
   let args = argparse();

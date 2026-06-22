@@ -49,23 +49,31 @@ pub fn run_daemon_mode() {
 
     let current_state = get_active_player_status_json(&mpris_player, &mut mpd_player);
     if current_state != last_state && !current_state.is_empty() {
-        if let Ok(mut f) = OpenOptions::new()
-          .write(true)
-          .create(true)
-          .truncate(true)
-          .open(FILE_PATH)
-        {
-          let _ = f.write_all(current_state.as_bytes());
-          let _ = f.write_all(b"\n");
-        }
+      if let Ok(mut f) = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(FILE_PATH)
+      {
+        let _ = f.write_all(current_state.as_bytes());
+        let _ = f.write_all(b"\n");
+      }
       if ticks_since_signal >= 4 {
-        let _ = std::process::Command::new("pkill").arg("-RTMIN+15").arg("waybar").output();
+        let _ = std::process::Command::new("pkill")
+          .arg("-RTMIN+15")
+          .arg("waybar")
+          .output();
         ticks_since_signal = 0;
       }
       last_state = current_state;
       ticks_since_resend = 0;
     } else if !current_state.is_empty() && ticks_since_resend >= 10 {
-      if let Ok(mut f) = OpenOptions::new().write(true).create(true).truncate(true).open(FILE_PATH) {
+      if let Ok(mut f) = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(FILE_PATH)
+      {
         let _ = f.write_all(current_state.as_bytes());
         let _ = f.write_all(b"\n");
       }

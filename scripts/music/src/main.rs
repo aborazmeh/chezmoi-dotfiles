@@ -1,19 +1,19 @@
+mod audiobook;
 mod bookmarks;
 mod daemon;
 mod mpdplayer;
-mod audiobook;
 mod mprisplayer;
 mod utils;
 
 use bookmarks::add_bookmark;
 use clap::{Arg, Command};
 use notify_rust::Notification;
-use utils::hms;
 use std::collections::HashMap;
 use std::env;
 use std::io::prelude::*;
 use std::process;
 use unix_named_pipe::*;
+use utils::hms;
 
 const MPRIS_NOT_SO_IMPORTANT: [&str; 2] = ["kdeconnect", "chromium"]; // FIXME get from config
 
@@ -124,16 +124,18 @@ fn main() {
         .output()
         .expect("Unable to increase volume");
     }
-    "bookmark" => match add_bookmark(mpris_player.get_url().as_str(), mpris_player.get_position()) {
-      Ok(x) => {
-        let mut notification = Notification::new();
-        notification
-          .summary("Bookmark Added")
-          .body(format!("{} : {}", x.0, hms(x.1)).as_str());
-        notification.show().unwrap();
+    "bookmark" => {
+      match add_bookmark(mpris_player.get_url().as_str(), mpris_player.get_position()) {
+        Ok(x) => {
+          let mut notification = Notification::new();
+          notification
+            .summary("Bookmark Added")
+            .body(format!("{} : {}", x.0, hms(x.1)).as_str());
+          notification.show().unwrap();
+        }
+        Err(_) => return,
       }
-      Err(_) => return,
-    },
+    }
     command => {
       if mpd_player.is_active() && mpris_player.is_active() && mpris_player.is_playing() {
         mpris_player.execute_command(command, options)

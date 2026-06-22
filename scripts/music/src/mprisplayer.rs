@@ -1,6 +1,6 @@
 use crate::{
   audiobook::get_audiobook_duration,
-  utils::{format_sway_json_output, output, MetadataType},
+  utils::{MetadataType, format_sway_json_output, output},
 };
 use mpris::{Metadata, Player, PlayerFinder};
 use std::collections::HashMap;

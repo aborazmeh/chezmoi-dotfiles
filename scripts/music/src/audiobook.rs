@@ -74,7 +74,7 @@ impl TotalPlaytime {
     Ok(())
   }
 
-fn save_to_file(&self) -> io::Result<()> {
+  fn save_to_file(&self) -> io::Result<()> {
     let sorted_entries: BTreeMap<_, _> = self.entries.iter().collect();
     let mut file = OpenOptions::new()
       .write(true)
@@ -101,11 +101,7 @@ fn save_to_file(&self) -> io::Result<()> {
       }
     }
 
-    if found {
-      Some(result)
-    } else {
-      None
-    }
+    if found { Some(result) } else { None }
   }
 }
 
@@ -117,8 +113,8 @@ fn are_in_same_directory(path1: &str, path2: &str) -> bool {
   let parent2 = path2.parent();
 
   match (parent1, parent2) {
-      (Some(dir1), Some(dir2)) => dir1 == dir2,
-      _ => false,
+    (Some(dir1), Some(dir2)) => dir1 == dir2,
+    _ => false,
   }
 }
 
@@ -134,7 +130,14 @@ fn get_directory_fingerprint(dir: &Path) -> Option<Vec<(String, u64)>> {
     let entry = entry.ok()?;
     let path = entry.path();
     if path.is_file() && is_media(&path) {
-      let mtime = entry.metadata().ok()?.modified().ok()?.duration_since(UNIX_EPOCH).ok()?.as_secs();
+      let mtime = entry
+        .metadata()
+        .ok()?
+        .modified()
+        .ok()?
+        .duration_since(UNIX_EPOCH)
+        .ok()?
+        .as_secs();
       entries.push((path.file_name()?.to_string_lossy().to_string(), mtime));
     }
   }
@@ -151,15 +154,14 @@ fn read_cached_total_duration(dir: &Path) -> Option<i64> {
   let stored_duration: i64 = lines.next()?.ok()?.parse().ok()?;
 
   let current_fingerprint = get_directory_fingerprint(dir)?;
-  let mut current_fingerprint_str: Vec<String> = current_fingerprint.iter()
+  let mut current_fingerprint_str: Vec<String> = current_fingerprint
+    .iter()
     .map(|(name, mtime)| format!("{}:{}", name, mtime))
     .collect();
-  let mut stored_fp: Vec<String> = stored_fingerprint.iter()
-      .cloned()
-      .collect();
+  let mut stored_fp: Vec<String> = stored_fingerprint.iter().cloned().collect();
   current_fingerprint_str.sort();
   stored_fp.sort();
-  
+
   if stored_fp == current_fingerprint_str {
     Some(stored_duration)
   } else {
@@ -169,10 +171,15 @@ fn read_cached_total_duration(dir: &Path) -> Option<i64> {
 
 fn write_cached_total_duration(dir: &Path, duration_micros: i64) {
   if let Some(fingerprint) = get_directory_fingerprint(dir) {
-    let fingerprint_str: Vec<String> = fingerprint.iter()
+    let fingerprint_str: Vec<String> = fingerprint
+      .iter()
       .map(|(name, mtime)| format!("{}:{}", name, mtime))
       .collect();
-    let contents = format!("{}\n{}", serde_json::to_string(&fingerprint_str).unwrap(), duration_micros);
+    let contents = format!(
+      "{}\n{}",
+      serde_json::to_string(&fingerprint_str).unwrap(),
+      duration_micros
+    );
     let _ = fs::write(dir.join(".total_duration.cache"), contents);
   }
 }
@@ -251,11 +258,9 @@ pub fn get_audiobook_duration(url: &str) -> i64 {
     }
   }
 
-  let total = match total_playtime.get_duration(full_path.to_str().unwrap())  {
-    Some(x) => {
-      x as i64 * 1_000_000
-    },
-    None => 0
+  let total = match total_playtime.get_duration(full_path.to_str().unwrap()) {
+    Some(x) => x as i64 * 1_000_000,
+    None => 0,
   };
   write_cached_total_duration(&dirname, total);
   total

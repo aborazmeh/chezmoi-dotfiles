@@ -161,37 +161,37 @@ pub fn output(frontend: &str, metadata_map: HashMap<&str, MetadataType>) {
   match frontend {
     "sway" => println!("{}", format_sway_json_output(metadata_map, frontend)),
     _ => {
-  let metadata = Metadata::new(metadata_map);
+      let metadata = Metadata::new(metadata_map);
 
-  match frontend {
-    "i3blocks" => {
-      println!(
-        "{} {} ({})",
-        metadata.icon, metadata.title, metadata.position
-      );
-      println!(
-        "{} {} ({})",
-        metadata.icon, metadata.title, metadata.position
-      );
-    }
+      match frontend {
+        "i3blocks" => {
+          println!(
+            "{} {} ({})",
+            metadata.icon, metadata.title, metadata.position
+          );
+          println!(
+            "{} {} ({})",
+            metadata.icon, metadata.title, metadata.position
+          );
+        }
 
-    "polybar" => {
-      // #   # FIXME
-      // #   # echo "%{A1:~/scripts/bar/music toggle:}%{A4:~/scripts/bar/music seek+:}%{A5:~/scripts/bar/music seek-:}$text%{A}%{A}%{A}"
-      println!(
-        "%{{A1:~/scripts/bar/music toggle:}} {} {} %{{A}}",
-        metadata.icon, metadata.title
-      )
-      // # elif [[ $FRONTEND == "polybar" && $PLAYER == mpd ]]; then
-      // #   text=$($MPC -f "%track% %title%" | head -n1)
-      // #   if [[ $status ==  ]]; then
-      // #     status=
-      // #   elif [[ $status ==  ]]; then
-      // #     status=
-      // #   fi
-      // #   echo "%{A1:~/scripts/bar/music prev:}%{A} %{A1:~/scripts/bar/music seek-:}%{A} %{A1:~/scripts/bar/music toggle:}$status%{A} %{A1:~/scripts/bar/music seek+:}%{A} %{A1:~/scripts/bar/music next:}%{A} ($position) $text"
-      // # fi
-    }
+        "polybar" => {
+          // #   # FIXME
+          // #   # echo "%{A1:~/scripts/bar/music toggle:}%{A4:~/scripts/bar/music seek+:}%{A5:~/scripts/bar/music seek-:}$text%{A}%{A}%{A}"
+          println!(
+            "%{{A1:~/scripts/bar/music toggle:}} {} {} %{{A}}",
+            metadata.icon, metadata.title
+          )
+          // # elif [[ $FRONTEND == "polybar" && $PLAYER == mpd ]]; then
+          // #   text=$($MPC -f "%track% %title%" | head -n1)
+          // #   if [[ $status ==  ]]; then
+          // #     status=
+          // #   elif [[ $status ==  ]]; then
+          // #     status=
+          // #   fi
+          // #   echo "%{A1:~/scripts/bar/music prev:}%{A} %{A1:~/scripts/bar/music seek-:}%{A} %{A1:~/scripts/bar/music toggle:}$status%{A} %{A1:~/scripts/bar/music seek+:}%{A} %{A1:~/scripts/bar/music next:}%{A} ($position) $text"
+          // # fi
+        }
         _ => unreachable!(),
       }
     }
@@ -267,7 +267,12 @@ fn format_tooltip(frontend: &str, metadata: &Metadata) -> String {
     if bookmarks.len() > 0 {
       let format_time = |seconds: u32| -> String {
         if seconds / 3600 > 0 {
-          format!("{:02}:{:02}:{:02}", seconds / 3600, (seconds / 60) % 60, seconds % 60)
+          format!(
+            "{:02}:{:02}:{:02}",
+            seconds / 3600,
+            (seconds / 60) % 60,
+            seconds % 60
+          )
         } else {
           format!("{:02}:{:02}", (seconds / 60) % 60, seconds % 60)
         }
