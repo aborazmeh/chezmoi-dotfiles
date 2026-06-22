@@ -39,7 +39,8 @@
     },
     "custom/music": {
       "exec": "cat /tmp/waybar-music",
-      "interval": 1,
+      "interval": "once",
+      "signal": 15,
       "return-type": "json",
       "on-click": "~/scripts/bar/music -f sway toggle",
       "on-click-right": "~/scripts/bar/music -f sway stop",

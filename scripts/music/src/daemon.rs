@@ -35,6 +35,7 @@ fn get_active_player_status_json(mpris: &MprisPlayer, mpd: &mut MpdPlayer) -> St
 pub fn run_daemon_mode() {
   let mut last_state = String::new();
   let mut ticks_since_resend = 0u32;
+  let mut ticks_since_signal = 4u32;
   let mut mpd_refresh = 0u32;
   let mut mpd_player = MpdPlayer::new();
   loop {
@@ -47,8 +48,7 @@ pub fn run_daemon_mode() {
     mpd_refresh += 1;
 
     let current_state = get_active_player_status_json(&mpris_player, &mut mpd_player);
-    if current_state != last_state || (!current_state.is_empty() && ticks_since_resend >= 10) {
-      if !current_state.is_empty() {
+    if current_state != last_state && !current_state.is_empty() {
         if let Ok(mut f) = OpenOptions::new()
           .write(true)
           .create(true)
@@ -58,14 +58,22 @@ pub fn run_daemon_mode() {
           let _ = f.write_all(current_state.as_bytes());
           let _ = f.write_all(b"\n");
         }
+      if ticks_since_signal >= 4 {
+        let _ = std::process::Command::new("pkill").arg("-RTMIN+15").arg("waybar").output();
+        ticks_since_signal = 0;
       }
-      if current_state != last_state {
-        last_state = current_state;
+      last_state = current_state;
+      ticks_since_resend = 0;
+    } else if !current_state.is_empty() && ticks_since_resend >= 10 {
+      if let Ok(mut f) = OpenOptions::new().write(true).create(true).truncate(true).open(FILE_PATH) {
+        let _ = f.write_all(current_state.as_bytes());
+        let _ = f.write_all(b"\n");
       }
       ticks_since_resend = 0;
     } else {
       ticks_since_resend += 1;
     }
+    ticks_since_signal += 1;
     thread::sleep(Duration::from_millis(500));
   }
 }
