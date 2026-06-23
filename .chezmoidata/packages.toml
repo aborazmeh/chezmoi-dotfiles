@@ -32,7 +32,6 @@ linux = [
   "slurp",
   "autotiling",
   "newsboat",
-  "task",
   "taskwarrior-tui",
   "power-profiles-daemon",
   "light",
@@ -40,10 +39,10 @@ linux = [
   "nsxiv",
   "clang",
   "shfmt",
-  "go",
   "jq",
   "gping",
   "mpv",
+  "mpv-mpris",
 ]
 
 arch = [
@@ -64,6 +63,8 @@ arch = [
   "perl-tidy",
   "dog",
   "python-newspaper",
+  "go",
+  "task",
 ]
 
 debian = [
@@ -74,6 +75,8 @@ debian = [
   "fonts-firacode",
   "itools",
   "python3-qrcode",
+  "golang",
+  "taskwarrior",
 ]
 
 fedora = [
