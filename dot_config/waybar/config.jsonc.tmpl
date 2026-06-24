@@ -172,7 +172,7 @@
     "position": "bottom",
     "modules-left": [ "{{ or (and (eq .chassis_type "laptop") "backlight") "custom/ddcutil" -}}", "power-profiles-daemon", {{ if eq .chassis_type "laptop" -}} "battery", {{- end }} "pulseaudio", "cpu", "temperature", "memory", "disk", "network", "custom/exchange", "custom/weather" ],
     "modules-center": [ "custom/clock", "custom/prayertimes" ],
-    "modules-right": [ "tray", "keyboard-state" {{- if eq .machine "home" }}, "custom/keyboard" {{- else }}, "sway/language" {{- end }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
+    "modules-right": [ "tray", "keyboard-state", {{ or (and (findExecutable "kbd_layouts_i3ipc" (list (printf "%s/scripts/bar" .chezmoi.homeDir))) "custom/keyboard") "sway/language" | quote }} {{- if eq .chassis_type "laptop" }}, "bluetooth" {{- end }} ],
     "clock": {
       "interval": 60,
       "format": " {:%H:%M}",
