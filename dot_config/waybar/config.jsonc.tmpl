@@ -4,7 +4,7 @@
     "position": "top",
     "modules-left": [ "sway/workspaces", "sway/mode", "sway/scratchpad" ],
     "modules-center": [ "sway/window" ],
-    "modules-right": [ {{ if eq .machine "home" -}} "custom/music", "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/tasks", "custom/swaync" ],
+    "modules-right": [ "custom/music",{{ if eq .machine "home" -}} "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/tasks", "custom/swaync" ],
     "sway/workspaces": {
       "disable-scroll-wraparound": false,
       "smooth-scrolling-threshold": 1,
