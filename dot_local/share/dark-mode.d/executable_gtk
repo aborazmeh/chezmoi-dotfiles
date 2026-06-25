@@ -1,4 +1,0 @@
-#!/bin/bash
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-sed -i 's/gtk-application-prefer-dark-theme=[0-1]/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-[34]*/settings.ini
-
