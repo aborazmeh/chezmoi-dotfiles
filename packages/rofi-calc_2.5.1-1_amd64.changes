@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Thu, 25 Jun 2026 00:00:00 +0000
+Source: rofi-calc
+Binary: rofi-calc rofi-calc-dbgsym
+Architecture: amd64
+Version: 2.5.1-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Sven-Hendrik Haase <svenstaro@gmail.com>
+Changed-By: Sven-Hendrik Haase <svenstaro@gmail.com>
+Description:
+ rofi-calc  - rofi calculator plugin
+Changes:
+ rofi-calc (2.5.1-1) unstable; urgency=medium
+ .
+   * Initial Debian packaging.
+Checksums-Sha1:
+ 29c3b8d31a11cc157edc49cda197c8b053a44447 20808 rofi-calc-dbgsym_2.5.1-1_amd64.deb
+ 2cc126555ed3b2445524c8a07b1539ae3a26bd23 10402 rofi-calc_2.5.1-1_amd64.buildinfo
+ 4cf53e7307a894a21869f6c0a2bddd51c6337c8f 9456 rofi-calc_2.5.1-1_amd64.deb
+Checksums-Sha256:
+ ab2940a2f95717ebbe33baa1efdb065de70fda4c3758d26493e0c5f086d8f977 20808 rofi-calc-dbgsym_2.5.1-1_amd64.deb
+ faafbf606dc248b47ff9a905d8d42299ad24d1c942338c877a0dafdf7e6f6bb6 10402 rofi-calc_2.5.1-1_amd64.buildinfo
+ a333762cd507dc17a22616e175f3890d1bdcb961f46618f9e157f5337e5c56d2 9456 rofi-calc_2.5.1-1_amd64.deb
+Files:
+ e9554b0409bcc57f77a33f6bec0a917f 20808 debug optional rofi-calc-dbgsym_2.5.1-1_amd64.deb
+ 29b61e9853f7a953faa6185d6971d34d 10402 utils optional rofi-calc_2.5.1-1_amd64.buildinfo
+ d9bc3273f99e784f223e2361a042fab1 9456 utils optional rofi-calc_2.5.1-1_amd64.deb

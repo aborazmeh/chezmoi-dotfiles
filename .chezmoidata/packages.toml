@@ -43,6 +43,7 @@ linux = [
   "gping",
   "mpv",
   "mpv-mpris",
+  "geoclue-2.0",  # for darkman
 ]
 
 arch = [

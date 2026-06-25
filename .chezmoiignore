@@ -6,6 +6,7 @@ package.json
 pnpm-lock.yaml
 .vscode
 slapt-getrc
+packages
 
 {{- if eq .chezmoi.os "darwin" "linux" }}
   {{- if ne .emacs_framework "spacemacs" }}

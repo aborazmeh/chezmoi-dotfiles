@@ -25,6 +25,12 @@ sudo {{ $aurHelper }} {{ .packages.linux | join " " }} {{ $distroPackages | join
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
 {{- else if eq $distro "debian" "ubuntu" "kali" }}
 sudo apt install {{ .packages.linux | join " " }} {{ $distroPackages | join " " -}};
+
+for p in $HOME/.local/share/chezmoi/packages/*.deb; do
+  [[ "$p" == *"-dbgsym"* ]] && continue 
+  sudo apt install "$p"
+done
+
 echo -e "\033[0;32m\033[1m[OK]\033[0m    Package installation complete.";
 {{- else if eq $distro "fedora" }}
 # TODO
