@@ -18,3 +18,22 @@ vim.api.nvim_create_autocmd("BufNew", {
         end
     end,
 })
+
+-- chezmoi
+vim.keymap.set("n", "<leader>cz", function()
+  require("chezmoi.pick").telescope()
+end)
+
+vim.keymap.set('n', '<leader>fc', function()
+  require("chezmoi.pick").telescope(
+    targets = vim.fn.stdpath("config"),
+    args = {
+      "--path-style",
+      "absolute",
+      "--include",
+      "files",
+      "--exclude",
+      "externals",
+    }
+  )
+end)
