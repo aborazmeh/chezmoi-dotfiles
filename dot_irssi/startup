@@ -1,0 +1,5 @@
+LOAD OTR
+SCRIPT LOAD uberprompt
+WINDOW GOTO (status)
+SCRIPT LOAD nicklist
+NICKLIST FIFO

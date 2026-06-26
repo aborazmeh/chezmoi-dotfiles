@@ -1,0 +1,4 @@
+#Triggers file version 1.0
+-regexp '\x80' -replace '\xA4' 
+-all -regexp '\t' -replace '    ' 
+-all -regexp '(http://\w+\.\w{2,5})' -replace '12$1' 

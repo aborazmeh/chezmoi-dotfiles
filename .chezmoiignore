@@ -28,6 +28,7 @@ packages
 
 .znc
 .weechat
+.irssi
 
 .ncmpcpp
 
