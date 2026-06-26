@@ -20,20 +20,6 @@ vim.api.nvim_create_autocmd("BufNew", {
 })
 
 -- chezmoi
-vim.keymap.set("n", "<leader>cz", function()
+vim.keymap.set("n", "<leader>fC", function()
   require("chezmoi.pick").telescope()
-end)
-
-vim.keymap.set('n', '<leader>fc', function()
-  require("chezmoi.pick").telescope(
-    targets = vim.fn.stdpath("config"),
-    args = {
-      "--path-style",
-      "absolute",
-      "--include",
-      "files",
-      "--exclude",
-      "externals",
-    }
-  )
-end)
+end, { desc = "Find files (Chezmoi)" })
