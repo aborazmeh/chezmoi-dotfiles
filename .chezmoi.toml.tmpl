@@ -74,3 +74,6 @@ encryption = "gpg"
 
 [data.torn]
   api_key = "{{ promptStringOnce . "torn.api_key" "Torn API Key" }}"
+
+[data.taskwarrior]
+  holiday_locales = "{{ promptStringOnce . "taskwarrior.holiday_locales" "taskwarrior holiday locale" | replaceAllRegex " " "" }}"

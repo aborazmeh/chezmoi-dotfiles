@@ -1,5 +1,4 @@
-{{ $year :=  now | date "2006" -}}
-{{ $filename := printf "%s/.config/task/holidays.%s_%s.json" .cxt.chezmoi.homeDir .locale $year -}}
+{{ $filename := printf "%s/.local/share/holidays/holidays.json" .cxt.chezmoi.homeDir .locale -}}
 {{ range $idx, $h := (include $filename | trim | splitList "\n") -}}
 {{ with fromJson . -}}
 holiday.{{ .locale }}{{ $idx }}.name={{ .description }}

@@ -1,0 +1,32 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  holidays list  ━━━\033[0m"
+
+OUTPUT_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/holidays"
+mkdir -p "$OUTPUT_DIR"
+
+urls=(
+  {{ range .taskwarrior.holiday_locales | splitList "," -}}
+    "https://holidata.net/{{ . }}/{{ now.Year }}.json"
+  {{ end -}}
+  )
+
+combined_content=""
+
+for url in "${urls[@]}"; do
+  lang=$(echo "$url" | grep -oP 'en-US|tr-TR')
+
+  content=$(curl -f -s "$url")
+
+  if [[ $? -eq 0 ]] && [[ -n "$content" ]]; then
+    echo -e "\033[0;32m\033[1m[OK]\033[0m    $url"
+    combined_content="$combined_content"$'\n'"$content"
+  else
+    echo -e "\033[1m[ERROR]\033[0m $url" >&2;
+  fi
+done
+
+echo "$combined_content" >"$OUTPUT_DIR/holidays.jsonl"
+
+{{ end -}}
