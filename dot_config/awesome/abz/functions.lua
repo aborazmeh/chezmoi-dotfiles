@@ -1,0 +1,106 @@
+awful = require("awful")
+lfs = require("lfs")
+asyncshell = require("asyncshell")
+
+function copytoclipboard(args)
+  os.execute('echo -n "' .. args .. '" | xclip -selection "clipboard"')
+end
+
+function open_url(url)
+  --runners for various protocols
+  local myrunners = {
+    http = "xdg-open",
+    ftp = "dolphin",
+    file = "xdg-open",
+    vnc = "krdc",
+    rdp = "krdc",
+    fish = "dolphin",
+    smb = "dolphin",
+    man = "dolphin",
+    info = "dolphin"
+  }
+  command = url
+  local protocol = command:match("^(%a+):/+")
+  if protocol then
+    command = (myrunners[protocol] or "xdg-open").." " .. command
+  end
+  local result = awful.util.spawn(command)
+end
+
+local abzprompt = {}
+
+function calc(args)
+  --local result = asyncshell.demand("echo \"" .. args .. "\"|bc 2>/dev/null", 1):read("*l")
+  local result = asyncshell.demand("calc -q -- \"" .. args .. "\"", 1):read("*l"):gsub("%s", "")
+  if result then return result end
+end
+
+
+
+function websearch(engine, keyword)
+  local mysearchengines = {
+    google = "http://www.google.com/search?q=",
+    bing = "http://www.bing.com/search?q=",
+    yandex = "http://www.yandex.com.tr/yandsearch?text=",
+    yahoo = "http://search.yahoo.com/search?p=",
+    duckduckgo = "http://duckduckgo.com/?q=",
+    ask = "http://www.ask.com/web?q=",
+    wikipedia = "http://wikipedia.org/wiki/Special:Search?search=",
+    wolframalpha = "http://www.wolframalpha.com/input/?i=",
+    youtube = "http://www.youtube.com/results?search_query=",
+    imdb = "http://www.imdb.com/find?q=",
+    google_maps = "https://www.google.com/maps/?q=",
+    bing_maps = "http://www.bing.com/maps/?q=",
+    yandex_maps = "https://maps.yandex.com/?text=",
+    archlinuxwiki = "http://wiki.archlinux.org/index.php?search=",
+
+    default = "http://www.google.com/search?q="
+  }
+  keyword = keyword:gsub(" ", "+")
+  open_url(mysearchengines[engine] .. keyword)
+end
+
+
+---- (lang)>(lang) (text): Translation
+--elseif ( p:match("^.?.?.?>(...?) (.+)") ) then
+--local frlang, tolang, trans = p:match("(.?.?.?)>(...?) (.+)")
+
+--asyncshell.request("python ~/.config/scripts/trans.py " .. frlang .. " " .. tolang .. " \"" .. trans .. "\"",
+--function(output)
+--local ws = output:read("*a")
+--abzprompt:notify_show({ title = "Google Translation", text = ws, icon = beautiful.prompt_trans, timeout = 20 })
+--copytoclipboard(ws:match("Translation: (.+)"))
+--end)
+
+---- > (text): Translate to Arabic
+--elseif ( p:match("^> (.+)") ) then
+--local trans = p:match("> (.+)")
+--local tolang = "ar"
+
+--asyncshell.request("python ~/.config/scripts/trans.py " .. " " .. tolang .. " \"" .. trans .. "\"",
+--function(output)
+--local ws = output:read("*a")
+--abzprompt:notify_show({ title = "Google Translation", text = ws, icon = beautiful.prompt_trans, timeout = 20 })
+--copytoclipboard(ws:match("Translation: (.+)"))
+--end)
+
+---- Run shell commands
+--elseif ( p:match("^`.+`")  or p:match("$(.+)") or p:match("$%((.+)%)") ) then
+--local command = p:match("^`(.+)`") or p:match("$%((.+)%)") or p:match("$(.+)")
+--asyncshell.request(command,
+--function(output)
+--local ws = output:read("*a")
+---- Don't show the empty strings
+--if ws == "" then return end
+--abzprompt:notify_show({ title = "Shell Output", text = ws, icon = beautiful.prompt_terminal, timeout = 20 })
+--end)
+
+function opendir(dir)
+  if (lfs.attributes(dir,"mode") == "directory") then
+    awful.util.spawn("nautilus " .. dir)
+  end
+end
+
+function runasroot(cmd)
+  awful.util.spawn("gksudo " .. cmd)
+end

@@ -188,7 +188,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = fromList $
     , ((modMask, xK_Escape), spawn "$HOME/scripts/xkbdlayout.sh")
 
     -- Get the function keys to work
-    , ((0, 0x1008ff2a), spawn "sh ~/.config/awesome/scripts/shutdown.sh")  -- XF86Power
+    , ((0, 0x1008ff2a), spawn "sh ~/.config/scripts/shutdown.sh")  -- XF86Power
     , ((0, 0x1008ff03), spawn "xbacklight -dec 15") --XF86MonBrightnessDown
     , ((0, 0x1008ff02), spawn "xbacklight -inc 15") --XF86MonBrightnessUp
     , ((0, 0x1008ff14), spawn $ "mpc -h " ++ mpdPassword ++ "@" ++ mpdServer ++ " toggle") -- XF86AudioPlay

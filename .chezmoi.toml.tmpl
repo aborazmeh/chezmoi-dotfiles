@@ -77,3 +77,12 @@ encryption = "gpg"
 
 [data.taskwarrior]
   holiday_locales = "{{ promptStringOnce . "taskwarrior.holiday_locales" "taskwarrior holiday locale" | replaceAllRegex " " "" }}"
+
+{{ if eq $machine "home" -}}
+[data.awesome]
+  email = "{{ promptStringOnce . "awesome.email" "Awesome WM Notifications Email" }}"
+  imap = "{{ promptStringOnce . "awesome.imap_server" "Awesome WM Notifications IMAP Server" }}"
+
+[data.forvo]
+  api_key = "{{ promptStringOnce . "forvo.api_key" "Forvo API Key" }}"
+{{ end -}}

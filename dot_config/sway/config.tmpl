@@ -263,7 +263,7 @@ bindsym --to-code {
   $mod+ctrl+space exec swaync-client --hide-latest
 
   # Function Keys
-  # --locked XF86Power exec "sh ~/.config/awesome/scripts/shutdown.sh"
+  # --locked XF86Power exec "sh ~/.config/scripts/shutdown.sh"
   --locked XF86MonBrightnessDown exec "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
   --locked XF86MonBrightnessUp exec "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
   $mod+F4 exec "$HOME/.rofi/monitor_layout.sh"

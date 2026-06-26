@@ -68,6 +68,12 @@ smplayer
 .SpaceVim.d
 
 scripts/i3blocks
+scripts/forvo.py
+scripts/lyrics.py
+scripts/wiki.py
+scripts/rand_wallpapers.py
+scripts/shutdown.sh
+scripts/trans.py
 
 .rtorrentrc
 

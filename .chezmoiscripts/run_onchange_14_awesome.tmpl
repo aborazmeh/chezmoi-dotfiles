@@ -1,0 +1,18 @@
+{{ if and (eq .chezmoi "home") (eq .chezmoi.os "linux")  -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Awesome Window Manager  ━━━\033[0m"
+
+urls=(
+  https://github.com/alexander-yakushev/awesompd
+  https://github.com/Midek/bashets
+  https://github.com/blueyed/awesome-cyclefocus
+  https://github.com/lcpz/lain
+  https://github.com/Elv13/tyrannical
+)
+
+for url in "${urls[@]}"; do
+  git clone $url $HOME/.config/awesome/$(basename $url | sed 's/awesome-//')
+  ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    $(basename $url | sed 's/awesome-//')") || echo -e "\033[1m[ERROR]\033[0m $(basename $url | sed 's/awesome-//')" >&2
+done
+{{ end -}}
