@@ -6,7 +6,6 @@ linux = [
   "sway",
   "swaylock",
   "swayidle",
-  "waybar",
   "rofi",
   "lazygit",
   "tmuxp",
@@ -47,6 +46,7 @@ linux = [
 ]
 
 arch = [
+  "waybar-cava",
   "fd",
   "swaync",
   "bottom",
@@ -69,6 +69,7 @@ arch = [
 ]
 
 debian = [
+  "waybar",
   "sway-notification-center",
   "btm",
   "fd-find",

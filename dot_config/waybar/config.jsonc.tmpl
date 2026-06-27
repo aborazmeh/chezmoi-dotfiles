@@ -4,7 +4,7 @@
     "position": "top",
     "modules-left": [ "sway/workspaces", "sway/mode", "sway/scratchpad" ],
     "modules-center": [ "sway/window" ],
-    "modules-right": [ "custom/music",{{ if eq .machine "home" -}} "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/tasks", "custom/swaync" ],
+    "modules-right": [ "cava", "custom/music",{{ if eq .machine "home" -}} "mpd", "custom/torrents", {{- end -}} "custom/rss", "custom/podcasts", "custom/torn", "custom/tasks", "custom/swaync" ],
     "sway/workspaces": {
       "disable-scroll-wraparound": false,
       "smooth-scrolling-threshold": 1,
@@ -37,6 +37,31 @@
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
+    "cava": {
+      "cava_config": "$HOME/.config/cava/config",
+      "framerate": 30,
+      "autosens": 0,
+      "sensitivity": 5,
+      "bars": 10,
+      "lower_cutoff_freq": 50,
+      "higher_cutoff_freq": 10000,
+      "hide_on_silence": true,
+      "sleep_timer": 5,
+      "format_silent": "quiet",
+      "method": "pipewire",
+      "source": "auto",
+      "stereo": true,
+      "reverse": false,
+      "bar_delimiter": 0,
+      "monstercat": false,
+      "waves": false,
+      "noise_reduction": 0.2,
+      "input_delay": 0,
+      "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+      "actions": {
+        "on-click-right": "mode"
+      }
+    },
     "custom/music": {
       "exec": "cat /tmp/waybar-music",
       "interval": "once",
@@ -50,7 +75,7 @@
     },
     "mpd": {
       "server": "localhost",
-      "port": "6680",
+      "port": 6680,
       "interval": 1,
       "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}({elapsedTime:%H:%M:%S}/{totalTime:%H:%M:%S}){title}",
       "format-stopped": "",
