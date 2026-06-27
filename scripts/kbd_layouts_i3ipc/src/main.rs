@@ -10,22 +10,26 @@ fn main() -> Fallible<()> {
   )
   .expect("JSON was not well-formatted");
 
-  for input_dev in Connection::new().unwrap().get_inputs().unwrap().iter() {
-    if input_dev.input_type == "keyboard" {
-      print_output(input_dev.xkb_active_layout_name.to_owned().unwrap(), &json);
-      break;
+  let mut conn = Connection::new()?;
+  let first_kbd = conn
+    .get_inputs()?
+    .into_iter()
+    .find(|d| d.input_type == "keyboard");
+  if let Some(ref kbd) = first_kbd {
+    if let Some(ref layout) = kbd.xkb_active_layout_name {
+      print_output(layout.clone(), &json);
     }
   }
 
   let mut last_layout = String::new();
-
-  for event in Connection::new()?.subscribe([EventType::Input])? {
+  for event in conn.subscribe([EventType::Input])? {
     match event? {
-      Event::Input(event) => {
-        if let Some(layout_name) = event.input.xkb_active_layout_name {
-          if layout_name != last_layout {
-            print_output(layout_name.clone(), &json);
-            last_layout = layout_name;
+      Event::Input(ev) => {
+        if ev.input.input_type == "keyboard" {
+          let layout = ev.input.xkb_active_layout_name.unwrap_or_default();
+          if layout != last_layout && !layout.is_empty() {
+            print_output(layout.clone(), &json);
+            last_layout = layout;
           }
         }
       }
