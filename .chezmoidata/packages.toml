@@ -53,6 +53,7 @@ arch = [
   "ttf-firacode-nerd",
   "ttf-nerd-fonts-symbols",
   "yazi",
+  "dust",
   "gitui",
   "itools",
   "darkman",

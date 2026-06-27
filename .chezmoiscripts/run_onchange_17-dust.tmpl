@@ -1,0 +1,10 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "debian") -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Dust - du alternative  ━━━\033[0m"
+if command -v dust >/dev/null; then
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Dust already installed, skipping."
+else
+  curl -sSfL https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/install.sh | sh
+fi
+{{ end -}}
