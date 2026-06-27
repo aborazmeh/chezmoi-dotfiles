@@ -6,7 +6,7 @@ use std::time::Duration;
 use crate::mpdplayer::MpdPlayer;
 use crate::mprisplayer::MprisPlayer;
 
-const FILE_PATH: &str = "/tmp/waybar-music";
+const FILE_PATH: &str = "/tmp/music-fifo";
 const NOT_SO_IMPORTANT: [&str; 2] = ["kdeconnect", "chromium"];
 
 fn has_important_players(player_name: &str) -> bool {
