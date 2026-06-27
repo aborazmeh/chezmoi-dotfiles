@@ -1,0 +1,18 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+PACKAGES=("math-symbols" "greek-letters-improved" "all-emojis")
+
+echo -e "\n\033[1m━━━  Espanso Packages  ━━━\033[0m"
+for p in "${PACKAGES[@]}"; do
+  if espanso package list | grep -q "$p"; then
+    echo -e "\033[0;36m\033[1m[INFO]\033[0m  $p plugin already installed, skipping."
+  else
+    espanso package install $p
+    echo -e "\033[0;32m\033[1m[OK]\033[0m    Espanso $p plugin installed."
+  fi
+done
+
+espanso package update all
+echo -e "\033[0;32m\033[1m[OK]\033[0m    Espanso plugins upgraded."
+{{ end -}}

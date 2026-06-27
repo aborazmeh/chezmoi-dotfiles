@@ -1,0 +1,45 @@
+# espanso match file
+# For a complete introduction, visit the official docs at: https://espanso.org/docs/
+
+yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+
+matches:
+  - trigger: :date
+    replace: "{{date}}"
+    vars:
+      - name: date
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: :now
+    replace: "{{date}}"
+    vars:
+      - name: date
+        type: date
+        params:
+          format: "%Y-%m-%dT%H:%M:%S"
+
+  - trigger: :clip
+    replace: "{{clip}}"
+    vars:
+      - name: clip
+        type: clipboard
+
+  - triggers: [:commit, :shortsha]
+    replace: "{{shortsha}}"
+    vars:
+      - name: clip
+        type: clipboard
+      - name: shortsha
+        type: shell
+        params:
+          cmd: echo '{{clip}}' | cut -c1-8
+
+  - trigger: :shell
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: echo 'Hello from your shell'

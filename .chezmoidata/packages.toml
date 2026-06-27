@@ -66,6 +66,7 @@ arch = [
   "python-newspaper",
   "go",
   "task",
+  "espanso-wayland",
 ]
 
 debian = [

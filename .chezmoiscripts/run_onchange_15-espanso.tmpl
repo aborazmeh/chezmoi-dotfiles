@@ -1,0 +1,15 @@
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "debian") -}}
+#!/bin/bash
+
+echo -e "\n\033[1m━━━  Espanso Text Expander  ━━━\033[0m"
+if command -v espanso >/dev/null; then
+  echo -e "\033[0;36m\033[1m[INFO]\033[0m  Espanso already installed, skipping."
+else
+  wget https://github.com/espanso/espanso/releases/latest/download/espanso-debian-wayland-amd64.deb -O /tmp/espanso-debian-wayland-amd64.deb
+  sudo apt install /tmp/espanso-debian-wayland-amd64.deb
+  sudo setcap "cap_dac_override+p" $(which espanso)
+  espanso service register
+  espanso start
+  echo -e "\033[0;32m\033[1m[OK]\033[0m    Espanso installed."
+fi
+{{ end -}}
