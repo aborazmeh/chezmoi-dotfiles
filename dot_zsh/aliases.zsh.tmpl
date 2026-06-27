@@ -22,7 +22,9 @@ alias traceroute='mtr'
 alias ping='gping'
 alias ps='procs'
 alias cd='z'    # zoxide
+{{ if eq .chezmoi.osRelease.id "arch" -}}
 alias dig='dog'
+{{ end -}}
 alias cheat='cht.sh'
 alias nnn='source $HOME/.config/nnn/config.sh ; nnn'
 
