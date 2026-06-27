@@ -1,11 +1,12 @@
+use dirs::home_dir;
 use serde_json;
 use std::fs;
 use swayipc::{Connection, Event, EventType, Fallible};
 
 fn main() -> Fallible<()> {
+  let home = home_dir().expect("Couldn't get home directory");
   let json: serde_json::Value = serde_json::from_str(
-    &fs::read_to_string("{{ .chezmoi.homeDir }}/scripts/languages.json")
-      .expect("Unable to read file"),
+    &fs::read_to_string(home.join("scripts").join("languages.json")).expect("Unable to read file"),
   )
   .expect("JSON was not well-formatted");
 
