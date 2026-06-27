@@ -280,9 +280,10 @@ bindsym --to-code {
   --locked XF86AudioNext exec "$HOME/scripts/bar/music -f sway seek+"
   # XF86AudioNext with Ctrl to next track
   --locked Ctrl+XF86AudioNext exec "$HOME/scripts/bar/music -f sway next"
-  --locked XF86AudioLowerVolume exec "$HOME/scripts/bar/music -f sway volume-"
-  --locked XF86AudioRaiseVolume exec "$HOME/scripts/bar/music -f sway volume+"
-  --locked XF86AudioMute exec "$HOME/scripts/bar/music -f sway mute"
+  {{ $m := printf "%s/scripts/bar/music" .chezmoi.homeDir | lstat -}}
+  --locked XF86AudioLowerVolume exec "{{ or (and $m "$HOME/scripts/bar/music -f sway volume-") `amixer -D pulse set Master unmute 5%- | awk -F'[][]' '/\\[[0-9]+%\\]/ {print $2; exit}' | tr -d '%' > $SWAYSOCK.wob` }}"
+  --locked XF86AudioRaiseVolume exec "{{ or (and $m "$HOME/scripts/bar/music -f sway volume+") `amixer -D pulse set Master unmute 5%+ | awk -F'[][]' '/\\[[0-9]+%\\]/ {print $2;exit}' | tr -d '%' > $SWAYSOCK.wob` }}"
+  --locked XF86AudioMute exec "{{ or (and $m "$HOME/scripts/bar/music -f sway mute") "amixer -D pulse set Master toggle" }}"
 
   # switch to workspace
   $mod+tab workspace next
