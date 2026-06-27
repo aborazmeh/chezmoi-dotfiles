@@ -40,21 +40,19 @@ fn main() -> Fallible<()> {
 }
 
 fn print_output(layout: String, json: &serde_json::Value) {
-  let emoji = match json.get(&layout[..2].to_lowercase()) {
-    Some(x) => match x.get("emoji") {
-      Some(x) => x,
-      None => {
-        println!("{}", layout);
-        return;
-      }
-    },
+  let json_obj = json.as_object().expect("JSON must be an object");
+  let entry = json_obj.values().find(|v| {
+    v.get("name")
+      .and_then(|n| n.as_str())
+      .map_or(false, |name| layout.starts_with(name))
+  });
+  let emoji = match entry.and_then(|e| e.get("emoji")).and_then(|e| e.as_str()) {
+    Some(e) => e.to_owned(),
     None => {
       println!("{}", layout);
       return;
     }
-  }
-  .as_str()
-  .expect(&layout);
+  };
 
   println!(
     "{}",
