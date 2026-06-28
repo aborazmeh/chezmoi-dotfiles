@@ -2,7 +2,7 @@
 
 {{ $chassisType := includeTemplate ".chezmoitemplates/chassis.tmpl" . -}}
 {{ $timezone := includeTemplate ".chezmoitemplates/timezone.tmpl" . -}}
-{{ $wm := includeTemplate ".chezmoitemplates/wm.tmpl" . -}}
+{{ $display_system := includeTemplate ".chezmoitemplates/display_system.tmpl" . -}}
 
 {{ if eq $machine "home" -}}
 encryption = "gpg"
@@ -29,7 +29,8 @@ encryption = "gpg"
   timezone = "{{ or (promptStringOnce . "timezone" (printf "timezone (%s)" $timezone)) $timezone }}"
   fullname = "{{ promptStringOnce . "fullname" "fullname" }}"
   email = "{{ promptStringOnce . "email" "email" }}"
-  wm = "{{ or (promptStringOnce . "wm" (printf "windowing system (%s)" $wm)) $wm }}" # or "x11"
+  display_system = "{{ or (promptStringOnce . "display_system" (printf "windowing system (%s)" $display_system)) $display_system }}" # or "x11"
+  wm = "{{ or (promptStringOnce . "wm" (printf "window manager (%s)" "sway")) "sway" }}"
   password_manager = "{{ or (promptStringOnce . "password_manager" "password manager (bw)") "bw" }}" # = "bitwarden" / "vaultwarden" or "pass"
   network_interface = "{{ or (promptStringOnce . "network_interface" "network interface (enp3s0)") "enp3s0" }}"
   emacs_framework = "{{ or (promptStringOnce . "emacs_framework" "emacs framework (spacemacs)" ) "spacemacs" }}" # or doomemacs

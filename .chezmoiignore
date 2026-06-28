@@ -14,7 +14,7 @@ packages
   {{- end }}
 {{- end }}
 
-{{- if ne .wm "x11" }}
+{{- if ne .display_system "x11" }}
 .Xdefaults
 .Xresources
 .xbindkeysrc
