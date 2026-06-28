@@ -23,22 +23,12 @@ function show_prayers() {
   maghrib="$(echo "$output" | sed -n '12p' | awk 'NR=3{print $6}')"
   isha="$(echo "$output" | sed -n '12p' | awk 'NR=2{print $7}')"
 
-  monitor_width=$(xdpyinfo | \grep dimensions | awk '{print $2}' | sed 's/x.\+//')
-  if [[ $monitor_width -lt 1500 ]]; then
-    text="\
-Fajr\t\t$(zeropadding "$fajr")\n\
-Zuhr\t\t$(zeropadding "$zuhr")\n\
-Asr\t\t$(zeropadding "$asr")\n\
-Maghrib\t$(zeropadding "$maghrib")\n\
-Isha\t\t$(zeropadding "$isha")"
-  else
-    text="\
-Fajr\t\t\t$(zeropadding "$fajr")\n\
-Zuhr\t\t$(zeropadding "$zuhr")\n\
-Asr\t\t\t$(zeropadding "$asr")\n\
-Maghrib\t$(zeropadding "$maghrib")\n\
-Isha\t\t$(zeropadding "$isha")"
-  fi
+  text=$(printf "%-20s%s\n%-18s%s\n%-19s%s\n%-15s%s\n%-19s%s" \
+    "Fajr" "$(zeropadding "$fajr")" \
+    "Zuhr" "$(zeropadding "$zuhr")" \
+    "Asr" "$(zeropadding "$asr")" \
+    "Maghrib" "$(zeropadding "$maghrib")" \
+    "Isha" "$(zeropadding "$isha")")
 
   if [[ -z $JSON ]]; then
     if [[ $until_prayer -le 1800 ]]; then
@@ -47,7 +37,7 @@ Isha\t\t$(zeropadding "$isha")"
       notify-send "Prayer Times" -u normal "$text"
     fi
   else
-    echo "${text}"
+    echo "${text//$'\n'/\\n}"
   fi
 }
 
