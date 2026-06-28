@@ -30,7 +30,7 @@ install_mirage_linemod() {
 
 install_tmux() {
   pip install ranger-tmux
-  python -m ranger_tmux install
+  python3 -m ranger_tmux install
   ([[ $? -eq 0 ]] && echo -e "\033[0;32m\033[1m[OK]\033[0m    Plugin updated: ranger_tmux") || echo -e "\033[1m[ERROR]\033[0m Error while updating plugin ranger_tmux" >&2
 }
 
