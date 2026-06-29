@@ -13,34 +13,24 @@ return {
     },
   },
   lazy = false, -- the plugin lazy-initialises itself
-  keys = {
-    {
-      "ff",
-      function()
-        require("fff").find_files()
-      end,
-      desc = "FFFind files",
-    },
-    {
-      "fg",
-      function()
-        require("fff").live_grep()
-      end,
-      desc = "LiFFFe grep",
-    },
-    {
-      "fz",
-      function()
-        require("fff").live_grep({ grep = { modes = { "fuzzy", "plain" } } })
-      end,
-      desc = "Live fffuzy grep",
-    },
-    {
-      "fc",
-      function()
-        require("fff").live_grep({ query = vim.fn.expand("<cword>") })
-      end,
-      desc = "Search current word",
-    },
-  },
+  keys = function()
+    local find = function(keys, func, args, desc)
+      return {
+        keys,
+        function()
+          (require("fff")[func] or require("fff").find_files)(args)
+        end,
+        desc = desc or "FFFind files",
+      }
+    end
+
+    return {
+      find("<leader>ff"),
+      find("<leader><leader>"),
+      find("ff"),
+      find("fg", "live_grep", nil, "LiFFFe grep"),
+      find("fz", "live_grep", { grep = { modes = { "fuzzy", "plain" } } }, "Live fffuzy grep"),
+      find("fc", "live_grep", { query = vim.fn.expand("<cword>") }, "Search current word"),
+    }
+  end,
 }
