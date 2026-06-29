@@ -8,3 +8,12 @@ watch_aria2c() {
   done
 }
 
+clip_watch() {
+  wl-paste --watch sh -c 'printf "%s\n" "$(cat)"'
+}
+
+clip_notify() {
+  while clipnotify; do
+    echo $(wl-paste)
+  done
+}
