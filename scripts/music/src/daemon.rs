@@ -48,15 +48,26 @@ pub fn run_daemon_mode() {
     mpd_refresh += 1;
 
     let current_state = get_active_player_status_json(&mpris_player, &mut mpd_player);
-    if current_state != last_state && !current_state.is_empty() {
-      if let Ok(mut f) = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .open(FILE_PATH)
-      {
-        let _ = f.write_all(current_state.as_bytes());
-        let _ = f.write_all(b"\n");
+    if current_state != last_state {
+      if current_state.is_empty() {
+        if let Ok(mut f) = OpenOptions::new()
+          .write(true)
+          .create(true)
+          .truncate(true)
+          .open(FILE_PATH)
+        {
+          let _ = f.write_all(b"{\"text\": \"\", \"class\": \"stopped\"}\n");
+        }
+      } else {
+        if let Ok(mut f) = OpenOptions::new()
+          .write(true)
+          .create(true)
+          .truncate(true)
+          .open(FILE_PATH)
+        {
+          let _ = f.write_all(current_state.as_bytes());
+          let _ = f.write_all(b"\n");
+        }
       }
       if ticks_since_signal >= 4 {
         let _ = std::process::Command::new("pkill")
