@@ -2,11 +2,15 @@ README.md
 Pictures/backgrounds/{arch,debian,kali,slackware,ubuntu}*
 node_modules
 .prettierrc
+.stylelintrc
+.prettierignore
 package.json
 pnpm-lock.yaml
 .vscode
 slapt-getrc
 packages
+.husky
+.lintstagedrc
 
 {{- if eq .chezmoi.os "darwin" "linux" }}
   {{- if ne .emacs_framework "spacemacs" }}

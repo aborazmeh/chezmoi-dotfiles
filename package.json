@@ -1,10 +1,15 @@
 {
   "scripts": {
     "format:check": "prettier --check .",
-    "format:write": "prettier --write ."
+    "format:write": "prettier --write .",
+    "prepare": "husky"
   },
   "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "prettier": "^3.8.3",
-    "prettier-plugin-go-template": "^0.0.15"
+    "prettier-plugin-go-template": "^0.0.15",
+    "stylelint": "^17.14.0",
+    "stylelint-config-standard": "^40.0.0"
   }
 }

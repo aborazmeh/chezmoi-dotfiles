@@ -1,0 +1,35 @@
+# Dependencies and build artifacts
+node_modules/
+*.min.js
+*.min.css
+*.bundle.js
+*.bundle.css
+
+# Version control
+.git/
+.svn/
+.hg/
+.gitignore
+.gitattributes
+
+# Generated code
+generated/
+gen/
+_autogen/
+*.generated.*
+*.auto.*
+
+# Build tool caches
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Package manager specifics
+pnpm-lock.yaml
+pnpm-workspace.yaml
+yarn.lock
+package-lock.json
+bun.lockb
+bun.lock
+
