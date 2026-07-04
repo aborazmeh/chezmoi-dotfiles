@@ -45,7 +45,7 @@ local supermenu = require("abz.supermenu")
 local abzprompt = require ("abz.abzprompt")
 
 
--- {{{ Naughty Default Options
+{{ printf `-- {{{` }} Naughty Default Options
 --naughty.config.defaults.timeout          = 5
 --naughty.config.defaults.screen           = 1
 --naughty.config.defaults.position         = "top_right"
@@ -67,7 +67,7 @@ naughty.config.presets.low.opacity = 0.8
 naughty.config.presets.critical.opacity = 0.8
 -- }}}
 
--- {{{ Debugging printing
+{{ printf `-- {{{` }} Debugging printing
 function say (s)
   naughty.notify({preset=naughty.config.presets.critical,
   text= s,
@@ -76,7 +76,7 @@ function say (s)
 end
 -- }}}
 
--- {{{ Error handling
+{{ printf `-- {{{` }} Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
@@ -101,7 +101,7 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
+{{ printf `-- {{{` }} Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme/theme.lua")
 
@@ -137,7 +137,7 @@ local layouts =
 }
 -- }}}
 
--- {{{ Wallpaper
+{{ printf `-- {{{` }} Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
         gears.wallpaper.maximized(beautiful.wallpaper, s, true)
@@ -145,7 +145,7 @@ if beautiful.wallpaper then
 end
 -- }}}
 
--- {{{ Automatic random wallpapers from 4walled.com
+{{ printf `-- {{{` }} Automatic random wallpapers from 4walled.com
 --function wallpaper()
   --picturesque.sfw = false
    -- This will set wallpaper only on a second screen, fit the image and use black color as the background.
@@ -164,7 +164,7 @@ end
 --end
 -- }}}
 
--- {{{ Automatic random wallpapers from specific directory
+{{ printf `-- {{{` }} Automatic random wallpapers from specific directory
 -- FIXME: fix bugs.
 --function getwallpaper()
   --wallpapers_dir = os.getenv("HOME") .. "/Pictures/Wallpapers"
@@ -180,7 +180,7 @@ end
 --getwallpaper()
 -- }}}
 
--- {{{ Autostart apps
+{{ printf `-- {{{` }} Autostart apps
 function apps_init()
   function run_once(prg,arg_string,pname,screen)
     if not prg then
@@ -227,7 +227,7 @@ function apps_init()
 end
 -- }}}
 
--- {{{ Tags
+{{ printf `-- {{{` }} Tags
 -- Define a tag table which hold all screen tags.
 --[[
  tags = {
@@ -400,7 +400,7 @@ tyrannical.tags = {
     tyrannical.settings.group_children = true --Force popups/dialogs to have the same tags as the parent client
     -- }}}
 
--- {{{ Menu
+{{ printf `-- {{{` }} Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
@@ -421,7 +421,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
--- {{{ Wibox
+{{ printf `-- {{{` }} Wibox
 markup = lain.util.markup
 
 -- Create a textclock widget
@@ -433,7 +433,7 @@ mybottomwibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 
--- {{{ Tagllist
+{{ printf `-- {{{` }} Tagllist
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
 awful.button({ }, 1, awful.tag.viewonly),
@@ -445,7 +445,7 @@ awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
 -- }}}
 
--- {{{ Tasklist
+{{ printf `-- {{{` }} Tasklist
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
 awful.button({ }, 1, function (c)
@@ -484,7 +484,7 @@ awful.button({ }, 5, function ()
 end))
 -- }}}
 
--- {{{ Separators
+{{ printf `-- {{{` }} Separators
 spr = wibox.widget.textbox(' ')
 sprpipe = wibox.widget.textbox('|')
 sprpipe_normal = wibox.widget.textbox(" |")
@@ -505,9 +505,9 @@ arrr_ld_sf = wibox.widget.imagebox(beautiful.arrr_ld_sf)
 sprpipe = wibox.widget.background(sprpipe, "#313131")
 -- }}}
 
--- {{{ Widgets
+{{ printf `-- {{{` }} Widgets
 
--- {{ Colors
+{{ printf `-- {{` }} Colors
 green = "#00CC00"
 gray = beautiful.fg_normal
 red = "#EE0000"
@@ -515,7 +515,7 @@ yellow = "#FFFF00"
 cyan = "#00BBBB"
 -- }}
 
--- {{ Keyboard & Mouse
+{{ printf `-- {{` }} Keyboard & Mouse
 -- Keyboard map indicator and changer
 kbdcfg = {}
 kbdcfg.mode = "icon"    -- Could be "text", "icon", or "textandicon"
@@ -557,7 +557,7 @@ awful.button({ }, 1, function () kbdcfg.switch() end),
 awful.button({ }, 3, function () kbdcfg.exswitch() end)))
 -- }}
 
--- {{ Battery
+{{ printf `-- {{` }} Battery
 baticon = wibox.widget.imagebox(beautiful.widget_bat)
 batcharging = wibox.widget.textbox(" ")
 batbar = awful.widget.progressbar()
@@ -679,7 +679,7 @@ batcharging = wibox.widget.background(batcharging, "#313131")
 batwidget = wibox.widget.background(batwidget, "#313131")
 -- }}
 
--- {{ ALSA volume
+{{ printf `-- {{` }} ALSA volume
 volicon = wibox.widget.imagebox(beautiful.widget_vol)
 volumewidget = lain.widgets.alsa({
   settings = function()
@@ -736,7 +736,7 @@ awful.button({ }, 5, function () volumewidget:volumedown() end),
 awful.button({ }, 2, function () volumewidget:mute() end)))
 -- }}
 
--- {{ Net
+{{ printf `-- {{` }} Net
 netdownicon = wibox.widget.imagebox(beautiful.widget_netdown)
 netdownicon.align = "middle"
 netdowninfo = wibox.widget.textbox()
@@ -795,7 +795,7 @@ netdownicon:connect_signal('button::press', function () netinfo:show(0) end)
 netdownicon:connect_signal('mouse::leave', function () netinfo:hide() end)
 -- }}
 
--- {{ Weather
+{{ printf `-- {{` }} Weather
 --yawnwidget = lain.widgets.yawn(2487889,
 --{
   --settings = function()
@@ -822,7 +822,7 @@ netdownicon:connect_signal('mouse::leave', function () netinfo:hide() end)
 --end)
 -- }}
 
--- {{ CPU
+{{ printf `-- {{` }} CPU
 cpuicon = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget = lain.widgets.cpu({
@@ -871,7 +871,7 @@ cpuicon:connect_signal('mouse::enter', function () cpu:show(0) end)
 cpuicon:connect_signal('mouse::leave', function () cpu:hide() end)
 -- }}
 
--- {{ System Load
+{{ printf `-- {{` }} System Load
 sysloadwidget = lain.widgets.sysload({
   settings = function()
     widget:set_markup(markup("#e33a6e", "(" .. load_1 .. ")") .. " ")
@@ -886,7 +886,7 @@ sysloadwidget:connect_signal('mouse::enter', function () cpu:show(0) end)
 sysloadwidget:connect_signal('mouse::leave', function () cpu:hide() end)
 -- }}
 
--- {{ Memory
+{{ printf `-- {{` }} Memory
 memicon = wibox.widget.imagebox(beautiful.widget_mem)
 memwidget = lain.widgets.mem({
   settings = function()
@@ -956,7 +956,7 @@ memicon:connect_signal('mouse::leave', function () mem:hide() end)
 memicon:connect_signal('button::press', function () mem:show_clicked() end)
 -- }}
 
--- {{ / fs
+{{ printf `-- {{` }} / fs
 fsicon = wibox.widget.imagebox(beautiful.widget_fs)
 fswidget = lain.widgets.fs({
   settings  = function()
@@ -996,7 +996,7 @@ fsicon:connect_signal('mouse::enter', function () lain.widgets.fs:show(0) end)
 fsicon:connect_signal('mouse::leave', function () lain.widgets.fs:hide() end)
 -- }}
 
--- {{ Coretemp
+{{ printf `-- {{` }} Coretemp
 tempicon = wibox.widget.imagebox(beautiful.widget_temp)
 tempwidget = lain.widgets.temp({
     settings = function()
@@ -1041,16 +1041,16 @@ tempwidget:connect_signal('button::press', function () temp:show(0) end)
 tempwidget:connect_signal('mouse::leave', function () temp:hide() end)
 -- }}
 
--- {{ Textclock
+{{ printf `-- {{` }} Textclock
 clockicon = wibox.widget.imagebox(beautiful.widget_clock)
 mytextclock = awful.widget.textclock(markup("#7788af", "%A %d %B ") .. markup("#343639", "|") .. markup("#de5e1e", " %H:%M "))
 -- }}
 
--- {{ Calendar
+{{ printf `-- {{` }} Calendar
 lain.widgets.calendar:attach(mytextclock, { font_size = 10 })
 -- }}
 
--- {{ Mail IMAP check
+{{ printf `-- {{` }} Mail IMAP check
 imappass = "imappass"
 mailicon = wibox.widget.imagebox()
 mailicon:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mail) end)))
@@ -1094,7 +1094,7 @@ awful.button({ }, 3, function ()
 end)))
 -- }}
 
--- {{ MPD
+{{ printf `-- {{` }} MPD
 mpd_server = "{{ .mpd.hostname }}"
 mpd_password = "{{ .mpd.password }}"
 
@@ -1393,7 +1393,7 @@ play_pause_icon:connect_signal('button::press', function () awful.util.spawn_wit
 stop_icon:connect_signal('button::press', function () awful.util.spawn_with_shell("mpc -h " .. mpd_password .. "@" .. mpd_server .. " stop") end)
 -- }}
 
--- {{ USB
+{{ printf `-- {{` }} USB
 local usb = {}
 function usb:check()
   local ws = asyncshell.demand("mount|grep udisks", 1):read("*a"):gsub("(.+)\b.+", "%1")
@@ -1405,7 +1405,7 @@ usbwidget = wibox.widget.imagebox(beautiful.widget_usb)
 --usbtimer:start()
 -- }}
 
--- {{ USD Dollar ( and more exchange rates )
+{{ printf `-- {{` }} USD Dollar ( and more exchange rates )
 local dollar = {}
 dollarwidget_text = wibox.widget.textbox()
 dollarwidget = wibox.widget.background()
@@ -1492,7 +1492,7 @@ dollarwidget:buttons(awful.util.table.join(
 dollar_timer:start()
 -- }}
 
--- {{ Social (Facebook, Twitter, RSS)
+{{ printf `-- {{` }} Social (Facebook, Twitter, RSS)
 local social = {}
 social_network = {"facebook", "twitter", "rss", "podcast", "todo"}
 social_current_network = 1
@@ -1601,7 +1601,7 @@ socialicon:connect_signal('button::press', function () social:widget_pressed() e
 -- }}}
 
 
--- {{{ Promptbox
+{{ printf `-- {{{` }} Promptbox
 --abzprompt_completion_onthefly = true
 abzprompt_init()
 function promptbox_run (prompt_type)
@@ -1626,7 +1626,7 @@ function promptbox_run (prompt_type)
 end
 -- }}}
 
--- {{{ Widgets
+{{ printf `-- {{{` }} Widgets
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt( )
@@ -1776,7 +1776,7 @@ end
 --bashets.stop()
 -- }}}
 
--- {{{ Mouse bindings
+{{ printf `-- {{{` }} Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 5, awful.tag.viewnext),
@@ -1784,7 +1784,7 @@ root.buttons(awful.util.table.join(
 ))
 -- }}}
 
--- {{{ Key bindings
+{{ printf `-- {{{` }} Key bindings
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -1991,7 +1991,7 @@ clientbuttons = awful.util.table.join(
 root.keys(globalkeys)
 -- }}}
 
--- {{{ Rules
+{{ printf `-- {{{` }} Rules
 -- Rules to apply to new clients (through the "manage" signal).
 
 awful.rules.rules = {
@@ -2034,7 +2034,7 @@ awful.rules.rules = {
 --]]
 -- }}}
 
--- {{{ Signals
+{{ printf `-- {{{` }} Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
     -- Enable sloppy focus
