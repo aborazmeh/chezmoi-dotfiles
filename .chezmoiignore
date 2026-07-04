@@ -72,6 +72,7 @@ GNUstep
 smplayer
 
 .SpaceVim.d
+.vintrc.yaml
 
 scripts/i3blocks
 scripts/forvo.py
