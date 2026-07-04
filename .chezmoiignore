@@ -4,6 +4,7 @@ node_modules
 .prettierrc
 .stylelintrc
 .prettierignore
+.yamlfmt.yml
 package.json
 pnpm-lock.yaml
 .vscode
