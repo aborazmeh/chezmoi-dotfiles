@@ -7,13 +7,13 @@ DB=$HOME/.newsbeuter/cache.db
 sqlite3 "$DB" "PRAGMA query_only = 1; PRAGMA temp_store = MEMORY;"
 
 readarray -t feed_counts < <(sqlite3 -separator '|' "$DB" "
-  SELECT feedurl, COUNT(*) 
-  FROM rss_item 
-  WHERE unread = 1 
+  SELECT feedurl, COUNT(*)
+  FROM rss_item
+  WHERE unread = 1
   GROUP BY feedurl
 ")
 
-mapfile -t urls < <(grep -E '^http' $HOME/.newsbeuter/urls | grep -v 'podcast' | grep -v '^#' | grep -v '^$' | awk '{print $1}')
+mapfile -t urls < <(grep -E '^http' $HOME/.newsbeuter/urls | grep -v 'podcast' | grep -v '^#' | grep -v '^$' | sed 's/ .*//')
 
 declare -A url_count
 for count_line in "${feed_counts[@]}"; do
