@@ -503,7 +503,7 @@ set -g @plugin 'jaclu/tmux-menus'
 set -g @plugin 'alexwforsythe/tmux-which-key'
 
 set -g @plugin 'fabioluciano/tmux-powerkit'
-set -g @powerkit_plugins "datetime,battery,cpu,memory,git"
+set -g @powerkit_plugins "datetime,battery,cpu,memory,git,chezmoi"
 {{ $theme := "nord" -}}
 {{ $variant := "dark" -}}
 {{ $themeKey := index .themes.tmux_powerkit .chezmoi.osRelease.id -}}
