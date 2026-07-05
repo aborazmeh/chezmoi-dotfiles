@@ -10,7 +10,7 @@
   "*.{html}": ["prettier --write", "htmlhint"],
   "*.{css}": ["stylelint --fix", "prettier --write"],
   "*.{md}": ["markdownlint --fix", "prettier --write"],
-  "*.{toml}": ["taplo format --check"],
+  "*.{toml}": ["taplo format"],
   "*.{xml}": ["xmllint --format --noout"],
   "*.{Makefile}": ["make -n -f /dev/null 2>&1 || true"],
   "*.{c,h,cpp,hpp,cxx,c++,,cc}": [
