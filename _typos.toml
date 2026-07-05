@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["dot_config/private_filezilla/filezilla.xml.tmpl"]
