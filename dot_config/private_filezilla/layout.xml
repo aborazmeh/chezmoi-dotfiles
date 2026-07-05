@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<FileZilla3 version="3.69.6" platform="*nix">
-	<Layout Builddate="2026-03-23" Buildtime="18:05:34">
+<FileZilla3 version="3.70.5" platform="*nix">
+	<Layout Builddate="2026-05-10" Buildtime="16:54:47">
 		<Resources>
 			<xrc file="sitemanager.xrc" date="1561891732" />
 			<xrc file="storj.xrc" date="1577999086" />
@@ -11,9 +11,8 @@
 			<xrc file="netconfwizard.xrc" date="1707303642" />
 			<xrc file="inputdialog.xrc" date="1561891732" />
 		</Resources>
-		<Language id="en_US" date="1774289134">
+		<Language id="en_US" date="1778432087">
 			<Font font="Adwaita Sans 11" width="903" height="19" />
-			<Dialog name="Settings" width="597" />
 		</Language>
 	</Layout>
 </FileZilla3>
