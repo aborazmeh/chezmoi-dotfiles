@@ -1,4 +1,4 @@
-{{ $filename := printf "%s/.local/share/holidays/holidays.json" .cxt.chezmoi.homeDir .locale -}}
+{{ $filename := printf "%s/.local/share/holidays/holidays.jsonl" .cxt.chezmoi.homeDir -}}
 {{ range $idx, $h := (include $filename | trim | splitList "\n") -}}
 {{ with fromJson . -}}
 holiday.{{ .locale }}{{ $idx }}.name={{ .description }}
