@@ -1,7 +1,7 @@
 [Default Applications]
 inode/directory={{ .default_apps.fileManager | join ";" }}
 
-{{- /* Text */ -}}
+# Text
 application/ecmascript=emacs.desktop;emacsclient.desktop
 application/json-patch+json={{ .default_apps.textEditor | join ";" }}
 application/json={{ .default_apps.codeEditor | join ";" }}
@@ -100,7 +100,7 @@ text/x-scss={{ .default_apps.codeEditor | join ";" }}
 text/x-setext={{ .default_apps.textEditor | join ";" }}
 text/x.gcode={{ .default_apps.codeEditor | join ";" }}
 
-{{- /* Documents */ -}}
+# Documents
 application/epub+zip={{ .default_apps.ebookReader | join ";" }}
 application/octet-stream={{ .default_apps.pdfViewer | join ";" }}
 application/oxps={{ .default_apps.pdfViewer | join ";" }}
@@ -137,7 +137,7 @@ image/x-bzeps={{ .default_apps.pdfViewer | join ";"}}
 image/x-eps={{ .default_apps.pdfViewer | join ";"}}
 image/x-gzeps={{ .default_apps.pdfViewer | join ";"}}
 
-{{- /* Archive */ -}}
+# Archive
 application/gzip=org.gnome.Nautilus.desktop
 application/vnd.ms-cab-compressed=org.gnome.Nautilus.desktop
 application/vnd.rar=org.gnome.Nautilus.desktop
@@ -179,7 +179,7 @@ application/zip=org.gnome.Nautilus.desktop
 application/zlib=org.gnome.Nautilus.desktop
 application/zstd=org.gnome.Nautilus.desktop
 
-{{- /* Office */ -}}
+# Office
 application/mathml+xml={{ .default_apps.officeMath | join ";" }}
 application/msword-template={{ .default_apps.officeWriter | join ";" }}
 /* application/msword={{ .default_apps.officeWriter | join ";" }} */
@@ -280,7 +280,7 @@ text/richtext={{ .default_apps.officeWriter | join ";" }}
 text/spreadsheet={{ .default_apps.officeCalc | join ";" }}
 text/tab-separated-values={{ .default_apps.officeCalc | join ";" }}
 
-{{- /* Web */ -}}
+# Web
 application/atom+xml={{ .default_apps.rssReader | join ";" }}
 application/rdf+xml={{ .default_apps.rssReader | join ";" }}
 application/rss+xml={{ .default_apps.rssReader | join ";" }}
@@ -307,7 +307,7 @@ x-scheme-handler/magnet={{ .default_apps.torrentClient | join ";"}}
 x-scheme-handler/mailto={{ .default_apps.emailClient | join ";" }}
 x-scheme-handler/mid={{ .default_apps.emailClient | join ";" }}
 
-{{- /* Images */ -}}
+# Images
 image/apng={{ .default_apps.imageViewer | join ";" }}
 image/astc={{ .default_apps.imageViewer | join ";" }}
 image/avif={{ .default_apps.imageViewer | join ";" }}
@@ -406,7 +406,7 @@ image/x-xbitmap={{ .default_apps.imageViewer | join ";" }}
 image/x-xcf={{ .default_apps.imageViewer | join ";" }}
 image/x-xpixmap={{ .default_apps.imageViewer | join ";" }}
 
-{{- /* Multiedia  */ -}}
+# Multiedia
 application/mxf={{ .default_apps.mediaPlayer | join ";" }}
 application/ogg={{ .default_apps.mediaPlayer | join ";" }}
 application/sdp={{ .default_apps.mediaPlayer | join ";" }}
@@ -521,7 +521,7 @@ video/x-ogm+ogg={{ .default_apps.mediaPlayer | join ";" }}
 video/x-sgi-movie={{ .default_apps.mediaPlayer | join ";" }}
 video/x-theora+ogg={{ .default_apps.mediaPlayer | join ";" }}
 
-{{- /* Misc */ -}}
+# Misc
 application/illustrator=org.inkscape.Inkscape.desktop;org.gnome.Evince.desktop
 application/java-archive=java-java-openjdk.desktop
 application/pgp-keys=org.gnome.seahorse.Application.desktop
