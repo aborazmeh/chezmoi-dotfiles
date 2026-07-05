@@ -540,6 +540,11 @@ set -g @tmux-nvim-resize-keybinding-down 'M-J'
 set -g @tmux-nvim-resize-keybinding-up 'M-K'
 set -g @tmux-nvim-resize-keybinding-right 'M-L'
 
+# copy-mode
+bind-key -T copy-mode-vi / command-prompt -i -p "search up" "send -X search-backward-incremental \"%%%\""
+bind-key -T copy-mode-vi ? command-prompt -i -p "search down" "send -X search-forward-incremental \"%%%\""
+
+
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
