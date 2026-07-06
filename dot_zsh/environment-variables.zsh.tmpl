@@ -128,3 +128,8 @@ export LEDGER_FILE=$HOME/repos/budget/budget.ledger
 export MCFLY_LIGHT=FALSE
 export MCFLY_KEY_SCHEME=vim   # emacs
 export MCFLY_FUZZY=2
+
+{{ range $var,$val := .env -}}
+{{ if eq $var "path" }} {{ continue }} {{ end -}}
+export {{ $var }}={{ $val }}
+{{ end -}}
