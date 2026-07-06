@@ -12,6 +12,7 @@ slapt-getrc
 packages
 .husky
 .lintstagedrc
+_typos.toml
 
 {{- if eq .chezmoi.os "darwin" "linux" }}
   {{- if ne .emacs_framework "spacemacs" }}
@@ -41,6 +42,7 @@ packages
 
 GNUstep
 .xmonad
+.config/awesome
 
 .vifm
 
