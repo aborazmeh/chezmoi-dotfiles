@@ -4,15 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [
-  "args",
-  "date",
-  "kbd_layouts_i3ipc",
-  "exchange",
-  {{ if eq .machine "home" -}}
-  "music",
-  {{ end -}}
-]
+members = ["args", "date", "kbd_layouts_i3ipc", "exchange", "music"]
 
 [profile.release]
 opt-level = 3     # Optimize for size
