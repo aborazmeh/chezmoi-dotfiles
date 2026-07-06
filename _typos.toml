@@ -1,2 +1,5 @@
 [files]
-extend-exclude = ["dot_config/private_filezilla/filezilla.xml.tmpl"]
+extend-exclude = [
+  "dot_config/private_filezilla/filezilla.xml.tmpl",
+  "dot_config/sway/config.tmpl",
+]
