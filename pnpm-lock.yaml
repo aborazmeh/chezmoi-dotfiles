@@ -20,6 +20,9 @@ importers:
       prettier-plugin-go-template:
         specifier: ^0.0.15
         version: 0.0.15(prettier@3.8.3)
+      prettier-plugin-toml:
+        specifier: ^2.0.6
+        version: 2.0.6(prettier@3.8.3)
       stylelint:
         specifier: ^17.14.0
         version: 17.14.0
@@ -111,6 +114,12 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
+
+  '@taplo/core@0.2.0':
+    resolution: {integrity: sha512-r8bl54Zj1In3QLkiW/ex694bVzpPJ9EhwqT9xkcUVODnVUGirdB1JTsmiIv0o1uwqZiwhi8xNnTOQBRQCpizrQ==}
+
+  '@taplo/lib@0.5.0':
+    resolution: {integrity: sha512-+xIqpQXJco3T+VGaTTwmhxLa51qpkQxCjRwezjFZgr+l21ExlywJFcDfTrNmL6lG6tqb0h8GyJKO3UPGPtSCWg==}
 
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
@@ -461,6 +470,12 @@ packages:
     peerDependencies:
       prettier: ^3.0.0
 
+  prettier-plugin-toml@2.0.6:
+    resolution: {integrity: sha512-12N/wBuHa9jd/KVy9pRP20NMKxQfQLMseQCt66lIbLaPLItvGUcSIryE1eZZMJ7loSws6Ig3M2Elc2EreNh76w==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      prettier: ^3.0.3
+
   prettier@3.8.3:
     resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
@@ -686,6 +701,12 @@ snapshots:
       fastq: 1.20.1
 
   '@sindresorhus/merge-streams@4.0.0': {}
+
+  '@taplo/core@0.2.0': {}
+
+  '@taplo/lib@0.5.0':
+    dependencies:
+      '@taplo/core': 0.2.0
 
   ajv@8.20.0:
     dependencies:
@@ -991,6 +1012,11 @@ snapshots:
     dependencies:
       prettier: 3.8.3
       ulid: 2.4.0
+
+  prettier-plugin-toml@2.0.6(prettier@3.8.3):
+    dependencies:
+      '@taplo/lib': 0.5.0
+      prettier: 3.8.3
 
   prettier@3.8.3: {}
 

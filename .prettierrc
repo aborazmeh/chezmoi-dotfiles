@@ -1,7 +1,5 @@
 {
-  "plugins": [
-    "prettier-plugin-go-template"
-  ],
+  "plugins": ["prettier-plugin-go-template", "prettier-plugin-toml"],
   "semi": true,
   "tabWidth": 2,
   "useTabs": false,
@@ -11,31 +9,20 @@
   "goTemplateBracketSpacing": true,
   "overrides": [
     {
-      "files": [
-        "*.tmpl"
-      ],
+      "files": ["*.tmpl"],
       "options": {
         "parser": "go-template",
         "printWidth": 80
       }
     },
     {
-      "files": [
-        "*.html",
-        "*.css",
-        "*.scss",
-        "*.sass",
-        "*.less",
-        "*.styl"
-      ],
+      "files": ["*.html", "*.css", "*.scss", "*.sass", "*.less", "*.styl"],
       "options": {
         "singleQuote": false
       }
     },
     {
-      "files": [
-        "*.md"
-      ],
+      "files": ["*.md"],
       "options": {
         "proseWrap": "preserve",
         "embeddedLanguageFormatting": "auto"
