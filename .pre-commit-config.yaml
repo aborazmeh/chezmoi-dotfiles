@@ -24,6 +24,8 @@ repos:
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: pretty-format-json
+        args: [--autofix, --indent, "2"]
+        exclude: (package-lock.json|yarn.lock|lazy-lock.json)$
       - id: requirements-txt-fixer
       - id: trailing-whitespace
 
