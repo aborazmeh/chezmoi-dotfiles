@@ -2,6 +2,33 @@ use mpd::Client;
 
 use crate::utils::{MetadataType, format_sway_json_output, output};
 use std::collections::HashMap;
+use std::fs;
+use std::path::PathBuf;
+
+fn get_mpd_password() -> String {
+  let config_dir = std::env::var("XDG_CONFIG_HOME")
+    .map(PathBuf::from)
+    .unwrap_or_else(|_| {
+      let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".to_string());
+      PathBuf::from(home).join(".config")
+    });
+  let config_path = config_dir.join("chezmoi/chezmoi.toml");
+
+  if let Ok(contents) = fs::read_to_string(&config_path) {
+    if let Ok(config) = contents.parse::<toml::Value>() {
+      if let Some(password) = config
+        .get("data")
+        .and_then(|d| d.get("mpd"))
+        .and_then(|m| m.get("password"))
+        .and_then(|p| p.as_str())
+      {
+        return password.to_string();
+      }
+    }
+  }
+
+  "".to_string()
+}
 
 pub struct MpdPlayer {
   player: Option<Client>,
@@ -10,7 +37,7 @@ pub struct MpdPlayer {
 impl MpdPlayer {
   pub fn new() -> Self {
     match Client::connect("127.0.0.1:6600") {
-      Ok(mut player) => match player.login("{{ .mpd.password }}") {
+      Ok(mut player) => match player.login(&get_mpd_password()) {
         Ok(_) => {
           return Self {
             player: Some(player),
