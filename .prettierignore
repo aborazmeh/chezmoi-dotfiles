@@ -33,3 +33,4 @@ package-lock.json
 bun.lockb
 bun.lock
 Cargo.lock
+lazy-lock.json
