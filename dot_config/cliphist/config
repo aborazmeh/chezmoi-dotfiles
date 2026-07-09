@@ -1,0 +1,5 @@
+max-items 1000
+max-dedupe-search 200
+max-store-size 25MB
+preview-width 100
+db-path $XDG_CACHE_HOME/cliphist/db

@@ -193,6 +193,11 @@ bindsym --to-code {
   # Scratchpad
   $mod+Shift+e exec $scratchpad
 
+  # Clipboard manager
+  $mod+v exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+  $mod+Shift+v exec '[[ $(cliphist list 2>/dev/null | wc -l) -gt 0 ]] && cliphist wipe && notify-send cliphist "cliphist database was wiped"'
+
+
   # change focus
   $mod+h focus left
   $mod+j focus down
@@ -651,6 +656,7 @@ exec swayidle -w \
 exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
 exec $HOME/scripts/bar/music --frontend sway --daemon
 exec kanata
+exec wl-paste --watch cliphist store
 exec wlsunset -l $latitude -L $longitude
 {{- if eq .machine "home" }}
 exec megasync
@@ -672,7 +678,6 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSO
 # exec emacs --daemon
 # exec wluma
 # exec udiskie --automount --tray --notify --appindicator
-# exec wl-paste -t text --watch clipman store
 {{- end }}
 
 # Wallpaper
