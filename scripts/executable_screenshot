@@ -3,12 +3,10 @@
 mkdir -p ~/Pictures/Screenshots
 FILENAME=~/Pictures/Screenshots/$(date +%F-%s).png
 
-while getopts f:c: option
-do
-  case "${option}"
-    in
-    f) FRONTEND=${OPTARG};;
-    c) COMMAND=${OPTARG};;
+while getopts f:c: option; do
+  case "${option}" in
+  f) FRONTEND=${OPTARG} ;;
+  c) COMMAND=${OPTARG} ;;
   esac
 done
 
@@ -22,14 +20,15 @@ capture_screen() {
 
 capture_window() {
   if [[ $FRONTEND == sway ]]; then
-    grim -g "$(slurp)" -t $FILENAME
+    grim -g "$(slurp)" -t png $FILENAME
   else
-    sleep 0.2; scrot -sF $FILENAME
+    sleep 0.2
+    scrot -sF $FILENAME
   fi
 }
 
 case $COMMAND in
-  "fullscreen")capture_screen;;
-  "window")capture_window;;
-  "teiler")teiler ;;
+"fullscreen") capture_screen ;;
+"window") capture_window ;;
+"teiler") teiler ;;
 esac
